@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { formatDistance } from 'date-fns'
 
 const Plant = (props) => (
   <tr>
     <td>{props.plant.cultivar.name}</td>
     <td>{props.plant.cultivar.type}</td>
-    <td>{props.plant.cultivar.source}</td>
+    <td>{formatDistance(props.plant.created_on, Date.now(), { addSuffix: true })}</td>
     <td>
-      <Link className="btn btn-link" to={`/edit/${props.plant._id}`}>Edit</Link> |
+      <Link className="btn btn-link" to={`/plant/${props.plant._id}`}>View</Link> |
       <button className="btn btn-link"
         onClick={() => {
           props.deletePlant(props.plant._id);
@@ -52,7 +53,7 @@ export default function Plants() {
     setPlants(newPlants);
   }
 
-  // This method will map out the plants on the table
+  // map out the plants on the table
   function plantList() {
     return plants.map((plant) => {
       return (
@@ -65,7 +66,6 @@ export default function Plants() {
     });
   }
 
-  // This following section will display the table with the plants§ of individuals.
   return (
     <div>
       <h3>Plants</h3>
@@ -74,12 +74,13 @@ export default function Plants() {
           <tr>
             <th>Name</th>
             <th>Type</th>
-            <th>Source</th>
+            <th>Created On</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>{plantList()}</tbody>
       </table>
+      <Link className="btn btn-link" to={`/plant/add`}>Add</Link>
     </div>
   );
 }
