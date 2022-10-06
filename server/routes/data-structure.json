@@ -1,0 +1,22 @@
+
+{
+    "id": "",
+    "timestamp": "",
+    "cultivar": {
+        "name": "Northen Lights",
+        "type": "autoflower, regular/photoperiod",
+        "source": "marijuanasa",
+        "propagation": "seeds or clones/cutting"
+    },
+    "location": "indoor, outdoor, greenhouse",
+    "method": "soil, aquaponics, hydroponics, aeroponics",
+    "plantingDate": "",
+    "germinationDate": "",
+    "note": "",
+    "entries": [{
+        "timestamp": "",
+        "type": "observation, action, bad insects, potting up, watering, nutrients, issues, good inseect",
+        "note": "",
+        "images": []
+    }]
+}
