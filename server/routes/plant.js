@@ -25,11 +25,10 @@ plantRoutes.route('/plants').get(function (req, res) {
 
 // get plant by id
 plantRoutes.route('/plant/:id').get(function (req, res) {
-  let db_connect = dbo.getDb();
-  let myquery = { _id: ObjectId(req.params.id) };
-  db_connect
-    .collection('plants')
-    .findOne(myquery, function (err, result) {
+  let db = dbo.getDb();
+  let query = { _id: ObjectId(req.params.id) };
+  db.collection('plants')
+    .findOne(query, function (err, result) {
       if (err) throw err;
       res.json(result);
     });
@@ -37,9 +36,9 @@ plantRoutes.route('/plant/:id').get(function (req, res) {
 
 // create plant
 plantRoutes.route('/plant').post(function (req, response) {
-  let db_connect = dbo.getDb();
-  let myobj = {
-    created: Date.now(),
+  let db = dbo.getDb();
+  let obj = {
+    created_at: Date.now(),
     cultivar: {
       name: req.body.cultivar.name,
       type: req.body.cultivar.type,
@@ -48,22 +47,23 @@ plantRoutes.route('/plant').post(function (req, response) {
     },
     location: req.body.location,
     method: req.body.method,
-    planting_date: req.body.planting_date,
-    germination_date: req.body.germination_date,
+    planted_on: req.body.planted_on,
+    germinated_on: req.body.germinated_on,
     note: req.body.note,
     entries: [],
   };
-  db_connect.collection('plants').insertOne(myobj, function (err, res) {
-    if (err) throw err;
-    response.json(res);
+  db.collection('plants')
+    .insertOne(obj, function (err, res) {
+      if (err) throw err;
+      response.json(res);
   });
 });
 
 // update plant
 plantRoutes.route('/plant/:id').put(function (req, response) {
-  let db_connect = dbo.getDb();
-  let myquery = { _id: ObjectId(req.params.id) };
-  let newvalues = {
+  let db = dbo.getDb();
+  let query = { _id: ObjectId(req.params.id) };
+  let obj = {
     $set: {
       cultivar: {
         name: req.body.cultivar.name,
@@ -73,14 +73,13 @@ plantRoutes.route('/plant/:id').put(function (req, response) {
       },
       location: req.body.location,
       method: req.body.method,
-      planting_date: req.body.planting_date,
-      germination_date: req.body.germination_date,
+      planted_on: req.body.planted_on,
+      germinated_on: req.body.germinated_on,
       note: req.body.note,
     },
   };
-  db_connect
-    .collection('plants')
-    .updateOne(myquery, newvalues, function (err, res) {
+  db.collection('plants')
+    .updateOne(query, obj, function (err, res) {
       if (err) throw err;
       console.log('1 document updated');
       response.json(res);
@@ -88,13 +87,14 @@ plantRoutes.route('/plant/:id').put(function (req, response) {
 });
 
 // delete plant
-plantRoutes.route('plant/:id').delete((req, response) => {
-  let db_connect = dbo.getDb();
-  let myquery = { _id: ObjectId(req.params.id) };
-  db_connect.collection('plants').deleteOne(myquery, function (err, obj) {
-    if (err) throw err;
-    console.log('1 document deleted');
-    response.json(obj);
+plantRoutes.route('/plant/:id').delete((req, response) => {
+  let db = dbo.getDb();
+  let query = { _id: ObjectId(req.params.id) };
+  db.collection('plants')
+    .deleteOne(query, function (err, obj) {
+      if (err) throw err;
+      console.log('1 document deleted');
+      response.json(obj);
   });
 });
 
