@@ -20,7 +20,7 @@ const Plant = (props) => (
   </tr>
 );
 
-export default function Plants() {
+export default function PlantList() {
   const [plants, setPlants] = useState([]);
 
   // fetch plants from the database upon page loads

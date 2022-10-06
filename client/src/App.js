@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import 'bootstrap/dist/css/bootstrap.css';
 
-import Plants from "./components/Plants";
+import PlantList from "./components/PlantList";
 
 function App() {
   return (
@@ -10,7 +10,7 @@ function App() {
       <BrowserRouter>
         <div style={{ margin: 20 }}>
           <Routes>
-            <Route exact path="/" element={<Plants />} />
+            <Route exact path="/" element={<PlantList />} />
           </Routes>
         </div>
       </BrowserRouter>
