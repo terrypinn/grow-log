@@ -1,8 +1,8 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import 'bootstrap/dist/css/bootstrap.css';
 
-import PlantList from "./components/PlantList";
+import PlantList from './components/PlantList';
 
 function App() {
   return (

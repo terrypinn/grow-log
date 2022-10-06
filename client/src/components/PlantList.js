@@ -45,7 +45,7 @@ export default function PlantList() {
 
   async function deletePlant(id) {
     await fetch(`http://localhost:5000/plant/${id}`, {
-      method: "DELETE"
+      method: 'DELETE'
     });
 
     const newPlants = plants.filter((el) => el._id !== id);
