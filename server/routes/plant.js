@@ -38,7 +38,7 @@ plantRoutes.route('/plant/:id').get(function (req, res) {
 plantRoutes.route('/plant').post(function (req, response) {
   let db = dbo.getDb();
   let obj = {
-    created_at: Date.now(),
+    created_on: Date.now(),
     cultivar: {
       name: req.body.cultivar.name,
       type: req.body.cultivar.type,
