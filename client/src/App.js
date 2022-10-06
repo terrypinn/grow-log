@@ -1,13 +1,13 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import Navbar from "./components/Navbar";
+import 'bootstrap/dist/css/bootstrap.css';
+
 import Plants from "./components/Plants";
 
 function App() {
   return (
     <div>
       <BrowserRouter>
-        <Navbar />
         <div style={{ margin: 20 }}>
           <Routes>
             <Route exact path="/" element={<Plants />} />
