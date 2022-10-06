@@ -40,8 +40,8 @@ export default function Plants() {
 
     getPlants();
 
-    return; 
-  }, [plants.length]);
+    return;
+  }, []);
 
   // This method will delete a plant
   async function deletePlant(id) {
