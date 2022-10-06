@@ -4,8 +4,8 @@ import { formatDistance } from 'date-fns'
 
 const Plant = (props) => (
   <tr>
-    <td>{props.plant.cultivar.name}</td>
-    <td>{props.plant.cultivar.type}</td>
+    <td>{props.plant.name}</td>
+    <td>{props.plant.type}</td>
     <td>{formatDistance(props.plant.created_on, Date.now(), { addSuffix: true })}</td>
     <td>
       <Link className="btn btn-link" to={`/plant/${props.plant._id}`}>View</Link> |
@@ -23,7 +23,7 @@ const Plant = (props) => (
 export default function Plants() {
   const [plants, setPlants] = useState([]);
 
-  // This method fetches the plants from the database.
+  // fetch plants from the database upon page loads
   useEffect(() => {
     async function getPlants() {
       const response = await fetch(`http://localhost:5000/plants/`);
@@ -43,7 +43,6 @@ export default function Plants() {
     return;
   }, []);
 
-  // This method will delete a plant
   async function deletePlant(id) {
     await fetch(`http://localhost:5000/plant/${id}`, {
       method: "DELETE"

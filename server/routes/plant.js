@@ -39,18 +39,16 @@ plantRoutes.route('/plant').post(function (req, response) {
   let db = dbo.getDb();
   let obj = {
     created_on: Date.now(),
-    cultivar: {
-      name: req.body.cultivar.name,
-      type: req.body.cultivar.type,
-      source: req.body.cultivar.source,
-      propagation: req.body.cultivar.propagation
-    },
+    entries: [],
+    germinated_on: req.body.germinated_on,
     location: req.body.location,
     method: req.body.method,
-    planted_on: req.body.planted_on,
-    germinated_on: req.body.germinated_on,
+    name: req.body.name,
     note: req.body.note,
-    entries: [],
+    planted_on: req.body.planted_on,
+    propagation: req.body.propagation,
+    source: req.body.source,
+    type: req.body.type,
   };
   db.collection('plants')
     .insertOne(obj, function (err, res) {
@@ -65,17 +63,15 @@ plantRoutes.route('/plant/:id').put(function (req, response) {
   let query = { _id: ObjectId(req.params.id) };
   let obj = {
     $set: {
-      cultivar: {
-        name: req.body.cultivar.name,
-        type: req.body.cultivar.type,
-        source: req.body.cultivar.source,
-        propagation: req.body.cultivar.propagation
-      },
+      germinated_on: req.body.germinated_on,
       location: req.body.location,
       method: req.body.method,
-      planted_on: req.body.planted_on,
-      germinated_on: req.body.germinated_on,
+      name: req.body.name,
       note: req.body.note,
+      planted_on: req.body.planted_on,
+      propagation: req.body.propagation,
+      source: req.body.source,
+      type: req.body.type,
     },
   };
   db.collection('plants')
