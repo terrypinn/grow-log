@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router';
 import DatePicker from 'react-datepicker';
 import { format } from 'date-fns'
 
-import "react-datepicker/dist/react-datepicker.css";
+import 'react-datepicker/dist/react-datepicker.css';
 
 export default function PlantAdd() {
   const [form, setForm] = useState({
@@ -30,10 +30,11 @@ export default function PlantAdd() {
     e.preventDefault();
 
     const data = { ...form };
-    data.germinated_on = format(form.germinated_on, 'yyyy-MM-dd');
-    data.planted_on = format(form.planted_on, 'yyyy-MM-dd');
 
-    await fetch('http://localhost:5000/plant/add', {
+    if (form.germinated_on) data.germinated_on = format(form.germinated_on, 'yyyy-MM-dd');
+    if (form.planted_on) data.planted_on = format(form.planted_on, 'yyyy-MM-dd');
+
+    await fetch('http://localhost:5000/plant', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -45,7 +46,6 @@ export default function PlantAdd() {
         return;
       });
 
-    setForm({ name: '', position: '', level: '' });
     navigate('/');
   }
 
@@ -252,7 +252,7 @@ export default function PlantAdd() {
             onChange={(e) => updateForm({ note: e.target.value })}
           />
         </div>
-        
+
         <div className="form-group">
           <input
             type="submit"
