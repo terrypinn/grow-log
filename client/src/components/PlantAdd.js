@@ -1,5 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
+import DatePicker from 'react-datepicker';
+import { format } from 'date-fns'
+
+import "react-datepicker/dist/react-datepicker.css";
 
 export default function PlantAdd() {
   const [form, setForm] = useState({
@@ -26,6 +30,8 @@ export default function PlantAdd() {
     e.preventDefault();
 
     const data = { ...form };
+    data.germinated_on = format(form.germinated_on, 'yyyy-MM-dd');
+    data.planted_on = format(form.planted_on, 'yyyy-MM-dd');
 
     await fetch('http://localhost:5000/plant/add', {
       method: 'POST',
@@ -204,6 +210,26 @@ export default function PlantAdd() {
             />
             <label htmlFor="methodAeroponics" className="form-check-label">Aeroponics</label>
           </div>
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="germinated-on">Germinated On</label>
+          <DatePicker
+            id='germinated-on'
+            dateFormat="dd/MM/yyyy"
+            onChange={(date) => updateForm({ germinated_on: date })}
+            selected={form.germinated_on}
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="planted-on">Planted On</label>
+          <DatePicker
+            id='planted-on'
+            dateFormat="dd/MM/yyyy"
+            onChange={(date) => updateForm({ planted_on: date })}
+            selected={form.planted_on}
+          />
         </div>
 
         <div className="form-group">
