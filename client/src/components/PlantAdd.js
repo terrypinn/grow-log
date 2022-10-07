@@ -15,11 +15,11 @@ export default function PlantAdd() {
     planted_on: '',
     propagation: '',
     source: '',
-    type: '', 
+    type: '',
   });
   const navigate = useNavigate();
 
-  // These methods will update the state properties.
+  // update state properties
   function updateForm(value) {
     return setForm((prev) => {
       return { ...prev, ...value };
@@ -65,6 +65,17 @@ export default function PlantAdd() {
         </div>
 
         <div className="form-group">
+          <label htmlFor="source">Source</label>
+          <input
+            type="text"
+            className="form-control"
+            id="source"
+            value={form.source}
+            onChange={(e) => updateForm({ source: e.target.value })}
+          />
+        </div>
+
+        <div className="form-group">
           <p>Type</p>
           <div className="form-check form-check-inline">
             <input
@@ -91,7 +102,7 @@ export default function PlantAdd() {
             <label htmlFor="typeRegular" className="form-check-label">Regular</label>
           </div>
         </div>
-        
+
         <div className="form-group">
           <p>Propagation</p>
           <div className="form-check form-check-inline">
@@ -233,12 +244,23 @@ export default function PlantAdd() {
         </div>
 
         <div className="form-group">
+          <label htmlFor="note">Note</label>
+          <textarea
+            className="form-control"
+            id="note"
+            value={form.note}
+            onChange={(e) => updateForm({ note: e.target.value })}
+          />
+        </div>
+        
+        <div className="form-group">
           <input
             type="submit"
             value="Add"
             className="btn btn-primary"
           />
         </div>
+
       </form>
     </div>
   );
