@@ -1,27 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
 import { formatDistance } from 'date-fns'
 
-const Plant = (props) => (
-  <tr>
-    <td>{props.plant.name}</td>
-    <td>{props.plant.type}</td>
-    <td>{formatDistance(props.plant.created_on, Date.now(), { addSuffix: true })}</td>
-    <td>
-      <Link className="btn btn-link" to={`/plant/${props.plant._id}`}>View</Link> |
-      <button className="btn btn-link"
-        onClick={() => {
-          props.deletePlant(props.plant._id);
-        }}
-      >
-        Delete
-      </button>
-    </td>
-  </tr>
-);
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Button from '@mui/material/Button';
+import Paper from '@mui/material/Paper';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 export default function PlantList() {
   const [plants, setPlants] = useState([]);
+  const navigate = useNavigate();
 
   // fetch plants from the database upon page loads
   useEffect(() => {
@@ -39,47 +32,46 @@ export default function PlantList() {
     }
 
     getPlants();
-
-    return;
   }, []);
 
-  async function deletePlant(id) {
-    await fetch(`http://localhost:5000/plant/${id}`, {
-      method: 'DELETE'
-    });
-
-    const newPlants = plants.filter((el) => el._id !== id);
-    setPlants(newPlants);
-  }
-
-  // map out the plants on the table
-  function plantList() {
-    return plants.map((plant) => {
-      return (
-        <Plant
-          plant={plant}
-          deletePlant={() => deletePlant(plant._id)}
-          key={plant._id}
-        />
-      );
-    });
-  }
-
   return (
-    <div>
-      <h3>Plants</h3>
-      <table className="table table-striped" style={{ marginTop: 20 }}>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Type</th>
-            <th>Created On</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>{plantList()}</tbody>
-      </table>
-      <Link className="btn btn-link" to={`/plant/add`}>Add</Link>
-    </div>
+    <TableContainer component={Paper}>
+      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell>
+              <h3>My&nbsp;Plants</h3>
+            </TableCell>
+            <TableCell />
+            <TableCell align="right">
+              <Button
+                onClick={() => navigate('/plant/add')}
+                startIcon={<AddCircleIcon />}
+                variant="contained">
+                Add
+              </Button>
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Name</TableCell>
+            <TableCell align="right">Type</TableCell>
+            <TableCell align="right">Created&nbsp;On</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {plants.map((row) => (
+            <TableRow
+              key={row._id}
+              onClick={() => navigate(`/plant/${row._id}`)}
+              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+            >
+              <TableCell component="th" scope="row">{row.name}</TableCell>
+              <TableCell align="right">{row.type}</TableCell>
+              <TableCell align="right">{formatDistance(row.created_on, Date.now(), { addSuffix: true })}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 }

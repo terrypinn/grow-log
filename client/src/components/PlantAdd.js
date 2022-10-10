@@ -1,26 +1,38 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
-import DatePicker from 'react-datepicker';
-import { format } from 'date-fns'
+import * as datefns from 'date-fns'
 
-import 'react-datepicker/dist/react-datepicker.css';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
+import SaveIcon from '@mui/icons-material/Save';
+
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+
 
 export default function PlantAdd() {
   const [form, setForm] = useState({
-    germinated_on: '',
+    germinated_on: null,
     location: '',
     method: '',
     name: '',
     note: '',
-    planted_on: '',
+    planted_on: null,
     propagation: '',
     source: '',
     type: '',
   });
+  
   const navigate = useNavigate();
 
-  // update state properties
-  function updateForm(value) {
+  function updateForm(value) {  
     return setForm((prev) => {
       return { ...prev, ...value };
     });
@@ -30,9 +42,6 @@ export default function PlantAdd() {
     e.preventDefault();
 
     const data = { ...form };
-
-    if (form.germinated_on) data.germinated_on = format(form.germinated_on, 'yyyy-MM-dd');
-    if (form.planted_on) data.planted_on = format(form.planted_on, 'yyyy-MM-dd');
 
     await fetch('http://localhost:5000/plant', {
       method: 'POST',
@@ -50,218 +59,121 @@ export default function PlantAdd() {
   }
 
   return (
-    <div>
-      <h3>Add</h3>
-      <form onSubmit={onSubmit}>
-        <div className="form-group">
-          <label htmlFor="name">Name</label>
-          <input
-            type="text"
-            className="form-control"
-            id="name"
-            value={form.name}
-            onChange={(e) => updateForm({ name: e.target.value })}
-          />
-        </div>
 
-        <div className="form-group">
-          <label htmlFor="source">Source</label>
-          <input
-            type="text"
-            className="form-control"
-            id="source"
-            value={form.source}
-            onChange={(e) => updateForm({ source: e.target.value })}
-          />
-        </div>
+    <Box
+      component="form"
+      sx={{
+        '& .MuiTextField-root': { m: 1, width: '25ch' },
+      }}
+      noValidate
+      autoComplete="off"
+      onSubmit={onSubmit}
+    >
 
-        <div className="form-group">
-          <p>Type</p>
-          <div className="form-check form-check-inline">
-            <input
-              className="form-check-input"
-              type="radio"
-              name="typeOptions"
-              id="typeAutoflower"
-              value="Autoflower"
-              checked={form.type === "Autoflower"}
-              onChange={(e) => updateForm({ type: e.target.value })}
-            />
-            <label htmlFor="typeAutoflower" className="form-check-label">Autoflower</label>
-          </div>
-          <div className="form-check form-check-inline">
-            <input
-              className="form-check-input"
-              type="radio"
-              name="typeOptions"
-              id="typeRegular"
-              value="Regular"
-              checked={form.type === "Regular"}
-              onChange={(e) => updateForm({ type: e.target.value })}
-            />
-            <label htmlFor="typeRegular" className="form-check-label">Regular</label>
-          </div>
-        </div>
+      <TextField
+        id="name"
+        label="Name"
+        value={form.name}
+        onChange={(e) => updateForm({ name: e.target.value })}
+      />
 
-        <div className="form-group">
-          <p>Propagation</p>
-          <div className="form-check form-check-inline">
-            <input
-              className="form-check-input"
-              type="radio"
-              name="propagationOptions"
-              id="propagationSeed"
-              value="Seed"
-              checked={form.propagation === "Seed"}
-              onChange={(e) => updateForm({ propagation: e.target.value })}
-            />
-            <label htmlFor="propagationSeed" className="form-check-label">Seed</label>
-          </div>
-          <div className="form-check form-check-inline">
-            <input
-              className="form-check-input"
-              type="radio"
-              name="propagationOptions"
-              id="propagationClone"
-              value="Clone"
-              checked={form.propagation === "Clone"}
-              onChange={(e) => updateForm({ propagation: e.target.value })}
-            />
-            <label htmlFor="propagationClone" className="form-check-label">Clone</label>
-          </div>
-        </div>
+      <TextField
+        id="source"
+        label="Source"
+        value={form.source}
+        onChange={(e) => updateForm({ source: e.target.value })}
+      />
 
-        <div className="form-group">
-          <p>Location</p>
-          <div className="form-check form-check-inline">
-            <input
-              className="form-check-input"
-              type="radio"
-              name="locationOptions"
-              id="locationIndoor"
-              value="Indoor"
-              checked={form.location === "Indoor"}
-              onChange={(e) => updateForm({ location: e.target.value })}
-            />
-            <label htmlFor="locationIndoor" className="form-check-label">Indoor</label>
-          </div>
-          <div className="form-check form-check-inline">
-            <input
-              className="form-check-input"
-              type="radio"
-              name="locationOptions"
-              id="locationOutdoor"
-              value="Outdoor"
-              checked={form.location === "Outdoor"}
-              onChange={(e) => updateForm({ location: e.target.value })}
-            />
-            <label htmlFor="locationOutdoor" className="form-check-label">Outdoor</label>
-          </div>
-          <div className="form-check form-check-inline">
-            <input
-              className="form-check-input"
-              type="radio"
-              name="locationOptions"
-              id="locationGreenhouse"
-              value="Greenhouse"
-              checked={form.location === "Greenhouse"}
-              onChange={(e) => updateForm({ location: e.target.value })}
-            />
-            <label htmlFor="locationGreenhouse" className="form-check-label">Greenhouse</label>
-          </div>
-        </div>
+      <FormControl>
+        <FormLabel id="plant-type-radio-buttons-group">Type</FormLabel>
+        <RadioGroup
+          aria-labelledby="plant-type-radio-buttons-group"
+          name="tyoe-options"
+          value={form.type}
+          onChange={(e) => updateForm({ type: e.target.value })}
+        >
+          <FormControlLabel value="Autoflower" control={<Radio />} label="Autoflower" />
+          <FormControlLabel value="Regular" control={<Radio />} label="Regular" />
+        </RadioGroup>
+      </FormControl>
 
-        <div className="form-group">
-          <p>Method</p>
-          <div className="form-check form-check-inline">
-            <input
-              className="form-check-input"
-              type="radio"
-              name="methodOptions"
-              id="methodSoil"
-              value="Soil"
-              checked={form.method === "Soil"}
-              onChange={(e) => updateForm({ method: e.target.value })}
-            />
-            <label htmlFor="methodSoil" className="form-check-label">Soil</label>
-          </div>
-          <div className="form-check form-check-inline">
-            <input
-              className="form-check-input"
-              type="radio"
-              name="methodOptions"
-              id="methodAquaponics"
-              value="Aquaponics"
-              checked={form.method === "Aquaponics"}
-              onChange={(e) => updateForm({ method: e.target.value })}
-            />
-            <label htmlFor="methodAquaponics" className="form-check-label">Aquaponics</label>
-          </div>
-          <div className="form-check form-check-inline">
-            <input
-              className="form-check-input"
-              type="radio"
-              name="methodOptions"
-              id="methodHydroponics"
-              value="Hydroponics"
-              checked={form.method === "Hydroponics"}
-              onChange={(e) => updateForm({ method: e.target.value })}
-            />
-            <label htmlFor="methodHydroponics" className="form-check-label">Hydroponics</label>
-          </div>
-          <div className="form-check form-check-inline">
-            <input
-              className="form-check-input"
-              type="radio"
-              name="methodOptions"
-              id="methodAeroponics"
-              value="Aeroponics"
-              checked={form.method === "Aeroponics"}
-              onChange={(e) => updateForm({ method: e.target.value })}
-            />
-            <label htmlFor="methodAeroponics" className="form-check-label">Aeroponics</label>
-          </div>
-        </div>
+      <FormControl>
+        <FormLabel id="plant-propagation-radio-buttons-group">Propagation</FormLabel>
+        <RadioGroup
+          aria-labelledby="plant-propagation-radio-buttons-group"
+          name="propagation-options"
+          value={form.propagation}
+          onChange={(e) => updateForm({ propagation: e.target.value })}
+        >
+          <FormControlLabel value="Seed" control={<Radio />} label="Seed" />
+          <FormControlLabel value="Clone" control={<Radio />} label="Clone" />
+        </RadioGroup>
+      </FormControl>
 
-        <div className="form-group">
-          <label htmlFor="germinated-on">Germinated On</label>
-          <DatePicker
-            id='germinated-on'
-            dateFormat="dd/MM/yyyy"
-            onChange={(date) => updateForm({ germinated_on: date })}
-            selected={form.germinated_on}
-          />
-        </div>
+      <FormControl>
+        <FormLabel id="plant-location-radio-buttons-group">Location</FormLabel>
+        <RadioGroup
+          aria-labelledby="plant-location-radio-buttons-group"
+          name="location-options"
+          value={form.location}
+          onChange={(e) => updateForm({ location: e.target.value })}
+        >
+          <FormControlLabel value="Indoor" control={<Radio />} label="Indoor" />
+          <FormControlLabel value="Outdoor" control={<Radio />} label="Outdoor" />
+          <FormControlLabel value="Greenhouse" control={<Radio />} label="Greenhouse" />
+        </RadioGroup>
+      </FormControl>
 
-        <div className="form-group">
-          <label htmlFor="planted-on">Planted On</label>
-          <DatePicker
-            id='planted-on'
-            dateFormat="dd/MM/yyyy"
-            onChange={(date) => updateForm({ planted_on: date })}
-            selected={form.planted_on}
-          />
-        </div>
+      <FormControl>
+        <FormLabel id="plant-method-radio-buttons-group">Method</FormLabel>
+        <RadioGroup
+          aria-labelledby="plant-method-radio-buttons-group"
+          name="method-options"
+          value={form.method}
+          onChange={(e) => updateForm({ method: e.target.value })}
+        >
+          <FormControlLabel value="Soil" control={<Radio />} label="Soil" />
+          <FormControlLabel value="Hydroponics" control={<Radio />} label="Hydroponics" />
+          <FormControlLabel value="Aquaponics" control={<Radio />} label="Aquaponics" />
+          <FormControlLabel value="Aeroponics" control={<Radio />} label="Aeroponics" />
+        </RadioGroup>
+      </FormControl>
 
-        <div className="form-group">
-          <label htmlFor="note">Note</label>
-          <textarea
-            className="form-control"
-            id="note"
-            value={form.note}
-            onChange={(e) => updateForm({ note: e.target.value })}
-          />
-        </div>
+      <TextField
+        id="note"
+        label="Note"
+        multiline
+        rows={4}
+        value={form.note}
+        onChange={(e) => updateForm({ note: e.target.value })}
+      // style={{ width: "92%" }}
+      />
 
-        <div className="form-group">
-          <input
-            type="submit"
-            value="Add"
-            className="btn btn-primary"
-          />
-        </div>
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <DatePicker
+          label="Planted On"
+          value={form.planted_on}
+          inputFormat="dd/MM/yyyy"
+          onChange={(value) => updateForm({ planted_on: datefns.format(value, 'yyyy-MM-dd') })}
+          renderInput={(params) => <TextField {...params} />}
+        />
+        <DatePicker
+          disabled={!form.propagation || form.propagation === 'Clone'}
+          label="Germinated On"
+          value={form.germinated_on}
+          inputFormat="dd/MM/yyyy"
+          onChange={(value) => updateForm({ germinated_on: datefns.format(value, 'yyyy-MM-dd') })}
+          renderInput={(params) => <TextField {...params} />}
+        />
+      </LocalizationProvider>
 
-      </form>
-    </div>
+      <Button
+        type="submit"
+        startIcon={<SaveIcon />}
+        variant="contained">
+        Save
+      </Button>
+
+    </Box>
   );
 }
