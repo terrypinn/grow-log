@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router';
 import * as datefns from 'date-fns'
 
 import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Radio from '@mui/material/Radio';
@@ -29,10 +30,10 @@ export default function PlantAdd() {
     source: '',
     type: '',
   });
-  
+
   const navigate = useNavigate();
 
-  function updateForm(value) {  
+  function updateForm(value) {
     return setForm((prev) => {
       return { ...prev, ...value };
     });
@@ -59,121 +60,148 @@ export default function PlantAdd() {
   }
 
   return (
-
     <Box
       component="form"
-      sx={{
-        '& .MuiTextField-root': { m: 1, width: '25ch' },
-      }}
       noValidate
       autoComplete="off"
       onSubmit={onSubmit}
+      margin={1}
     >
+      <h4>Create New Plant</h4>
 
-      <TextField
-        id="name"
-        label="Name"
-        value={form.name}
-        onChange={(e) => updateForm({ name: e.target.value })}
-      />
+      <Grid container spacing={1} mt={1}>
+        <Grid item xs={2}>
+          <TextField
+            fullWidth
+            id="name"
+            label="Name"
+            value={form.name}
+            onChange={(e) => updateForm({ name: e.target.value })}
+          />
+        </Grid>
+        <Grid item xs={2}>
+          <TextField
+            fullWidth
+            id="source"
+            label="Source"
+            value={form.source}
+            onChange={(e) => updateForm({ source: e.target.value })}
+          />
+        </Grid>
+      </Grid>
 
-      <TextField
-        id="source"
-        label="Source"
-        value={form.source}
-        onChange={(e) => updateForm({ source: e.target.value })}
-      />
+      <Grid container spacing={1} mt={1}>
+        <Grid item xs={1}>
+          <FormControl>
+            <FormLabel id="plant-type-radio-buttons-group">Type</FormLabel>
+            <RadioGroup
+              aria-labelledby="plant-type-radio-buttons-group"
+              name="tyoe-options"
+              value={form.type}
+              onChange={(e) => updateForm({ type: e.target.value })}
+            >
+              <FormControlLabel value="Autoflower" control={<Radio />} label="Autoflower" />
+              <FormControlLabel value="Regular" control={<Radio />} label="Regular" />
+            </RadioGroup>
+          </FormControl>
+        </Grid>
+        <Grid item xs={1}>
+          <FormControl>
+            <FormLabel id="plant-propagation-radio-buttons-group">Propagation</FormLabel>
+            <RadioGroup
+              aria-labelledby="plant-propagation-radio-buttons-group"
+              name="propagation-options"
+              value={form.propagation}
+              onChange={(e) => updateForm({ propagation: e.target.value })}
+            >
+              <FormControlLabel value="Seed" control={<Radio />} label="Seed" />
+              <FormControlLabel value="Clone" control={<Radio />} label="Clone" />
+            </RadioGroup>
+          </FormControl>
+        </Grid>
+        <Grid item xs={1}>
+          <FormControl>
+            <FormLabel id="plant-location-radio-buttons-group">Location</FormLabel>
+            <RadioGroup
+              aria-labelledby="plant-location-radio-buttons-group"
+              name="location-options"
+              value={form.location}
+              onChange={(e) => updateForm({ location: e.target.value })}
+            >
+              <FormControlLabel value="Indoor" control={<Radio />} label="Indoor" />
+              <FormControlLabel value="Outdoor" control={<Radio />} label="Outdoor" />
+              <FormControlLabel value="Greenhouse" control={<Radio />} label="Greenhouse" />
+            </RadioGroup>
+          </FormControl>
+        </Grid>
+        <Grid item xs={1} ml={2}>
+          <FormControl>
+            <FormLabel id="plant-method-radio-buttons-group">Method</FormLabel>
+            <RadioGroup
+              aria-labelledby="plant-method-radio-buttons-group"
+              name="method-options"
+              value={form.method}
+              onChange={(e) => updateForm({ method: e.target.value })}
+            >
+              <FormControlLabel value="Soil" control={<Radio />} label="Soil" />
+              <FormControlLabel value="Hydroponics" control={<Radio />} label="Hydroponics" />
+              <FormControlLabel value="Aquaponics" control={<Radio />} label="Aquaponics" />
+              <FormControlLabel value="Aeroponics" control={<Radio />} label="Aeroponics" />
+            </RadioGroup>
+          </FormControl>
+        </Grid>
+      </Grid>
 
-      <FormControl>
-        <FormLabel id="plant-type-radio-buttons-group">Type</FormLabel>
-        <RadioGroup
-          aria-labelledby="plant-type-radio-buttons-group"
-          name="tyoe-options"
-          value={form.type}
-          onChange={(e) => updateForm({ type: e.target.value })}
-        >
-          <FormControlLabel value="Autoflower" control={<Radio />} label="Autoflower" />
-          <FormControlLabel value="Regular" control={<Radio />} label="Regular" />
-        </RadioGroup>
-      </FormControl>
+      <Grid container spacing={1} mt={1}>
+        <Grid item xs={2}>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DatePicker
+              label="Planted On"
+              value={form.planted_on}
+              inputFormat="dd/MM/yyyy"
+              onChange={(value) => updateForm({ planted_on: datefns.format(value, 'yyyy-MM-dd') })}
+              renderInput={(params) => <TextField {...params} />}
+            />
+          </LocalizationProvider>
+        </Grid>
+        <Grid item xs={2}>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DatePicker
+              disabled={!form.propagation || form.propagation === 'Clone'}
+              label="Germinated On"
+              value={form.germinated_on}
+              inputFormat="dd/MM/yyyy"
+              onChange={(value) => updateForm({ germinated_on: datefns.format(value, 'yyyy-MM-dd') })}
+              renderInput={(params) => <TextField {...params} />}
+            />
+          </LocalizationProvider>
+        </Grid>
+      </Grid>
 
-      <FormControl>
-        <FormLabel id="plant-propagation-radio-buttons-group">Propagation</FormLabel>
-        <RadioGroup
-          aria-labelledby="plant-propagation-radio-buttons-group"
-          name="propagation-options"
-          value={form.propagation}
-          onChange={(e) => updateForm({ propagation: e.target.value })}
-        >
-          <FormControlLabel value="Seed" control={<Radio />} label="Seed" />
-          <FormControlLabel value="Clone" control={<Radio />} label="Clone" />
-        </RadioGroup>
-      </FormControl>
+      <Grid container spacing={1} mt={1}>
+        <Grid item xs={4}>
+          <TextField
+            id="note"
+            label="Note"
+            fullWidth
+            multiline
+            rows={4}
+            value={form.note}
+            onChange={(e) => updateForm({ note: e.target.value })}
+          />
+        </Grid>
+      </Grid>
 
-      <FormControl>
-        <FormLabel id="plant-location-radio-buttons-group">Location</FormLabel>
-        <RadioGroup
-          aria-labelledby="plant-location-radio-buttons-group"
-          name="location-options"
-          value={form.location}
-          onChange={(e) => updateForm({ location: e.target.value })}
-        >
-          <FormControlLabel value="Indoor" control={<Radio />} label="Indoor" />
-          <FormControlLabel value="Outdoor" control={<Radio />} label="Outdoor" />
-          <FormControlLabel value="Greenhouse" control={<Radio />} label="Greenhouse" />
-        </RadioGroup>
-      </FormControl>
-
-      <FormControl>
-        <FormLabel id="plant-method-radio-buttons-group">Method</FormLabel>
-        <RadioGroup
-          aria-labelledby="plant-method-radio-buttons-group"
-          name="method-options"
-          value={form.method}
-          onChange={(e) => updateForm({ method: e.target.value })}
-        >
-          <FormControlLabel value="Soil" control={<Radio />} label="Soil" />
-          <FormControlLabel value="Hydroponics" control={<Radio />} label="Hydroponics" />
-          <FormControlLabel value="Aquaponics" control={<Radio />} label="Aquaponics" />
-          <FormControlLabel value="Aeroponics" control={<Radio />} label="Aeroponics" />
-        </RadioGroup>
-      </FormControl>
-
-      <TextField
-        id="note"
-        label="Note"
-        multiline
-        rows={4}
-        value={form.note}
-        onChange={(e) => updateForm({ note: e.target.value })}
-      // style={{ width: "92%" }}
-      />
-
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <DatePicker
-          label="Planted On"
-          value={form.planted_on}
-          inputFormat="dd/MM/yyyy"
-          onChange={(value) => updateForm({ planted_on: datefns.format(value, 'yyyy-MM-dd') })}
-          renderInput={(params) => <TextField {...params} />}
-        />
-        <DatePicker
-          disabled={!form.propagation || form.propagation === 'Clone'}
-          label="Germinated On"
-          value={form.germinated_on}
-          inputFormat="dd/MM/yyyy"
-          onChange={(value) => updateForm({ germinated_on: datefns.format(value, 'yyyy-MM-dd') })}
-          renderInput={(params) => <TextField {...params} />}
-        />
-      </LocalizationProvider>
-
-      <Button
-        type="submit"
-        startIcon={<SaveIcon />}
-        variant="contained">
-        Save
-      </Button>
-
+      <Grid container spacing={1} mt={1}>
+        <Grid item xs={1}>
+          <Button
+            type="submit"
+            variant="contained"
+            startIcon={<SaveIcon />}>
+            Save
+          </Button>
+        </Grid>
+      </Grid>
     </Box>
   );
 }
