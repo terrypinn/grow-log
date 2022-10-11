@@ -11,7 +11,6 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
-import SaveIcon from '@mui/icons-material/Save';
 
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -21,6 +20,7 @@ import EntryList from './EntryList';
 
 export default function PlantView() {
   const [form, setForm] = useState({
+    _id: '',
     germinated_on: null,
     location: '',
     method: '',
@@ -55,7 +55,7 @@ export default function PlantView() {
 
       if (!plant.planted_on) plant.planted_on = null;
       if (!plant.germinated_on) plant.germinated_on = null;
-      
+
       setForm(plant);
     }
 
@@ -68,14 +68,15 @@ export default function PlantView() {
     });
   }
 
-  // async function deletePlant(id) {
-  //   await fetch(`http://localhost:5000/plant/${id}`, {
-  //     method: 'DELETE'
-  //   });
+  async function deletePlant(id) {
+    if (!window.confirm("Are you sure you want to delete this plant?")) return;
+   
+    await fetch(`http://localhost:5000/plant/${id}`, {
+      method: 'DELETE'
+    });
 
-  //   const newPlants = plants.filter((el) => el._id !== id);
-  //   setPlants(newPlants);
-  // }
+    navigate('/');
+  }
 
   return (
     <Box
@@ -213,14 +214,31 @@ export default function PlantView() {
       <Grid container spacing={1} mt={1}>
         <Grid item xs={1}>
           <Button
+            fullWidth
             type="submit"
             variant="contained"
-            startIcon={<SaveIcon />}>
+          >
             Save
           </Button>
         </Grid>
         <Grid item xs={1}>
-          <Button variant="outlined" onClick={() => { navigate('/') }}>Cancel</Button>
+          <Button
+            fullWidth
+            color="error"
+            variant="outlined"
+            onClick={() => { deletePlant(form._id) }}
+          >
+            Delete
+          </Button>
+        </Grid>
+        <Grid item xs={1}>
+          <Button
+            fullWidth
+            variant="outlined"
+            onClick={() => { navigate('/') }}
+          >
+            Cancel
+          </Button>
         </Grid>
       </Grid>
     </Box>
