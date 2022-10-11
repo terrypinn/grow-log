@@ -201,6 +201,9 @@ export default function PlantAdd() {
             Save
           </Button>
         </Grid>
+        <Grid item xs={1}>
+          <Button variant="outlined" onClick={() => {navigate('/')}}>Cancel</Button>
+        </Grid>
       </Grid>
     </Box>
   );
