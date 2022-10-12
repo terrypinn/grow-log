@@ -13,9 +13,8 @@ const ObjectId = require('mongodb').ObjectId;
 
 // get all plants
 plantRoutes.route('/plants').get(function (req, res) {
-  let db_connect = dbo.getDb();
-  db_connect
-    .collection('plants')
+  let db = dbo.getDb();
+  db.collection('plants')
     .find({})
     .toArray(function (err, result) {
       if (err) throw err;
@@ -117,14 +116,17 @@ plantRoutes.route('/plant/:id/entry').post(function (req, response) {
 });
 
 // get plant entries 
-plantRoutes.route('/plant/:id/entry').get(function (req, res) {
+plantRoutes.route('/plant/:id/entries').get(function (req, res) {
   let db = dbo.getDb();
-  // let query = ;
+  const query = { _id: ObjectId(req.params.id) };
+  const options = { projection: { entries: 1 } };
   db.collection('plants')
-    .find({ _id: ObjectId(req.params.id) }, { entries: 1}, function (err, result) {
+    .findOne(query, options, function (err, result) {
       if (err) throw err;
       res.json(result);
     });
+
+
 });
 
 module.exports = plantRoutes;

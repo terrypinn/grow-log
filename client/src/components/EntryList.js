@@ -1,4 +1,5 @@
-import { useLocation, useNavigate } from 'react-router';
+import { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router';
 
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
@@ -10,12 +11,36 @@ import TableRow from '@mui/material/TableRow';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 
 export default function EntryList() {
-  const location = useLocation();
+  const params = useParams();
   const navigate = useNavigate();
- 
-  const { plant } = location.state;
+
+  const [entries, setEntries] = useState([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/plant/${params.id}/entries`);
+
+      if (!response.ok) {
+        const message = `An error has occured: ${response.statusText}`;
+        window.alert(message);
+        return;
+      }
+
+      const data = await response.json();
+      if (!data) {
+        window.alert(`Plant with id ${params.id} not found`);
+        navigate('/');
+        return;
+      }
+
+      setEntries(data.entries);
+    }
+
+    fetchData();
+  }, [params.id, navigate]);
 
   return (
     <Box margin={1}>
@@ -24,12 +49,19 @@ export default function EntryList() {
           <TableHead>
             <TableRow>
               <TableCell>
-                <h4>Entries</h4>
+                <h3>Entries</h3>
               </TableCell>
               <TableCell />
               <TableCell align="right">
                 <Button
-                  onClick={() => navigate(`/plant/${plant._id}/entry/add`)}
+                  onClick={() => navigate('/')}
+                  startIcon={<ArrowCircleLeftIcon />}
+                  variant="contained">
+                  Back
+                </Button>
+                &nbsp;
+                <Button
+                  onClick={() => navigate(`/plant/${params.id}/entry/add`)}
                   startIcon={<AddCircleIcon />}
                   variant="contained">
                   Add
@@ -43,11 +75,14 @@ export default function EntryList() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {plant.entries?.map((row) => (
+            {entries.map((row) => (
               <TableRow key={row._id}>
                 <TableCell component="th" scope="row">{row.type}</TableCell>
                 <TableCell>{row.note}</TableCell>
-                <TableCell>{row.images.map((url) => (<div>{<a href={url} target="_blank" rel="noopener">{url}</a>}</div>))}</TableCell>
+                <TableCell>{row.images.map((url, index) => (
+                  <div key={index}>{<a href={url} target="_blank" rel="noreferrer">{url}</a>}</div>
+                ))}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

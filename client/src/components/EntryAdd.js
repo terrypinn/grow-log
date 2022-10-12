@@ -11,7 +11,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import SaveIcon from '@mui/icons-material/Save';
 
-export default function EntryAdd(props) {
+export default function EntryAdd() {
   const navigate = useNavigate();
   const params = useParams();
 
@@ -45,7 +45,7 @@ export default function EntryAdd(props) {
         return;
       });
 
-    navigate(`/plant/${params.id}`);
+    navigate(`/plant/${params.id}/entries`);
   }
 
   return (
@@ -56,7 +56,7 @@ export default function EntryAdd(props) {
       onSubmit={onSubmit}
       margin={1}
     >
-      <h4>Create a New Entry</h4>
+      <h4>Create New Entry</h4>
 
       <Grid container spacing={1} mt={1}>
         <Grid item xs={4}>
@@ -124,7 +124,7 @@ export default function EntryAdd(props) {
           <Button
             fullWidth
             variant="outlined"
-            onClick={() => { navigate(`/plant/${params.id}`) }}>Cancel</Button>
+            onClick={() => { navigate(`/plant/${params.id}/entries`) }}>Cancel</Button>
         </Grid>
       </Grid>
     </Box>
