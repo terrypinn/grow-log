@@ -54,7 +54,7 @@ plantRoutes.route('/plant').post(function (req, response) {
     .insertOne(obj, function (err, res) {
       if (err) throw err;
       response.json(res);
-  });
+    });
 });
 
 // update plant
@@ -77,7 +77,6 @@ plantRoutes.route('/plant/:id').put(function (req, response) {
   db.collection('plants')
     .updateOne(query, obj, function (err, res) {
       if (err) throw err;
-      console.log('1 document updated');
       response.json(res);
     });
 });
@@ -89,9 +88,43 @@ plantRoutes.route('/plant/:id').delete((req, response) => {
   db.collection('plants')
     .deleteOne(query, function (err, obj) {
       if (err) throw err;
-      console.log('1 document deleted');
       response.json(obj);
-  });
+    });
+});
+
+/*** plant entry ***/
+
+// create
+plantRoutes.route('/plant/:id/entry').post(function (req, response) {
+  let db = dbo.getDb();
+  let query = { _id: ObjectId(req.params.id) };
+  let obj = {
+    $push: {
+      entries: {
+        _id: new ObjectId(),
+        created_on: Date.now(),
+        note: req.body.note,
+        // images: [] - TODO save images
+        type: req.body.type,
+      }
+    },
+  };
+  db.collection('plants')
+    .updateOne(query, obj, function (err, res) {
+      if (err) throw err;
+      response.json(res);
+    });
+});
+
+// get plant entries 
+plantRoutes.route('/plant/:id/entry').get(function (req, res) {
+  let db = dbo.getDb();
+  // let query = ;
+  db.collection('plants')
+    .find({ _id: ObjectId(req.params.id) }, { entries: 1}, function (err, result) {
+      if (err) throw err;
+      res.json(result);
+    });
 });
 
 module.exports = plantRoutes;
