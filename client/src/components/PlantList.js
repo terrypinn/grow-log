@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import * as datefns from 'date-fns'
 
+import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -35,43 +36,41 @@ export default function PlantList() {
   }, []);
 
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }}>
-        <TableHead>
-          <TableRow>
-            <TableCell>
-              <h3>My&nbsp;Plants</h3>
-            </TableCell>
-            <TableCell />
-            <TableCell align="right">
-              <Button
-                onClick={() => navigate('/plant/add')}
-                startIcon={<AddCircleIcon />}
-                variant="contained">
-                Add
-              </Button>
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell align="right">Type</TableCell>
-            <TableCell align="right">Created&nbsp;On</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {plants.map((row) => (
-            <TableRow
-              key={row._id}
-              onClick={() => navigate(`/plant/${row._id}`)}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">{row.name}</TableCell>
-              <TableCell align="right">{row.type}</TableCell>
-              <TableCell align="right">{datefns.formatDistance(row.created_on, Date.now(), { addSuffix: true })}</TableCell>
+    <Box margin={1}>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>
+                <h3>My&nbsp;Plants</h3>
+              </TableCell>
+              <TableCell />
+              <TableCell align="right">
+                <Button
+                  onClick={() => navigate('/plant/add')}
+                  startIcon={<AddCircleIcon />}
+                  variant="contained">
+                  Add
+                </Button>
+              </TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+            <TableRow>
+              <TableCell>Name</TableCell>
+              <TableCell align="right">Type</TableCell>
+              <TableCell align="right">Created&nbsp;On</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {plants.map((row) => (
+              <TableRow key={row._id} onClick={() => navigate(`/plant/${row._id}`)}>
+                <TableCell component="th" scope="row">{row.name}</TableCell>
+                <TableCell align="right">{row.type}</TableCell>
+                <TableCell align="right">{datefns.formatDistance(row.created_on, Date.now(), { addSuffix: true })}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Box>
   );
 }
