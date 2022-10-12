@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { Link } from 'react-router-dom';
 import * as datefns from 'date-fns'
 
 import Box from '@mui/material/Box';
@@ -12,6 +11,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
+import Link from '@mui/material/Link';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 export default function PlantList() {
@@ -21,7 +21,7 @@ export default function PlantList() {
   // fetch plants from the database upon page loads
   useEffect(() => {
     async function fetchData() {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/plants/`);
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/plants`);
 
       if (!response.ok) {
         const message = `An error occured: ${response.statusText}`;
@@ -68,12 +68,24 @@ export default function PlantList() {
               <TableRow key={row._id}>
                 <TableCell component="th" scope="row">{row.name}</TableCell>
                 <TableCell align="right">
-                  <Link to={`/plant/${row._id}/entries`} state={{ plant: row }}>{row.entries.length}</Link>
+                  <Link
+                    component="button"
+                    underline="none"
+                    onClick={() => { navigate(`/plant/${row._id}/entries`) }}
+                  >
+                    {row.entries.length}
+                  </Link>
                 </TableCell>
                 <TableCell align="right">{row.type}</TableCell>
                 <TableCell align="right">{datefns.formatDistance(row.created_on, Date.now(), { addSuffix: true })}</TableCell>
                 <TableCell align="right">
-                  <Link to={`/plant/edit/${row._id}`}>Edit</Link>
+                  <Link
+                    component="button"
+                    underline="none"
+                    onClick={() => { navigate(`/plant/edit/${row._id}`) }}
+                  >
+                    Edit
+                  </Link>
                 </TableCell>
               </TableRow>
             ))}
