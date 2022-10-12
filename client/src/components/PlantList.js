@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { Link } from 'react-router-dom';
 import * as datefns from 'date-fns'
 
 import Box from '@mui/material/Box';
@@ -20,7 +21,7 @@ export default function PlantList() {
   // fetch plants from the database upon page loads
   useEffect(() => {
     async function fetchData() {
-      const response = await fetch(`http://localhost:5000/plants/`);
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/plants/`);
 
       if (!response.ok) {
         const message = `An error occured: ${response.statusText}`;
@@ -41,9 +42,9 @@ export default function PlantList() {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>
-                <h3>My&nbsp;Plants</h3>
-              </TableCell>
+              <TableCell><h3>My&nbsp;Plants</h3></TableCell>
+              <TableCell />
+              <TableCell />
               <TableCell />
               <TableCell align="right">
                 <Button
@@ -56,16 +57,24 @@ export default function PlantList() {
             </TableRow>
             <TableRow>
               <TableCell>Name</TableCell>
+              <TableCell align="right">Entries</TableCell>
               <TableCell align="right">Type</TableCell>
               <TableCell align="right">Created&nbsp;On</TableCell>
+              <TableCell align="right">Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {plants.map((row) => (
-              <TableRow key={row._id} onClick={() => navigate(`/plant/${row._id}`)}>
+              <TableRow key={row._id}>
                 <TableCell component="th" scope="row">{row.name}</TableCell>
+                <TableCell align="right">
+                  <Link to={`/plant/${row._id}/entries`} state={{ plant: row }}>{row.entries.length}</Link>
+                </TableCell>
                 <TableCell align="right">{row.type}</TableCell>
                 <TableCell align="right">{datefns.formatDistance(row.created_on, Date.now(), { addSuffix: true })}</TableCell>
+                <TableCell align="right">
+                  <Link to={`/plant/edit/${row._id}`}>Edit</Link>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
