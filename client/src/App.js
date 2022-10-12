@@ -1,7 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import 'bootstrap/dist/css/bootstrap.css';
-
 import PlantList from './components/PlantList';
 import PlantAdd from './components/PlantAdd';
 import PlantView from './components/PlantView';
