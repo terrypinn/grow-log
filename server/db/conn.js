@@ -13,7 +13,7 @@ module.exports = {
     client.connect(function (err, db) {
       // Verify we got a good 'db' object
       if (db) {
-        _db = db.db('growDiary');
+        _db = db.db('grow_log');
         console.log('Connected to database.');
       }
       return callback(err);
