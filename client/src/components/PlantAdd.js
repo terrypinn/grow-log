@@ -21,8 +21,8 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 export default function PlantAdd() {
   const [form, setForm] = useState({
     germinated_on: null,
-    location: '',
-    method: '',
+    location: 'Indoor',
+    method: 'Soil',
     name: '',
     note: '',
     planted_on: null,
