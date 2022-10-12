@@ -44,7 +44,7 @@ export default function PlantAdd() {
 
     const data = { ...form };
 
-    await fetch('http://localhost:5000/plant', {
+    await fetch(`${process.env.REACT_APP_API_URL}/plant`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

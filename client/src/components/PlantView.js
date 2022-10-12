@@ -38,7 +38,7 @@ export default function PlantView() {
   useEffect(() => {
     async function fetchData() {
       const id = params.id.toString();
-      const response = await fetch(`http://localhost:5000/plant/${id}`);
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/plant/${id}`);
 
       if (!response.ok) {
         const message = `An error has occured: ${response.statusText}`;
@@ -71,7 +71,7 @@ export default function PlantView() {
   async function deletePlant(id) {
     if (!window.confirm("Are you sure you want to delete this plant?")) return;
    
-    await fetch(`http://localhost:5000/plant/${id}`, {
+    await fetch(`${process.env.REACT_APP_API_URL}/plant/${id}`, {
       method: 'DELETE'
     });
 
