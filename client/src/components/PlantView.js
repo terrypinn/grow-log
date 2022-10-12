@@ -19,6 +19,9 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import EntryList from './EntryList';
 
 export default function PlantView() {
+  const params = useParams();
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({
     _id: '',
     germinated_on: null,
@@ -32,13 +35,9 @@ export default function PlantView() {
     type: '',
   });
 
-  const params = useParams();
-  const navigate = useNavigate();
-
   useEffect(() => {
     async function fetchData() {
-      const id = params.id.toString();
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/plant/${id}`);
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/plant/${params.id}`);
 
       if (!response.ok) {
         const message = `An error has occured: ${response.statusText}`;
@@ -48,7 +47,7 @@ export default function PlantView() {
 
       const plant = await response.json();
       if (!plant) {
-        window.alert(`Plant with id ${id} not found`);
+        window.alert(`Plant with id ${params.id} not found`);
         navigate('/');
         return;
       }

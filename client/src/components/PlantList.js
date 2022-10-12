@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { formatDistance } from 'date-fns'
+import * as datefns from 'date-fns'
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -18,7 +18,7 @@ export default function PlantList() {
 
   // fetch plants from the database upon page loads
   useEffect(() => {
-    async function getPlants() {
+    async function fetchData() {
       const response = await fetch(`http://localhost:5000/plants/`);
 
       if (!response.ok) {
@@ -31,12 +31,12 @@ export default function PlantList() {
       setPlants(plants);
     }
 
-    getPlants();
+    fetchData();
   }, []);
 
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+      <Table sx={{ minWidth: 650 }}>
         <TableHead>
           <TableRow>
             <TableCell>
@@ -67,7 +67,7 @@ export default function PlantList() {
             >
               <TableCell component="th" scope="row">{row.name}</TableCell>
               <TableCell align="right">{row.type}</TableCell>
-              <TableCell align="right">{formatDistance(row.created_on, Date.now(), { addSuffix: true })}</TableCell>
+              <TableCell align="right">{datefns.formatDistance(row.created_on, Date.now(), { addSuffix: true })}</TableCell>
             </TableRow>
           ))}
         </TableBody>
