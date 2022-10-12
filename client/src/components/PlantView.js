@@ -11,6 +11,7 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
+import SaveIcon from '@mui/icons-material/Save';
 
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -216,7 +217,7 @@ export default function PlantView() {
               fullWidth
               type="submit"
               variant="contained"
-            >
+              startIcon={<SaveIcon />}>
               Save
             </Button>
           </Grid>
