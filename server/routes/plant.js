@@ -104,7 +104,7 @@ plantRoutes.route('/plant/:id/entry').post(function (req, response) {
         _id: new ObjectId(),
         created_on: Date.now(),
         note: req.body.note,
-        // images: [] - TODO save images
+        images: req.body.images,
         type: req.body.type,
       }
     },

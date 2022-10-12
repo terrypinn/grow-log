@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router';
 
 import Box from '@mui/material/Box';
@@ -9,6 +9,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import SaveIcon from '@mui/icons-material/Save';
 
 export default function EntryAdd(props) {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ export default function EntryAdd(props) {
   const [form, setForm] = useState({
     type: '',
     note: '',
-    images: []
+    images: ''
   });
 
   function updateForm(value) {
@@ -30,6 +31,7 @@ export default function EntryAdd(props) {
     e.preventDefault();
 
     const data = { ...form };
+    data.images = data.images.split(/\r?\n/).filter(x => x !== '');
 
     await fetch(`http://localhost:5000/plant/${params.id}/entry`, {
       method: 'POST',
@@ -45,7 +47,7 @@ export default function EntryAdd(props) {
 
     navigate(`/plant/${params.id}`);
   }
-  
+
   return (
     <Box
       component="form"
@@ -54,7 +56,7 @@ export default function EntryAdd(props) {
       onSubmit={onSubmit}
       margin={1}
     >
-      <h4>Create New Entry</h4>
+      <h4>Create a New Entry</h4>
 
       <Grid container spacing={1} mt={1}>
         <Grid item xs={4}>
@@ -81,7 +83,7 @@ export default function EntryAdd(props) {
       </Grid>
 
       <Grid container spacing={1} mt={1}>
-        <Grid item xs={8}>
+        <Grid item xs={4}>
           <TextField
             id="note"
             label="Note"
@@ -89,7 +91,21 @@ export default function EntryAdd(props) {
             multiline
             rows={4}
             value={form.note}
-          onChange={(e) => updateForm({ note: e.target.value })}
+            onChange={(e) => updateForm({ note: e.target.value })}
+          />
+        </Grid>
+      </Grid>
+
+      <Grid container spacing={1} mt={1}>
+        <Grid item xs={4}>
+          <TextField
+            id="images"
+            label="Images"
+            fullWidth
+            multiline
+            rows={4}
+            value={form.images}
+            onChange={(e) => updateForm({ images: e.target.value })}
           />
         </Grid>
       </Grid>
@@ -97,10 +113,18 @@ export default function EntryAdd(props) {
       <Grid container spacing={1} mt={1}>
         <Grid item xs={1}>
           <Button
+            fullWidth
             type="submit"
-            variant="contained">
+            variant="contained"
+            startIcon={<SaveIcon />}>
             Save
           </Button>
+        </Grid>
+        <Grid item xs={1}>
+          <Button
+            fullWidth
+            variant="outlined"
+            onClick={() => { navigate(`/plant/${params.id}`) }}>Cancel</Button>
         </Grid>
       </Grid>
     </Box>

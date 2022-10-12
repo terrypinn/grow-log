@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -11,14 +10,12 @@ import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 
-import EntryAdd from './EntryAdd';
-
 export default function EntryList(props) {
   const navigate = useNavigate();
 
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }}>
+      <Table>
         <TableHead>
           <TableRow>
             <TableCell>
@@ -45,7 +42,7 @@ export default function EntryList(props) {
             <TableRow key={row._id}>
               <TableCell component="th" scope="row">{row.type}</TableCell>
               <TableCell>{row.note}</TableCell>
-              <TableCell></TableCell>
+              <TableCell>{row.images.map((url) => (<div>{<a href={url} target="_blank">{url}</a>}</div>))}</TableCell>
             </TableRow>
           ))}
         </TableBody>
