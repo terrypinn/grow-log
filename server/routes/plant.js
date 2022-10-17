@@ -87,6 +87,8 @@ plantRoutes.route('/plant/:id').delete((request, response) => {
   db.collection('plants')
     .deleteOne(query, function (err, result) {
       if (err) throw err;
+      // delete all plant logs
+      db.collection('logs').deleteMany({ plantId: query._id });
       response.json(result);
     });
 });
@@ -163,11 +165,11 @@ plantRoutes.route('/log/:id').delete((request, response) => {
   db.collection('logs')
     .findOne(query, function (err, result) {
       if (err) throw err;
-      
+
       db.collection('plants')
         .updateOne({ _id: result.plantId }, { $pull: { logs: result._id } }, function (err, result) {
           if (err) throw err;
-          
+
           db.collection('logs')
             .deleteOne(query, function (err, result) {
               if (err) throw err;
