@@ -74,6 +74,16 @@ export default function LogEdit() {
     navigate(`/plant/${data.plantId}/logs`);
   }
 
+  async function deleteLog(id) {
+    if (!window.confirm("Are you sure you want to delete this log?")) return;
+
+    await fetch(`${process.env.REACT_APP_API_URL}/log/${id}`, {
+      method: 'DELETE'
+    });
+
+    navigate(`/plant/${form.plantId}/logs`);
+  }
+
   return (
     <Box
       component="form"
@@ -144,6 +154,16 @@ export default function LogEdit() {
             variant="contained"
             startIcon={<SaveIcon />}>
             Save
+          </Button>
+        </Grid>
+        <Grid item xs={1}>
+          <Button
+            fullWidth
+            color="error"
+            variant="outlined"
+            onClick={() => { deleteLog(form._id) }}
+          >
+            Delete
           </Button>
         </Grid>
         <Grid item xs={1}>
