@@ -60,21 +60,15 @@ export default function PlantList() {
               <TableCell align="center">Logs</TableCell>
               <TableCell align="right">Type</TableCell>
               <TableCell align="right">Created&nbsp;On</TableCell>
-              <TableCell align="right">Action</TableCell>
+              <TableCell />
             </TableRow>
           </TableHead>
           <TableBody>
             {plants.map((row) => (
               <TableRow key={row._id}>
                 <TableCell component="th" scope="row">{row.name}</TableCell>
-                <TableCell align="right">
-                  <Link
-                    component="button"
-                    underline="none"
-                    onClick={() => { navigate(`/plant/${row._id}/logs`) }}
-                  >
-                    {row.logs.length}
-                  </Link>
+                <TableCell align="center" onClick={() => { navigate(`/plant/${row._id}/logs`) }}>
+                  <Link component="button" underline="none">{row.logs.length}</Link>
                 </TableCell>
                 <TableCell align="right">{row.type}</TableCell>
                 <TableCell align="right">{datefns.formatDistance(row.createdOn, Date.now(), { addSuffix: true })}</TableCell>
