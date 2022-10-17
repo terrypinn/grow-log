@@ -10,6 +10,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
+import Link from '@mui/material/Link';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 
@@ -48,9 +49,8 @@ export default function LogList() {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>
-                <h3>Logs</h3>
-              </TableCell>
+              <TableCell><h3>Logs</h3></TableCell>
+              <TableCell />
               <TableCell />
               <TableCell align="right">
                 <Button
@@ -72,6 +72,7 @@ export default function LogList() {
               <TableCell>Type</TableCell>
               <TableCell>Note</TableCell>
               <TableCell>Images</TableCell>
+              <TableCell />
             </TableRow>
           </TableHead>
           <TableBody>
@@ -82,6 +83,15 @@ export default function LogList() {
                 <TableCell>{row.images.map((url, index) => (
                   <div key={index}>{<a href={url} target="_blank" rel="noreferrer">{url}</a>}</div>
                 ))}
+                </TableCell>
+                <TableCell align="right">
+                <Link
+                    component="button"
+                    underline="none"
+                    onClick={() => { navigate(`/log/edit/${row._id}`) }}
+                  >
+                    Edit
+                  </Link>
                 </TableCell>
               </TableRow>
             ))}
