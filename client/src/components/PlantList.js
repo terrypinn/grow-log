@@ -66,17 +66,7 @@ export default function PlantList() {
           {plants.map((row) => (
             <TableRow key={row._id}>
               <TableCell component="th" scope="row">{row.name}</TableCell>
-              <TableCell
-                align="center"
-                onClick={() => {
-                  navigate('/logs', {
-                    state: {
-                      id: row._id
-                    }
-                  })
-                }}>
-                <Link component="button" underline="none">{row.logs.length}</Link>
-              </TableCell>
+              <TableCell align="center">{row.logs.length}</TableCell>
               <TableCell align="right">{row.type}</TableCell>
               <TableCell align="right">{datefns.formatDistance(row.createdOn, Date.now(), { addSuffix: true })}</TableCell>
               <TableCell align="right">
@@ -91,7 +81,21 @@ export default function PlantList() {
                     })
                   }}
                 >
-                  Edit
+                  Edit Plant
+                </Link>
+                &nbsp;|&nbsp;
+                <Link
+                  component="button"
+                  underline="none"
+                  onClick={() => {
+                    navigate('/logs', {
+                      state: {
+                        id: row._id
+                      }
+                    })
+                  }}
+                >
+                  View Logs
                 </Link>
               </TableCell>
             </TableRow>
