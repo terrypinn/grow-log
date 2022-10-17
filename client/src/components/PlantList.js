@@ -67,7 +67,7 @@ export default function PlantList() {
               <TableCell component="th" scope="row">{row.name}</TableCell>
               <TableCell align="center">{row.logs.length}</TableCell>
               <TableCell align="right">{row.type}</TableCell>
-              <TableCell align="right">{datefns.formatDistance(row.createdOn, Date.now(), { addSuffix: true })}</TableCell>
+              <TableCell align="right">{datefns.formatDistance(row.created_on, Date.now(), { addSuffix: true })}</TableCell>
               <TableCell align="right">
                 <Link
                   component="button"

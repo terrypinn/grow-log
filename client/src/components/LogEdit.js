@@ -85,7 +85,7 @@ export default function LogEdit() {
   function navToLogs() {
     navigate('/logs', {
       state: {
-        id: location.state.plantId
+        id: location.state.plant_id
       }
     });
   };

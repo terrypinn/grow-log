@@ -26,8 +26,8 @@ export default function PlantAdd() {
     propagation: '',
     location: 'Indoor',
     method: 'Soil',
-    plantedOn: null,
-    germinatedOn: null,
+    planted_on: null,
+    germinated_on: null,
     note: '',
   });
 
@@ -156,9 +156,9 @@ export default function PlantAdd() {
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
               label="Planted On"
-              value={form.plantedOn}
+              value={form.planted_on}
               inputFormat="dd/MM/yyyy"
-              onChange={(value) => updateForm({ plantedOn: datefns.format(value, 'yyyy-MM-dd') })}
+              onChange={(value) => updateForm({ planted_on: datefns.format(value, 'yyyy-MM-dd') })}
               renderInput={(params) => <TextField {...params} />}
             />
           </LocalizationProvider>
@@ -168,9 +168,9 @@ export default function PlantAdd() {
             <DatePicker
               disabled={!form.propagation || form.propagation === 'Clone'}
               label="Germinated On"
-              value={form.germinatedOn}
+              value={form.germinated_on}
               inputFormat="dd/MM/yyyy"
-              onChange={(value) => updateForm({ germinatedOn: datefns.format(value, 'yyyy-MM-dd') })}
+              onChange={(value) => updateForm({ germinated_on: datefns.format(value, 'yyyy-MM-dd') })}
               renderInput={(params) => <TextField {...params} />}
             />
           </LocalizationProvider>

@@ -94,7 +94,7 @@ export default function LogList() {
                   onClick={() => navigate('/log/edit', {
                     state: {
                       id: row._id,
-                      plantId: row.plantId
+                      plant_id: row.plant_id
                     }
                   })}
                 >

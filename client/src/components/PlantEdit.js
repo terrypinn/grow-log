@@ -28,8 +28,8 @@ export default function PlantEdit() {
     propagation: '',
     location: '',
     method: '',
-    plantedOn: null,
-    germinatedOn: null,
+    planted_on: null,
+    germinated_on: null,
     note: '',
   });
 
@@ -50,8 +50,8 @@ export default function PlantEdit() {
         return;
       }
 
-      if (!data.plantedOn) data.plantedOn = null;
-      if (!data.germinatedOn) data.germinatedOn = null;
+      if (!data.planted_on) data.planted_on = null;
+      if (!data.germinated_on) data.germinated_on = null;
 
       setForm(data);
     }
@@ -196,9 +196,9 @@ export default function PlantEdit() {
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
               label="Planted On"
-              value={form.plantedOn}
+              value={form.planted_on}
               inputFormat="dd/MM/yyyy"
-              onChange={(value) => updateForm({ plantedOn: datefns.format(value, 'yyyy-MM-dd') })}
+              onChange={(value) => updateForm({ planted_on: datefns.format(value, 'yyyy-MM-dd') })}
               renderInput={(params) => <TextField {...params} />}
             />
           </LocalizationProvider>
@@ -208,9 +208,9 @@ export default function PlantEdit() {
             <DatePicker
               disabled={!form.propagation || form.propagation === 'Clone'}
               label="Germinated On"
-              value={form.germinatedOn}
+              value={form.germinated_on}
               inputFormat="dd/MM/yyyy"
-              onChange={(value) => updateForm({ germinatedOn: datefns.format(value, 'yyyy-MM-dd') })}
+              onChange={(value) => updateForm({ germinated_on: datefns.format(value, 'yyyy-MM-dd') })}
               renderInput={(params) => <TextField {...params} />}
             />
           </LocalizationProvider>

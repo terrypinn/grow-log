@@ -38,14 +38,14 @@ plantRoutes.route('/plant').post(function (request, response) {
   let db = dbo.getDb();
   const obj = {
     name: request.body.name,
-    createdOn: Date.now(),
+    created_on: Date.now(),
     source: request.body.source,
     type: request.body.type,
     propagation: request.body.propagation,
     location: request.body.location,
     method: request.body.method,
-    plantedOn: request.body.plantedOn,
-    germinatedOn: request.body.germinatedOn,
+    planted_on: request.body.planted_on,
+    germinated_on: request.body.germinated_on,
     note: request.body.note,
     logs: [],
   };
@@ -68,8 +68,8 @@ plantRoutes.route('/plant/:id').put(function (request, response) {
       propagation: request.body.propagation,
       location: request.body.location,
       method: request.body.method,
-      plantedOn: request.body.plantedOn,
-      germinatedOn: request.body.germinatedOn,
+      planted_on: request.body.planted_on,
+      germinated_on: request.body.germinated_on,
       note: request.body.note,
     },
   };
@@ -88,7 +88,7 @@ plantRoutes.route('/plant/:id').delete((request, response) => {
     .deleteOne(query, function (err, result) {
       if (err) throw err;
       // delete all plant logs
-      db.collection('logs').deleteMany({ plantId: query._id });
+      db.collection('logs').deleteMany({ plant_id: query._id });
       response.json(result);
     });
 });
@@ -96,10 +96,9 @@ plantRoutes.route('/plant/:id').delete((request, response) => {
 // create log
 plantRoutes.route('/log/:id').post(function (request, response) {
   let db = dbo.getDb();
-  const plantId = ObjectId(request.params.id);
   const obj = {
-    plantId: plantId,
-    createdOn: Date.now(),
+    plant_id: ObjectId(request.params.id),
+    created_on: Date.now(),
     type: request.body.type,
     note: request.body.note,
     images: request.body.images,
@@ -109,7 +108,7 @@ plantRoutes.route('/log/:id').post(function (request, response) {
       if (err) throw err;
 
       db.collection('plants')
-        .updateOne({ _id: plantId }, { $push: { logs: result.insertedId } }, function (err, result) {
+        .updateOne({ _id: obj.plant_id }, { $push: { logs: result.insertedId } }, function (err, result) {
           if (err) throw err;
         });
 
@@ -120,7 +119,7 @@ plantRoutes.route('/log/:id').post(function (request, response) {
 // get logs for plant
 plantRoutes.route('/logs/:id').get(function (request, response) {
   let db = dbo.getDb();
-  const query = { plantId: ObjectId(request.params.id) };
+  const query = { plant_id: ObjectId(request.params.id) };
   db.collection('logs')
     .find(query)
     .toArray(function (err, result) {
@@ -167,7 +166,7 @@ plantRoutes.route('/log/:id').delete((request, response) => {
       if (err) throw err;
 
       db.collection('plants')
-        .updateOne({ _id: result.plantId }, { $pull: { logs: result._id } }, function (err, result) {
+        .updateOne({ _id: result.plant_id }, { $pull: { logs: result._id } }, function (err, result) {
           if (err) throw err;
 
           db.collection('logs')
