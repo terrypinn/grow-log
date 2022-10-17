@@ -107,7 +107,7 @@ plantRoutes.route('/log/:id').post(function (request, response) {
       if (err) throw err;
 
       db.collection('plants')
-        .updateOne({ _id: plantId }, { $push: { logs: response.insertedId } }, function (err, result) {
+        .updateOne({ _id: plantId }, { $push: { logs: result.insertedId } }, function (err, result) {
           if (err) throw err;
         });
 
