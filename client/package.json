@@ -1,5 +1,5 @@
 {
-  "name": "grow-diary-client",
+  "name": "grow-log-client",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
