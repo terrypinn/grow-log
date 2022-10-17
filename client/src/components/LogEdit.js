@@ -96,7 +96,6 @@ export default function LogEdit() {
       noValidate
       autoComplete="off"
       onSubmit={onSubmit}
-      margin={1}
     >
       <h4>Edit Log</h4>
 

@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 
-import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -44,70 +43,68 @@ export default function LogList() {
   }, [location.state.id, navigate]);
 
   return (
-    <Box margin={1}>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell><h3>Logs</h3></TableCell>
-              <TableCell />
-              <TableCell />
+    <TableContainer component={Paper}>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell><h3>Logs</h3></TableCell>
+            <TableCell />
+            <TableCell />
+            <TableCell align="right">
+              <Button
+                onClick={() => navigate('/plants')}
+                startIcon={<ArrowCircleLeftIcon />}
+                variant="contained">
+                Back
+              </Button>
+              &nbsp;
+              <Button
+                onClick={() => navigate('/log/add', {
+                  state: {
+                    id: location.state.id
+                  }
+                })}
+                startIcon={<AddCircleIcon />}
+                variant="contained"
+              >
+                Add
+              </Button>
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Type</TableCell>
+            <TableCell>Note</TableCell>
+            <TableCell>Images</TableCell>
+            <TableCell />
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {logs.map((row) => (
+            <TableRow key={row._id}>
+              <TableCell component="th" scope="row">{row.type}</TableCell>
+              <TableCell>{row.note}</TableCell>
+              <TableCell>{row.images.map((url, index) => (
+                <div key={index}>{<a href={url} target="_blank" rel="noreferrer">{url}</a>}</div>
+              ))}
+              </TableCell>
               <TableCell align="right">
-                <Button
-                  onClick={() => navigate('/plants')}
-                  startIcon={<ArrowCircleLeftIcon />}
-                  variant="contained">
-                  Back
-                </Button>
-                &nbsp;
-                <Button
-                  onClick={() => navigate('/log/add', {
+                <Link
+                  component="button"
+                  underline="none"
+                  onClick={() => navigate('/log/edit', {
                     state: {
-                      id: location.state.id
+                      id: row._id,
+                      plantId: row.plantId
                     }
                   })}
-                  startIcon={<AddCircleIcon />}
-                  variant="contained"
                 >
-                  Add
-                </Button>
+                  Edit
+                </Link>
               </TableCell>
             </TableRow>
-            <TableRow>
-              <TableCell>Type</TableCell>
-              <TableCell>Note</TableCell>
-              <TableCell>Images</TableCell>
-              <TableCell />
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {logs.map((row) => (
-              <TableRow key={row._id}>
-                <TableCell component="th" scope="row">{row.type}</TableCell>
-                <TableCell>{row.note}</TableCell>
-                <TableCell>{row.images.map((url, index) => (
-                  <div key={index}>{<a href={url} target="_blank" rel="noreferrer">{url}</a>}</div>
-                ))}
-                </TableCell>
-                <TableCell align="right">
-                  <Link
-                    component="button"
-                    underline="none"
-                    onClick={() => navigate('/log/edit', {
-                      state: {
-                        id: row._id,
-                        plantId: row.plantId
-                      }
-                    })}
-                  >
-                    Edit
-                  </Link>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Box>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 }

@@ -9,7 +9,7 @@ import LogEdit from './components/LogEdit';
 
 function App() {
   return (
-    <div style={{ margin: 20 }}>
+    <div style={{ margin: 40 }}>
       <BrowserRouter>
         <Routes>
           <Route exact path="/" element={<Navigate to="/plants" />} />

@@ -62,7 +62,6 @@ export default function LogAdd() {
       noValidate
       autoComplete="off"
       onSubmit={onSubmit}
-      margin={1}
     >
       <h4>Create New Log</h4>
 

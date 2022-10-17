@@ -65,7 +65,6 @@ export default function PlantAdd() {
       noValidate
       autoComplete="off"
       onSubmit={onSubmit}
-      margin={1}
     >
       <h4>Create New Plant</h4>
 

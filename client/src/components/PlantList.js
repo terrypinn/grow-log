@@ -37,69 +37,67 @@ export default function PlantList() {
   }, []);
 
   return (
-    <Box margin={1}>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell><h3>My&nbsp;Plants</h3></TableCell>
-              <TableCell />
-              <TableCell />
-              <TableCell />
-              <TableCell align="right">
-                <Button
-                  onClick={() => navigate('/plant/add')}
-                  startIcon={<AddCircleIcon />}
-                  variant="contained">
-                  Add
-                </Button>
+    <TableContainer component={Paper}>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell><h3>My&nbsp;Plants</h3></TableCell>
+            <TableCell />
+            <TableCell />
+            <TableCell />
+            <TableCell align="right">
+              <Button
+                onClick={() => navigate('/plant/add')}
+                startIcon={<AddCircleIcon />}
+                variant="contained">
+                Add
+              </Button>
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Name</TableCell>
+            <TableCell align="center">Logs</TableCell>
+            <TableCell align="right">Type</TableCell>
+            <TableCell align="right">Created&nbsp;On</TableCell>
+            <TableCell />
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {plants.map((row) => (
+            <TableRow key={row._id}>
+              <TableCell component="th" scope="row">{row.name}</TableCell>
+              <TableCell
+                align="center"
+                onClick={() => {
+                  navigate('/logs', {
+                    state: {
+                      id: row._id
+                    }
+                  })
+                }}>
+                <Link component="button" underline="none">{row.logs.length}</Link>
               </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell align="center">Logs</TableCell>
-              <TableCell align="right">Type</TableCell>
-              <TableCell align="right">Created&nbsp;On</TableCell>
-              <TableCell />
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {plants.map((row) => (
-              <TableRow key={row._id}>
-                <TableCell component="th" scope="row">{row.name}</TableCell>
-                <TableCell
-                  align="center"
+              <TableCell align="right">{row.type}</TableCell>
+              <TableCell align="right">{datefns.formatDistance(row.createdOn, Date.now(), { addSuffix: true })}</TableCell>
+              <TableCell align="right">
+                <Link
+                  component="button"
+                  underline="none"
                   onClick={() => {
-                    navigate('/logs', {
+                    navigate('/plant/edit', {
                       state: {
                         id: row._id
                       }
                     })
-                  }}>
-                  <Link component="button" underline="none">{row.logs.length}</Link>
-                </TableCell>
-                <TableCell align="right">{row.type}</TableCell>
-                <TableCell align="right">{datefns.formatDistance(row.createdOn, Date.now(), { addSuffix: true })}</TableCell>
-                <TableCell align="right">
-                  <Link
-                    component="button"
-                    underline="none"
-                    onClick={() => {
-                      navigate('/plant/edit', {
-                        state: {
-                          id: row._id
-                        }
-                      })
-                    }}
-                  >
-                    Edit
-                  </Link>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Box>
+                  }}
+                >
+                  Edit
+                </Link>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 }

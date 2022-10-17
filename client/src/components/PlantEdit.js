@@ -104,7 +104,6 @@ export default function PlantEdit() {
       component="form"
       noValidate
       autoComplete="off"
-      margin={1}
       onSubmit={onSubmit}
     >
       <h4>Edit Plant</h4>
