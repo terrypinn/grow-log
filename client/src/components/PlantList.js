@@ -90,7 +90,8 @@ export default function PlantList() {
                   onClick={() => {
                     navigate('/logs', {
                       state: {
-                        id: row._id
+                        id: row._id,
+                        name: row.name
                       }
                     })
                   }}

@@ -47,7 +47,7 @@ export default function LogList() {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell><h3>Logs</h3></TableCell>
+            <TableCell><h3>Logs ({location.state.name})</h3></TableCell>
             <TableCell />
             <TableCell />
             <TableCell align="right">
