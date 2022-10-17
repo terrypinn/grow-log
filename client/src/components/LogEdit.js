@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -12,12 +12,10 @@ import Select from '@mui/material/Select';
 import SaveIcon from '@mui/icons-material/Save';
 
 export default function LogEdit() {
+  const location = useLocation();
   const navigate = useNavigate();
-  const params = useParams();
 
   const [form, setForm] = useState({
-    _id: '', // does not need to be saved here
-    plantId: '', // does not need to be saved here
     type: '',
     note: '',
     images: ''
@@ -25,7 +23,7 @@ export default function LogEdit() {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/log/${params.id}`);
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/log/${location.state.id}`);
 
       if (!response.ok) {
         const message = `An error has occured: ${response.statusText}`;
@@ -35,8 +33,8 @@ export default function LogEdit() {
 
       const data = await response.json();
       if (!data) {
-        window.alert(`Log with id ${params.id} not found`);
-        navigate('/');
+        window.alert(`Log with id ${location.state.id} not found`);
+        navigate('/plants');
         return;
       }
 
@@ -45,7 +43,7 @@ export default function LogEdit() {
     }
 
     fetchData();
-  }, [params.id, navigate]);
+  }, [location.state.id, navigate]);
 
   function updateForm(value) {
     return setForm((prev) => {
@@ -59,7 +57,7 @@ export default function LogEdit() {
     const data = { ...form };
     data.images = data.images.split(/\r?\n/).filter(x => x !== '');
 
-    await fetch(`${process.env.REACT_APP_API_URL}/log/${params.id}`, {
+    await fetch(`${process.env.REACT_APP_API_URL}/log/${location.state.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -71,18 +69,26 @@ export default function LogEdit() {
         return;
       });
 
-    navigate(`/plant/${data.plantId}/logs`);
+    navToLogs();
   }
 
-  async function deleteLog(id) {
+  async function deleteLog() {
     if (!window.confirm("Are you sure you want to delete this log?")) return;
 
-    await fetch(`${process.env.REACT_APP_API_URL}/log/${id}`, {
+    await fetch(`${process.env.REACT_APP_API_URL}/log/${location.state.id}`, {
       method: 'DELETE'
     });
 
-    navigate(`/plant/${form.plantId}/logs`);
+    navToLogs();
   }
+
+  function navToLogs() {
+    navigate('/logs', {
+      state: {
+        id: location.state.plantId
+      }
+    });
+  };
 
   return (
     <Box
@@ -161,7 +167,7 @@ export default function LogEdit() {
             fullWidth
             color="error"
             variant="outlined"
-            onClick={() => { deleteLog(form._id) }}
+            onClick={deleteLog}
           >
             Delete
           </Button>
@@ -170,7 +176,7 @@ export default function LogEdit() {
           <Button
             fullWidth
             variant="outlined"
-            onClick={() => { navigate(`/plant/${form.plantId}/logs`) }}>Cancel</Button>
+            onClick={navToLogs}>Cancel</Button>
         </Grid>
       </Grid>
     </Box>

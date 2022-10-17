@@ -56,7 +56,7 @@ export default function PlantAdd() {
         return;
       });
 
-    navigate('/');
+    navigate('/plants');
   }
 
   return (
@@ -202,7 +202,7 @@ export default function PlantAdd() {
           </Button>
         </Grid>
         <Grid item xs={1}>
-          <Button variant="outlined" onClick={() => {navigate('/')}}>Cancel</Button>
+          <Button variant="outlined" onClick={() => navigate('/plants')}>Cancel</Button>
         </Grid>
       </Grid>
     </Box>

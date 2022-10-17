@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useParams, useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -12,8 +12,8 @@ import Select from '@mui/material/Select';
 import SaveIcon from '@mui/icons-material/Save';
 
 export default function LogAdd() {
+  const location = useLocation();
   const navigate = useNavigate();
-  const params = useParams();
 
   const [form, setForm] = useState({
     type: '',
@@ -33,7 +33,7 @@ export default function LogAdd() {
     const data = { ...form };
     data.images = data.images.split(/\r?\n/).filter(x => x !== '');
 
-    await fetch(`${process.env.REACT_APP_API_URL}/log/${params.id}`, {
+    await fetch(`${process.env.REACT_APP_API_URL}/log/${location.state.id}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -45,8 +45,16 @@ export default function LogAdd() {
         return;
       });
 
-    navigate(`/plant/${params.id}/logs`);
+    navToLogs();
   }
+
+  function navToLogs() {
+    navigate('/logs', {
+      state: {
+        id: location.state.id
+      }
+    });
+  };
 
   return (
     <Box
@@ -116,7 +124,8 @@ export default function LogAdd() {
             fullWidth
             type="submit"
             variant="contained"
-            startIcon={<SaveIcon />}>
+            startIcon={<SaveIcon />}
+          >
             Save
           </Button>
         </Grid>
@@ -124,7 +133,10 @@ export default function LogAdd() {
           <Button
             fullWidth
             variant="outlined"
-            onClick={() => { navigate(`/plant/${params.id}/logs`) }}>Cancel</Button>
+            onClick={navToLogs}
+          >
+            Cancel
+          </Button>
         </Grid>
       </Grid>
     </Box>

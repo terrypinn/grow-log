@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
@@ -15,14 +15,14 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 
 export default function LogList() {
-  const params = useParams();
+  const location = useLocation();
   const navigate = useNavigate();
 
   const [logs, setLogs] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/logs/${params.id}`);
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/logs/${location.state.id}`);
 
       if (!response.ok) {
         const message = `An error has occured: ${response.statusText}`;
@@ -32,8 +32,8 @@ export default function LogList() {
 
       const data = await response.json();
       if (!data) {
-        window.alert(`Plant with id ${params.id} not found`);
-        navigate('/');
+        window.alert(`Plant with id ${location.state.id} not found`);
+        navigate('/plants');
         return;
       }
 
@@ -41,7 +41,7 @@ export default function LogList() {
     }
 
     fetchData();
-  }, [params.id, navigate]);
+  }, [location.state.id, navigate]);
 
   return (
     <Box margin={1}>
@@ -54,16 +54,21 @@ export default function LogList() {
               <TableCell />
               <TableCell align="right">
                 <Button
-                  onClick={() => navigate('/')}
+                  onClick={() => navigate('/plants')}
                   startIcon={<ArrowCircleLeftIcon />}
                   variant="contained">
                   Back
                 </Button>
                 &nbsp;
                 <Button
-                  onClick={() => navigate(`/plant/${params.id}/log/add`)}
+                  onClick={() => navigate('/log/add', {
+                    state: {
+                      id: location.state.id
+                    }
+                  })}
                   startIcon={<AddCircleIcon />}
-                  variant="contained">
+                  variant="contained"
+                >
                   Add
                 </Button>
               </TableCell>
@@ -85,10 +90,15 @@ export default function LogList() {
                 ))}
                 </TableCell>
                 <TableCell align="right">
-                <Link
+                  <Link
                     component="button"
                     underline="none"
-                    onClick={() => { navigate(`/log/edit/${row._id}`) }}
+                    onClick={() => navigate('/log/edit', {
+                      state: {
+                        id: row._id,
+                        plantId: row.plantId
+                      }
+                    })}
                   >
                     Edit
                   </Link>

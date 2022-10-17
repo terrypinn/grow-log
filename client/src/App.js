@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 
 import PlantList from './components/PlantList';
 import PlantAdd from './components/PlantAdd';
@@ -9,18 +9,17 @@ import LogEdit from './components/LogEdit';
 
 function App() {
   return (
-    <div>
+    <div style={{ margin: 20 }}>
       <BrowserRouter>
-        <div style={{ margin: 20 }}>
-          <Routes>
-            <Route exact path="/" element={<PlantList />} />
-            <Route exact path="/plant/add" element={<PlantAdd />} />
-            <Route exact path="/plant/edit/:id" element={<PlantEdit />} />
-            <Route exact path="/plant/:id/logs" element={<LogList />} />
-            <Route exact path="/plant/:id/log/add" element={<LogAdd />} />
-            <Route exact path="/log/edit/:id" element={<LogEdit />} />
-          </Routes>
-        </div>
+        <Routes>
+          <Route exact path="/" element={<Navigate to="/plants" />} />
+          <Route exact path="/plants" element={<PlantList />} />
+          <Route exact path="/plant/add" element={<PlantAdd />} />
+          <Route exact path="/plant/edit" element={<PlantEdit />} />
+          <Route exact path="/logs" element={<LogList />} />
+          <Route exact path="/log/add" element={<LogAdd />} />
+          <Route exact path="/log/edit" element={<LogEdit />} />
+        </Routes>
       </BrowserRouter>
     </div>
   );

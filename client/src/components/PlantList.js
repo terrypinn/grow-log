@@ -67,7 +67,15 @@ export default function PlantList() {
             {plants.map((row) => (
               <TableRow key={row._id}>
                 <TableCell component="th" scope="row">{row.name}</TableCell>
-                <TableCell align="center" onClick={() => { navigate(`/plant/${row._id}/logs`) }}>
+                <TableCell
+                  align="center"
+                  onClick={() => {
+                    navigate('/logs', {
+                      state: {
+                        id: row._id
+                      }
+                    })
+                  }}>
                   <Link component="button" underline="none">{row.logs.length}</Link>
                 </TableCell>
                 <TableCell align="right">{row.type}</TableCell>
@@ -76,7 +84,13 @@ export default function PlantList() {
                   <Link
                     component="button"
                     underline="none"
-                    onClick={() => { navigate(`/plant/edit/${row._id}`) }}
+                    onClick={() => {
+                      navigate('/plant/edit', {
+                        state: {
+                          id: row._id
+                        }
+                      })
+                    }}
                   >
                     Edit
                   </Link>
