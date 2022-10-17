@@ -20,15 +20,15 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 export default function PlantAdd() {
   const [form, setForm] = useState({
-    germinated_on: null,
-    location: 'Indoor',
-    method: 'Soil',
     name: '',
-    note: '',
-    planted_on: null,
-    propagation: '',
     source: '',
     type: '',
+    propagation: '',
+    location: 'Indoor',
+    method: 'Soil',
+    plantedOn: null,
+    germinatedOn: null,
+    note: '',
   });
 
   const navigate = useNavigate();
@@ -157,9 +157,9 @@ export default function PlantAdd() {
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
               label="Planted On"
-              value={form.planted_on}
+              value={form.plantedOn}
               inputFormat="dd/MM/yyyy"
-              onChange={(value) => updateForm({ planted_on: datefns.format(value, 'yyyy-MM-dd') })}
+              onChange={(value) => updateForm({ plantedOn: datefns.format(value, 'yyyy-MM-dd') })}
               renderInput={(params) => <TextField {...params} />}
             />
           </LocalizationProvider>
@@ -169,9 +169,9 @@ export default function PlantAdd() {
             <DatePicker
               disabled={!form.propagation || form.propagation === 'Clone'}
               label="Germinated On"
-              value={form.germinated_on}
+              value={form.germinatedOn}
               inputFormat="dd/MM/yyyy"
-              onChange={(value) => updateForm({ germinated_on: datefns.format(value, 'yyyy-MM-dd') })}
+              onChange={(value) => updateForm({ germinatedOn: datefns.format(value, 'yyyy-MM-dd') })}
               renderInput={(params) => <TextField {...params} />}
             />
           </LocalizationProvider>

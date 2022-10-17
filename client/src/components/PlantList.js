@@ -57,7 +57,7 @@ export default function PlantList() {
             </TableRow>
             <TableRow>
               <TableCell>Name</TableCell>
-              <TableCell align="right">Entries</TableCell>
+              <TableCell align="center">Logs</TableCell>
               <TableCell align="right">Type</TableCell>
               <TableCell align="right">Created&nbsp;On</TableCell>
               <TableCell align="right">Action</TableCell>
@@ -71,13 +71,13 @@ export default function PlantList() {
                   <Link
                     component="button"
                     underline="none"
-                    onClick={() => { navigate(`/plant/${row._id}/entries`) }}
+                    onClick={() => { navigate(`/plant/${row._id}/logs`) }}
                   >
-                    {row.entries.length}
+                    {row.logs.length}
                   </Link>
                 </TableCell>
                 <TableCell align="right">{row.type}</TableCell>
-                <TableCell align="right">{datefns.formatDistance(row.created_on, Date.now(), { addSuffix: true })}</TableCell>
+                <TableCell align="right">{datefns.formatDistance(row.createdOn, Date.now(), { addSuffix: true })}</TableCell>
                 <TableCell align="right">
                   <Link
                     component="button"

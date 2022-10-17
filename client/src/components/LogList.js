@@ -13,15 +13,15 @@ import Paper from '@mui/material/Paper';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 
-export default function EntryList() {
+export default function LogList() {
   const params = useParams();
   const navigate = useNavigate();
 
-  const [entries, setEntries] = useState([]);
+  const [logs, setLogs] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/plant/${params.id}/entries`);
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/logs/${params.id}`);
 
       if (!response.ok) {
         const message = `An error has occured: ${response.statusText}`;
@@ -36,7 +36,7 @@ export default function EntryList() {
         return;
       }
 
-      setEntries(data.entries);
+      setLogs(data);
     }
 
     fetchData();
@@ -49,7 +49,7 @@ export default function EntryList() {
           <TableHead>
             <TableRow>
               <TableCell>
-                <h3>Entries</h3>
+                <h3>Logs</h3>
               </TableCell>
               <TableCell />
               <TableCell align="right">
@@ -61,7 +61,7 @@ export default function EntryList() {
                 </Button>
                 &nbsp;
                 <Button
-                  onClick={() => navigate(`/plant/${params.id}/entry/add`)}
+                  onClick={() => navigate(`/plant/${params.id}/log/add`)}
                   startIcon={<AddCircleIcon />}
                   variant="contained">
                   Add
@@ -75,7 +75,7 @@ export default function EntryList() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {entries.map((row) => (
+            {logs.map((row) => (
               <TableRow key={row._id}>
                 <TableCell component="th" scope="row">{row.type}</TableCell>
                 <TableCell>{row.note}</TableCell>

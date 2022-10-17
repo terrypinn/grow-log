@@ -11,7 +11,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import SaveIcon from '@mui/icons-material/Save';
 
-export default function EntryAdd() {
+export default function LogAdd() {
   const navigate = useNavigate();
   const params = useParams();
 
@@ -33,7 +33,7 @@ export default function EntryAdd() {
     const data = { ...form };
     data.images = data.images.split(/\r?\n/).filter(x => x !== '');
 
-    await fetch(`http://localhost:5000/plant/${params.id}/entry`, {
+    await fetch(`http://localhost:5000/log/${params.id}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -45,7 +45,7 @@ export default function EntryAdd() {
         return;
       });
 
-    navigate(`/plant/${params.id}/entries`);
+    navigate(`/plant/${params.id}/logs`);
   }
 
   return (
@@ -56,15 +56,15 @@ export default function EntryAdd() {
       onSubmit={onSubmit}
       margin={1}
     >
-      <h4>Create New Entry</h4>
+      <h4>Create New Log</h4>
 
       <Grid container spacing={1} mt={1}>
         <Grid item xs={4}>
           <FormControl fullWidth>
-            <InputLabel id="entry-tyoe-select-label">Type</InputLabel>
+            <InputLabel id="log-tyoe-select-label">Type</InputLabel>
             <Select
-              labelId="entry-tyoe-select-label"
-              id="entry-tyoe-select"
+              labelId="log-tyoe-select-label"
+              id="log-tyoe-select"
               value={form.type}
               label="Type"
               onChange={(e) => updateForm({ type: e.target.value })}
@@ -124,7 +124,7 @@ export default function EntryAdd() {
           <Button
             fullWidth
             variant="outlined"
-            onClick={() => { navigate(`/plant/${params.id}/entries`) }}>Cancel</Button>
+            onClick={() => { navigate(`/plant/${params.id}/logs`) }}>Cancel</Button>
         </Grid>
       </Grid>
     </Box>

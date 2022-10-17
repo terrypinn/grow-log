@@ -12,121 +12,169 @@ const dbo = require('../db/conn');
 const ObjectId = require('mongodb').ObjectId;
 
 // get all plants
-plantRoutes.route('/plants').get(function (req, res) {
+plantRoutes.route('/plants').get(function (request, response) {
   let db = dbo.getDb();
   db.collection('plants')
     .find({})
     .toArray(function (err, result) {
       if (err) throw err;
-      res.json(result);
+      response.json(result);
     });
 });
 
 // get plant by id
-plantRoutes.route('/plant/:id').get(function (req, res) {
+plantRoutes.route('/plant/:id').get(function (request, response) {
   let db = dbo.getDb();
-  let query = { _id: ObjectId(req.params.id) };
+  const query = { _id: ObjectId(request.params.id) };
   db.collection('plants')
     .findOne(query, function (err, result) {
       if (err) throw err;
-      res.json(result);
+      response.json(result);
     });
 });
 
 // create plant
-plantRoutes.route('/plant').post(function (req, response) {
+plantRoutes.route('/plant').post(function (request, response) {
   let db = dbo.getDb();
-  let obj = {
-    created_on: Date.now(),
-    entries: [],
-    germinated_on: req.body.germinated_on,
-    location: req.body.location,
-    method: req.body.method,
-    name: req.body.name,
-    note: req.body.note,
-    planted_on: req.body.planted_on,
-    propagation: req.body.propagation,
-    source: req.body.source,
-    type: req.body.type,
+  const obj = {
+    name: request.body.name,
+    createdOn: Date.now(),
+    source: request.body.source,
+    type: request.body.type,
+    propagation: request.body.propagation,
+    location: request.body.location,
+    method: request.body.method,
+    plantedOn: request.body.plantedOn,
+    germinatedOn: request.body.germinatedOn,
+    note: request.body.note,
+    logs: [],
   };
   db.collection('plants')
-    .insertOne(obj, function (err, res) {
+    .insertOne(obj, function (err, result) {
       if (err) throw err;
-      response.json(res);
+      response.json(result);
     });
 });
 
 // update plant
-plantRoutes.route('/plant/:id').put(function (req, response) {
+plantRoutes.route('/plant/:id').put(function (request, response) {
   let db = dbo.getDb();
-  let query = { _id: ObjectId(req.params.id) };
-  let obj = {
+  const query = { _id: ObjectId(request.params.id) };
+  const obj = {
     $set: {
-      germinated_on: req.body.germinated_on,
-      location: req.body.location,
-      method: req.body.method,
-      name: req.body.name,
-      note: req.body.note,
-      planted_on: req.body.planted_on,
-      propagation: req.body.propagation,
-      source: req.body.source,
-      type: req.body.type,
+      name: request.body.name,
+      source: request.body.source,
+      type: request.body.type,
+      propagation: request.body.propagation,
+      location: request.body.location,
+      method: request.body.method,
+      plantedOn: request.body.plantedOn,
+      germinatedOn: request.body.germinatedOn,
+      note: request.body.note,
     },
   };
   db.collection('plants')
-    .updateOne(query, obj, function (err, res) {
+    .updateOne(query, obj, function (err, result) {
       if (err) throw err;
-      response.json(res);
+      response.json(result);
     });
 });
 
 // delete plant
-plantRoutes.route('/plant/:id').delete((req, response) => {
+plantRoutes.route('/plant/:id').delete((request, response) => {
   let db = dbo.getDb();
-  let query = { _id: ObjectId(req.params.id) };
+  const query = { _id: ObjectId(request.params.id) };
   db.collection('plants')
-    .deleteOne(query, function (err, obj) {
+    .deleteOne(query, function (err, result) {
       if (err) throw err;
-      response.json(obj);
+      response.json(result);
     });
 });
 
-/*** plant entry ***/
-
-// create
-plantRoutes.route('/plant/:id/entry').post(function (req, response) {
+// create log
+plantRoutes.route('/log/:id').post(function (request, response) {
   let db = dbo.getDb();
-  let query = { _id: ObjectId(req.params.id) };
-  let obj = {
-    $push: {
-      entries: {
-        _id: new ObjectId(),
-        created_on: Date.now(),
-        note: req.body.note,
-        images: req.body.images,
-        type: req.body.type,
-      }
+  const plantId = ObjectId(request.params.id);
+  const obj = {
+    plantId: plantId,
+    createdOn: Date.now(),
+    type: request.body.type,
+    note: request.body.note,
+    images: request.body.images,
+  };
+  db.collection('logs')
+    .insertOne(obj, function (err, result) {
+      if (err) throw err;
+
+      db.collection('plants')
+        .updateOne({ _id: plantId }, { $push: { logs: response.insertedId } }, function (err, result) {
+          if (err) throw err;
+        });
+
+      response.json(result);
+    });
+});
+
+// get logs for plant
+plantRoutes.route('/logs/:id').get(function (request, response) {
+  let db = dbo.getDb();
+  const query = { plantId: ObjectId(request.params.id) };
+  db.collection('logs')
+    .find(query)
+    .toArray(function (err, result) {
+      if (err) throw err;
+      response.json(result);
+    });
+});
+
+// get log by id
+plantRoutes.route('/log/:id').get(function (request, response) {
+  let db = dbo.getDb();
+  const query = { _id: ObjectId(request.params.id) };
+  db.collection('logs')
+    .findOne(query, function (err, result) {
+      if (err) throw err;
+      response.json(result);
+    });
+});
+
+// update log
+plantRoutes.route('/log/:id').put(function (request, response) {
+  let db = dbo.getDb();
+  const query = { _id: ObjectId(request.params.id) };
+  const obj = {
+    $set: {
+      type: request.body.type,
+      note: request.body.note,
+      images: request.body.images,
     },
   };
-  db.collection('plants')
-    .updateOne(query, obj, function (err, res) {
+  db.collection('logs')
+    .updateOne(query, obj, function (err, result) {
       if (err) throw err;
-      response.json(res);
+      response.json(result);
     });
 });
 
-// get plant entries 
-plantRoutes.route('/plant/:id/entries').get(function (req, res) {
+// delete log
+plantRoutes.route('/log/:id').delete((request, response) => {
   let db = dbo.getDb();
-  const query = { _id: ObjectId(req.params.id) };
-  const options = { projection: { entries: 1 } };
-  db.collection('plants')
-    .findOne(query, options, function (err, result) {
+  const query = { _id: ObjectId(request.params.id) };
+  db.collection('logs')
+    .findOne(query, function (err, result) {
       if (err) throw err;
-      res.json(result);
+      
+      db.collection('plants')
+        .updateOne({ _id: result.plantId }, { $pull: { logs: result._id } }, function (err, result) {
+          if (err) throw err;
+          
+          db.collection('logs')
+            .deleteOne(query, function (err, result) {
+              if (err) throw err;
+              response.json(result);
+            });
+        });
     });
-
-
 });
 
 module.exports = plantRoutes;
