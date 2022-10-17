@@ -104,7 +104,7 @@ export default function PlantEdit() {
       margin={1}
       onSubmit={onSubmit}
     >
-      <h4>My Plant</h4>
+      <h4>Edit Plant</h4>
 
       <Grid container spacing={1} mt={1}>
         <Grid item xs={2}>
