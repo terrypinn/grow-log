@@ -13,6 +13,8 @@ import Link from '@mui/material/Link';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 
+import * as datefns from 'date-fns'
+
 export default function LogList() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -50,6 +52,7 @@ export default function LogList() {
             <TableCell><h3>Logs ({location.state.name})</h3></TableCell>
             <TableCell />
             <TableCell />
+            <TableCell />
             <TableCell align="right">
               <Button
                 onClick={() => navigate('/plants')}
@@ -73,6 +76,7 @@ export default function LogList() {
           </TableRow>
           <TableRow>
             <TableCell>Type</TableCell>
+            <TableCell>Created On</TableCell>
             <TableCell>Note</TableCell>
             <TableCell>Images</TableCell>
             <TableCell />
@@ -82,6 +86,7 @@ export default function LogList() {
           {logs.map((row) => (
             <TableRow key={row._id}>
               <TableCell component="th" scope="row">{row.type}</TableCell>
+              <TableCell>{datefns.formatDistance(row.created_on, Date.now(), { addSuffix: true })}</TableCell>
               <TableCell>{row.note}</TableCell>
               <TableCell>{row.images.map((url, index) => (
                 <div key={index}>{<a href={url} target="_blank" rel="noreferrer">{url}</a>}</div>
