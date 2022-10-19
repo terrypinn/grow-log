@@ -5,7 +5,7 @@ const dbo = require('./dbo');
 const port = process.env.PORT || 5000;
 
 dbo.connect().then(() => {
-  console.log(`Connected to db`);
+  console.log(`Connected to database`);
   // start server once there is a database connection
   app.listen(port, () => console.log(`Server is running on port: ${port}`));
 });
