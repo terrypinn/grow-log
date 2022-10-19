@@ -32,8 +32,9 @@ export default function LogAdd() {
 
     const data = { ...form };
     data.images = data.images.split(/\r?\n/).filter(x => x !== '');
-
-    await fetch(`${process.env.REACT_APP_API_URL}/log/${location.state.id}`, {
+    data.plant_id = location.state.id;
+    
+    await fetch(`${process.env.REACT_APP_API_URL}/log`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

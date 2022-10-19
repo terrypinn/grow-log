@@ -21,7 +21,7 @@ export default function LogList() {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/logs/${location.state.id}`);
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/plant/${location.state.id}/logs`);
 
       if (!response.ok) {
         const message = `An error has occured: ${response.statusText}`;
