@@ -6,6 +6,7 @@ exports.log_list = (req, res) => {
   const db = dbo.getDb();
   db.collection('logs')
     .find({ plant_id: ObjectId(req.params.plant_id) })
+    .sort({ created_on: -1 })
     .toArray()
     .catch(err => res.status(500).json({ error: err }))
     .then(docs => res.json(docs));
