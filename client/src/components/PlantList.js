@@ -40,10 +40,7 @@ export default function PlantList() {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell><h3>My&nbsp;Plants</h3></TableCell>
-            <TableCell />
-            <TableCell />
-            <TableCell />
+            <TableCell colSpan={4}><h3>My&nbsp;Plants</h3></TableCell>
             <TableCell align="right">
               <Button
                 onClick={() => navigate('/plant/add')}
