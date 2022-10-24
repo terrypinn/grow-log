@@ -49,10 +49,7 @@ export default function LogList() {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell><h3>Logs ({location.state.name})</h3></TableCell>
-            <TableCell />
-            <TableCell />
-            <TableCell />
+            <TableCell colSpan={5}><h3>Logs ({location.state.name})</h3></TableCell>
             <TableCell align="right">
               <Button
                 onClick={() => navigate('/plants')}
@@ -75,6 +72,7 @@ export default function LogList() {
             </TableCell>
           </TableRow>
           <TableRow>
+            <TableCell>#</TableCell>
             <TableCell>Type</TableCell>
             <TableCell>Created On</TableCell>
             <TableCell>Note</TableCell>
@@ -83,10 +81,10 @@ export default function LogList() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {logs.map((row) => (
+          {logs.map((row, index) => (
             <TableRow key={row._id}>
-              <TableCell component="th" scope="row">{row.type}</TableCell>
-              <TableCell>{datefns.formatDistance(row.created_on, Date.now(), { addSuffix: true })}</TableCell>
+              <TableCell component="th" scope="row">{index + 1}</TableCell>
+              <TableCell>{row.type}</TableCell>
               <TableCell>{datefns.format(row.created_on, 'iii dd LLL yyyy HH:mm')}</TableCell>
               <TableCell>{row.note}</TableCell>
               <TableCell>{row.images.map((url, index) => (
