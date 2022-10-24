@@ -57,7 +57,7 @@ export default function PlantList() {
             <TableCell>Name</TableCell>
             <TableCell align="center">Logs</TableCell>
             <TableCell align="right">Type</TableCell>
-            <TableCell align="right">Created&nbsp;On</TableCell>
+            <TableCell align="right">Grow Start</TableCell>
             <TableCell />
           </TableRow>
         </TableHead>
@@ -67,7 +67,7 @@ export default function PlantList() {
               <TableCell component="th" scope="row">{row.name}</TableCell>
               <TableCell align="center">{row.logs.length}</TableCell>
               <TableCell align="right">{row.type}</TableCell>
-              <TableCell align="right">{datefns.formatDistance(row.created_on, Date.now(), { addSuffix: true })}</TableCell>
+              <TableCell align="right">{datefns.format(new Date(row.germinated_on), 'dd LLL yyyy')}</TableCell>
               <TableCell align="right">
                 <Link
                   component="button"
