@@ -87,6 +87,7 @@ export default function LogList() {
             <TableRow key={row._id}>
               <TableCell component="th" scope="row">{row.type}</TableCell>
               <TableCell>{datefns.formatDistance(row.created_on, Date.now(), { addSuffix: true })}</TableCell>
+              <TableCell>{datefns.format(row.created_on, 'iii dd LLL yyyy HH:mm')}</TableCell>
               <TableCell>{row.note}</TableCell>
               <TableCell>{row.images.map((url, index) => (
                 <div key={index}>{<a href={url} target="_blank" rel="noreferrer">{url}</a>}</div>
