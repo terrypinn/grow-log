@@ -184,7 +184,7 @@ export default function PlantAdd() {
             label="Note"
             fullWidth
             multiline
-            rows={4}
+            rows={8}
             value={form.note}
             onChange={(e) => updateForm({ note: e.target.value })}
           />
