@@ -86,7 +86,7 @@ export default function LogList() {
               <TableCell component="th" scope="row">{index + 1}</TableCell>
               <TableCell>{row.type}</TableCell>
               <TableCell>{datefns.format(row.created_on, 'iii dd LLL yyyy HH:mm')}</TableCell>
-              <TableCell>{row.note}</TableCell>
+              <TableCell><div style={{whiteSpace: 'pre-line'}}>{row.note}</div></TableCell>
               <TableCell>{row.images.map((url, index) => (
                 <div key={index}>{<a href={url} target="_blank" rel="noreferrer">{url}</a>}</div>
               ))}
