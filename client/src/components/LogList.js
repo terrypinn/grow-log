@@ -49,8 +49,8 @@ export default function LogList() {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell colSpan={5}><h3>Logs ({location.state.name})</h3></TableCell>
-            <TableCell align="right">
+            <TableCell colSpan={4}><h3>Logs ({location.state.name})</h3></TableCell>
+            <TableCell colSpan={2} align="right">
               <Button
                 onClick={() => navigate('/plants')}
                 startIcon={<ArrowCircleLeftIcon />}
