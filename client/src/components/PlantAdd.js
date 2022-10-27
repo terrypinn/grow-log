@@ -95,7 +95,7 @@ export default function PlantAdd() {
             <FormLabel id="plant-type-radio-buttons-group">Type</FormLabel>
             <RadioGroup
               aria-labelledby="plant-type-radio-buttons-group"
-              name="tyoe-options"
+              name="type-options"
               value={form.type}
               onChange={(e) => updateForm({ type: e.target.value })}
             >

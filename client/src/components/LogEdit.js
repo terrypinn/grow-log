@@ -102,10 +102,10 @@ export default function LogEdit() {
       <Grid container spacing={1} mt={1}>
         <Grid item xs={4}>
           <FormControl fullWidth>
-            <InputLabel id="log-tyoe-select-label">Type</InputLabel>
+            <InputLabel id="log-type-select-label">Type</InputLabel>
             <Select
-              labelId="log-tyoe-select-label"
-              id="log-tyoe-select"
+              labelId="log-type-select-label"
+              id="log-type-select"
               value={form.type}
               label="Type"
               onChange={(e) => updateForm({ type: e.target.value })}
