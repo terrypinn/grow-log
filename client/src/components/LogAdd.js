@@ -79,7 +79,7 @@ export default function LogAdd() {
             >
               <MenuItem value="Action">Action</MenuItem>
               <MenuItem value="Bad Insects">Bad Insects</MenuItem>
-              <MenuItem value="Good Insects">Good Inseects</MenuItem>
+              <MenuItem value="Good Insects">Good Insects</MenuItem>
               <MenuItem value="Issues">Issues</MenuItem>
               <MenuItem value="Nutrients">Nutrients</MenuItem>
               <MenuItem value="Observation">Observation</MenuItem>
