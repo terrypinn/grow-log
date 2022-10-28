@@ -24,6 +24,7 @@ export default function PlantList() {
   }, []);
 
   const formatGrowStartCell = (row) => {
+    if (!row.germinated_on) return 'n/a';
     const date = new Date(row.germinated_on);
     const displayDate = datefns.format(date, 'dd LLL yyyy');
     const displayDistance = datefns.formatDistance(date, Date.now(), { addSuffix: true });

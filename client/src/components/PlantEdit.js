@@ -39,8 +39,11 @@ export default function PlantEdit() {
       navigate(-1);
       return;
     }
-    // if (!plant.planted_on) data.planted_on = null;
-    // if (!plant.germinated_on) data.germinated_on = null;
+
+    const data = { ...plant.current };
+    data.germinated_on = data.germinated_on ?? null;
+    data.planted_on = data.planted_on ?? null;
+
     setForm(plant.current);
   }, [navigate]);
 
@@ -52,16 +55,26 @@ export default function PlantEdit() {
 
   function onSubmit(e) {
     e.preventDefault();
+
+    const data = { ...form };
+    data.germinated_on = data.germinated_on ?? '';
+    data.planted_on = data.planted_on ?? '';
+
     fetch(`${process.env.REACT_APP_API_URL}/plant/${plant.current._id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(form),
+      body: JSON.stringify(data),
     }).then(() => navigate(-1));
   }
 
   function deletePlant() {
     if (!window.confirm("Are you sure you want to delete this plant?")) return;
     fetch(`${process.env.REACT_APP_API_URL}/plant/${plant.current._id}`, { method: 'DELETE' }).then(() => navigate(-1));
+  }
+
+  function formatDatePickerValue(value) {
+    if (!value) return null;
+    return datefns.format(value, 'yyyy-MM-dd');
   }
 
   return (
@@ -163,7 +176,7 @@ export default function PlantEdit() {
               label="Planted On"
               value={form.planted_on}
               inputFormat="dd/MM/yyyy"
-              onChange={(value) => updateForm({ planted_on: datefns.format(value, 'yyyy-MM-dd') })}
+              onChange={(value) => updateForm({ planted_on: formatDatePickerValue(value) })}
               renderInput={(params) => <TextField {...params} />}
             />
           </LocalizationProvider>
@@ -175,7 +188,7 @@ export default function PlantEdit() {
               label="Germinated On"
               value={form.germinated_on}
               inputFormat="dd/MM/yyyy"
-              onChange={(value) => updateForm({ germinated_on: datefns.format(value, 'yyyy-MM-dd') })}
+              onChange={(value) => updateForm({ germinated_on: formatDatePickerValue(value) })}
               renderInput={(params) => <TextField {...params} />}
             />
           </LocalizationProvider>
