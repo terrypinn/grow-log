@@ -70,7 +70,7 @@ export default function LogList() {
         <TableBody>
           {logs.map((row, index) => (
             <TableRow key={row._id}>
-              <TableCell component="th" scope="row">{index + 1}</TableCell>
+              <TableCell component="th" scope="row">{logs.length - index}</TableCell>
               <TableCell>{row.type}</TableCell>
               <TableCell>{datefns.format(row.created_on, 'iii dd LLL yyyy HH:mm')}</TableCell>
               <TableCell><div style={{ whiteSpace: 'pre-line' }}>{row.note}</div></TableCell>
