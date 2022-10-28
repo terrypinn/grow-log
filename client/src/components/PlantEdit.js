@@ -68,7 +68,7 @@ export default function PlantEdit() {
   }
 
   function deletePlant() {
-    if (!window.confirm("Are you sure you want to delete this plant?")) return;
+    if (!window.confirm('Are you sure you want to delete this plant?')) return;
     fetch(`${process.env.REACT_APP_API_URL}/plant/${plant.current._id}`, { method: 'DELETE' }).then(() => navigate(-1));
   }
 
