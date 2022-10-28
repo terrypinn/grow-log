@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
-
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
@@ -17,6 +19,7 @@ export default function LogEdit() {
   const log = useRef(JSON.parse(localStorage.getItem('log')));
 
   const [form, setForm] = useState({
+    created_on: new Date(),
     type: '',
     note: '',
     images: ''
@@ -32,41 +35,49 @@ export default function LogEdit() {
     setForm(data)
   }, [navigate]);
 
-  function updateForm(value) {
-    return setForm((prev) => {
-      return { ...prev, ...value };
-    });
-  }
+  const updateForm = value => setForm(prev => ({ ...prev, ...value }));
 
-  function onSubmit(e) {
+  const submitForm = (e) => {
     e.preventDefault();
-
-    const data = { ...form };
-    data.images = data.images.split(/\r?\n/).filter(x => x !== '');
-
+    const body = {
+      ...form,
+      created_on: +form.created_on,
+      images: form.images.split(/\r?\n/).filter(x => x !== '')
+    };
     fetch(`${process.env.REACT_APP_API_URL}/log/${log.current._id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
+      body: JSON.stringify(body),
     }).then(() => navigate(-1));
-  }
+  };
 
-  function deleteLog() {
+  const deleteLog = () => {
     if (!window.confirm('Are you sure you want to delete this log?')) return;
     fetch(`${process.env.REACT_APP_API_URL}/log/${log.current._id}`, { method: 'DELETE' }).then(() => navigate(-1));
-  }
+  };
 
   return (
     <Box
       component="form"
       noValidate
       autoComplete="off"
-      onSubmit={onSubmit}
+      onSubmit={submitForm}
     >
       <h4>Edit Log</h4>
 
       <Grid container spacing={1} mt={1}>
-        <Grid item xs={4}>
+        <Grid item xs={2}>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DateTimePicker
+              label="Created On"
+              value={form.created_on}
+              inputFormat="dd/MM/yyyy HH:mm"
+              onChange={value => updateForm({ created_on: value })}
+              renderInput={params => <TextField {...params} />}
+            />
+          </LocalizationProvider>
+        </Grid>
+        <Grid item xs={2}>
           <FormControl fullWidth>
             <InputLabel id="log-type-select-label">Type</InputLabel>
             <Select
@@ -74,7 +85,7 @@ export default function LogEdit() {
               id="log-type-select"
               value={form.type}
               label="Type"
-              onChange={(e) => updateForm({ type: e.target.value })}
+              onChange={e => updateForm({ type: e.target.value })}
             >
               <MenuItem value="Action">Action</MenuItem>
               <MenuItem value="Bad Insects">Bad Insects</MenuItem>
@@ -98,7 +109,7 @@ export default function LogEdit() {
             multiline
             rows={8}
             value={form.note}
-            onChange={(e) => updateForm({ note: e.target.value })}
+            onChange={e => updateForm({ note: e.target.value })}
           />
         </Grid>
       </Grid>
@@ -112,7 +123,7 @@ export default function LogEdit() {
             multiline
             rows={4}
             value={form.images}
-            onChange={(e) => updateForm({ images: e.target.value })}
+            onChange={e => updateForm({ images: e.target.value })}
           />
         </Grid>
       </Grid>

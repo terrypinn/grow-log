@@ -24,7 +24,7 @@ exports.log_create = (req, res) => {
   let db = dbo.getDb();
   const doc = {
     plant_id: ObjectId(req.body.plant_id),
-    created_on: Date.now(),
+    created_on: req.body.created_on,
     type: req.body.type,
     note: req.body.note,
     images: req.body.images,
@@ -45,6 +45,7 @@ exports.log_update = (req, res) => {
   const db = dbo.getDb();
   const update = {
     $set: {
+      created_on: req.body.created_on,
       type: req.body.type,
       note: req.body.note,
       images: req.body.images,
