@@ -25,10 +25,10 @@ export default function PlantList() {
 
   const formatGrowStartCell = (row) => {
     if (!row.germinated_on) return 'n/a';
-    const date = new Date(row.germinated_on);
+    const date = new Date(row.germinated_on + 'T00:00');
     const displayDate = datefns.format(date, 'dd LLL yyyy');
-    const displayDistance = datefns.formatDistance(date, Date.now(), { addSuffix: true });
-    return `${displayDate} | ${displayDistance}`;
+    const displayDistance = datefns.differenceInDays(new Date(), date);
+    return `${displayDate} | ${displayDistance} days`;
   };
 
   const navToPlantEdit = (plant) => {
