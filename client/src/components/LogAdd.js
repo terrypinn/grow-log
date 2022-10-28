@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router';
+import { useState, useRef } from 'react';
+import { useNavigate } from 'react-router';
 
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -12,8 +12,9 @@ import Select from '@mui/material/Select';
 import SaveIcon from '@mui/icons-material/Save';
 
 export default function LogAdd() {
-  const location = useLocation();
   const navigate = useNavigate();
+
+  const plant = useRef(JSON.parse(localStorage.getItem('plant')));
 
   const [form, setForm] = useState({
     type: '',
@@ -27,35 +28,20 @@ export default function LogAdd() {
     });
   }
 
-  async function onSubmit(e) {
+  function onSubmit(e) {
     e.preventDefault();
 
     const data = { ...form };
     data.images = data.images.split(/\r?\n/).filter(x => x !== '');
-    data.plant_id = location.state.id;
-    
-    await fetch(`${process.env.REACT_APP_API_URL}/log`, {
+    data.plant_id = plant.current._id;
+
+    fetch(`${process.env.REACT_APP_API_URL}/log`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     })
-      .catch(error => {
-        window.alert(error);
-        return;
-      });
-
-    navToLogs();
+      .then(() => navigate(-1));
   }
-
-  function navToLogs() {
-    navigate('/logs', {
-      state: {
-        id: location.state.id
-      }
-    });
-  };
 
   return (
     <Box
@@ -133,7 +119,7 @@ export default function LogAdd() {
           <Button
             fullWidth
             variant="outlined"
-            onClick={navToLogs}
+            onClick={() => navigate(-1)}
           >
             Cancel
           </Button>

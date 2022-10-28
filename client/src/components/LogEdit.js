@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router';
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router';
 
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -12,8 +12,9 @@ import Select from '@mui/material/Select';
 import SaveIcon from '@mui/icons-material/Save';
 
 export default function LogEdit() {
-  const location = useLocation();
   const navigate = useNavigate();
+
+  const log = useRef(JSON.parse(localStorage.getItem('log')));
 
   const [form, setForm] = useState({
     type: '',
@@ -22,28 +23,14 @@ export default function LogEdit() {
   });
 
   useEffect(() => {
-    async function fetchData() {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/log/${location.state.id}`);
-
-      if (!response.ok) {
-        const message = `An error has occured: ${response.statusText}`;
-        window.alert(message);
-        return;
-      }
-
-      const data = await response.json();
-      if (!data) {
-        window.alert(`Log with id ${location.state.id} not found`);
-        navigate('/plants');
-        return;
-      }
-
-      data.images = data.images.join('\n');
-      setForm(data);
+    if (!log.current) {
+      navigate(-1);
+      return;
     }
-
-    fetchData();
-  }, [location.state.id, navigate]);
+    const data = { ...log.current }
+    data.images = data.images.join('\n');
+    setForm(data)
+  }, [navigate]);
 
   function updateForm(value) {
     return setForm((prev) => {
@@ -51,44 +38,23 @@ export default function LogEdit() {
     });
   }
 
-  async function onSubmit(e) {
+  function onSubmit(e) {
     e.preventDefault();
 
     const data = { ...form };
     data.images = data.images.split(/\r?\n/).filter(x => x !== '');
 
-    await fetch(`${process.env.REACT_APP_API_URL}/log/${location.state.id}`, {
+    fetch(`${process.env.REACT_APP_API_URL}/log/${log.current._id}`, {
       method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
-    })
-      .catch(error => {
-        window.alert(error);
-        return;
-      });
-
-    navToLogs();
+    }).then(() => navigate(-1));
   }
 
-  async function deleteLog() {
-    if (!window.confirm("Are you sure you want to delete this log?")) return;
-
-    await fetch(`${process.env.REACT_APP_API_URL}/log/${location.state.id}`, {
-      method: 'DELETE'
-    });
-
-    navToLogs();
+  function deleteLog() {
+    if (!window.confirm('Are you sure you want to delete this log?')) return;
+    fetch(`${process.env.REACT_APP_API_URL}/log/${log.current._id}`, { method: 'DELETE' }).then(() => navigate(-1));
   }
-
-  function navToLogs() {
-    navigate('/logs', {
-      state: {
-        id: location.state.plant_id
-      }
-    });
-  };
 
   return (
     <Box
@@ -175,7 +141,7 @@ export default function LogEdit() {
           <Button
             fullWidth
             variant="outlined"
-            onClick={navToLogs}>Cancel</Button>
+            onClick={() => navigate(-1)}>Cancel</Button>
         </Grid>
       </Grid>
     </Box>

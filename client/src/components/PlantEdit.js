@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router';
+import { useEffect, useState, useRef } from 'react';
+import { useNavigate } from 'react-router';
 import * as datefns from 'date-fns'
 
 import Box from '@mui/material/Box';
@@ -18,8 +18,9 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 export default function PlantEdit() {
-  const location = useLocation();
   const navigate = useNavigate();
+
+  const plant = useRef(JSON.parse(localStorage.getItem('plant')));
 
   const [form, setForm] = useState({
     name: '',
@@ -34,30 +35,14 @@ export default function PlantEdit() {
   });
 
   useEffect(() => {
-    async function fetchData() {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/plant/${location.state.id}`);
-
-      if (!response.ok) {
-        const message = `An error has occured: ${response.statusText}`;
-        window.alert(message);
-        return;
-      }
-
-      const data = await response.json();
-      if (!data) {
-        window.alert(`Plant with id ${location.state.id} not found`);
-        navigate('/plants');
-        return;
-      }
-
-      if (!data.planted_on) data.planted_on = null;
-      if (!data.germinated_on) data.germinated_on = null;
-
-      setForm(data);
+    if (!plant.current) {
+      navigate(-1);
+      return;
     }
-
-    fetchData();
-  }, [location.state.id, navigate]);
+    // if (!plant.planted_on) data.planted_on = null;
+    // if (!plant.germinated_on) data.germinated_on = null;
+    setForm(plant.current);
+  }, [navigate]);
 
   function updateForm(value) {
     return setForm((prev) => {
@@ -65,38 +50,18 @@ export default function PlantEdit() {
     });
   }
 
-  async function onSubmit(e) {
+  function onSubmit(e) {
     e.preventDefault();
-
-    const data = { ...form };
-
-    await fetch(`${process.env.REACT_APP_API_URL}/plant/${location.state.id}`, {
+    fetch(`${process.env.REACT_APP_API_URL}/plant/${plant.current._id}`, {
       method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    })
-      .catch(error => {
-        window.alert(error);
-        return;
-      });
-
-    navToPlants();
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(form),
+    }).then(() => navigate(-1));
   }
 
-  async function deletePlant() {
+  function deletePlant() {
     if (!window.confirm("Are you sure you want to delete this plant?")) return;
-
-    await fetch(`${process.env.REACT_APP_API_URL}/plant/${location.state.id}`, {
-      method: 'DELETE'
-    });
-
-    navToPlants();
-  }
-
-  function navToPlants() {
-    navigate('/plants');
+    fetch(`${process.env.REACT_APP_API_URL}/plant/${plant.current._id}`, { method: 'DELETE' }).then(() => navigate(-1));
   }
 
   return (
@@ -255,7 +220,7 @@ export default function PlantEdit() {
           <Button
             fullWidth
             variant="outlined"
-            onClick={navToPlants}
+            onClick={() => navigate(-1)}
           >
             Cancel
           </Button>

@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router';
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router';
+import * as datefns from 'date-fns'
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -13,43 +14,33 @@ import Link from '@mui/material/Link';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 
-import * as datefns from 'date-fns'
-
 export default function LogList() {
-  const location = useLocation();
   const navigate = useNavigate();
 
   const [logs, setLogs] = useState([]);
+  const plant = useRef(JSON.parse(localStorage.getItem('plant')));
 
   useEffect(() => {
-    async function fetchData() {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/plant/${location.state.id}/logs`);
-
-      if (!response.ok) {
-        const message = `An error has occured: ${response.statusText}`;
-        window.alert(message);
-        return;
-      }
-
-      const data = await response.json();
-      if (!data) {
-        window.alert(`Plant with id ${location.state.id} not found`);
-        navigate('/plants');
-        return;
-      }
-
-      setLogs(data);
+    if (!plant.current) {
+      navigate('/plants');
+      return;
     }
+    fetch(`${process.env.REACT_APP_API_URL}/plant/${plant.current._id}/logs`)
+      .then(response => response.json())
+      .then(logs => setLogs(logs));
+  }, [navigate]);
 
-    fetchData();
-  }, [location.state.id, navigate]);
+  const navToLogEdit = (log) => {
+    localStorage.setItem('log', JSON.stringify(log));
+    navigate('/log/edit');
+  };
 
   return (
     <TableContainer component={Paper}>
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell colSpan={4}><h3>Logs ({location.state.name})</h3></TableCell>
+            <TableCell colSpan={4}><h3>Logs ({plant.current?.name})</h3></TableCell>
             <TableCell colSpan={2} align="right">
               <Button
                 onClick={() => navigate('/plants')}
@@ -59,11 +50,7 @@ export default function LogList() {
               </Button>
               &nbsp;
               <Button
-                onClick={() => navigate('/log/add', {
-                  state: {
-                    id: location.state.id
-                  }
-                })}
+                onClick={() => navigate('/log/add')}
                 startIcon={<AddCircleIcon />}
                 variant="contained"
               >
@@ -86,7 +73,7 @@ export default function LogList() {
               <TableCell component="th" scope="row">{index + 1}</TableCell>
               <TableCell>{row.type}</TableCell>
               <TableCell>{datefns.format(row.created_on, 'iii dd LLL yyyy HH:mm')}</TableCell>
-              <TableCell><div style={{whiteSpace: 'pre-line'}}>{row.note}</div></TableCell>
+              <TableCell><div style={{ whiteSpace: 'pre-line' }}>{row.note}</div></TableCell>
               <TableCell>{row.images.map((url, index) => (
                 <div key={index}>{<a href={url} target="_blank" rel="noreferrer">{url}</a>}</div>
               ))}
@@ -95,12 +82,7 @@ export default function LogList() {
                 <Link
                   component="button"
                   underline="none"
-                  onClick={() => navigate('/log/edit', {
-                    state: {
-                      id: row._id,
-                      plant_id: row.plant_id
-                    }
-                  })}
+                  onClick={() => navToLogEdit(row)}
                 >
                   Edit
                 </Link>

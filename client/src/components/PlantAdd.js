@@ -17,7 +17,6 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-
 export default function PlantAdd() {
   const [form, setForm] = useState({
     name: '',
@@ -39,24 +38,15 @@ export default function PlantAdd() {
     });
   }
 
-  async function onSubmit(e) {
+  function onSubmit(e) {
     e.preventDefault();
 
-    const data = { ...form };
-
-    await fetch(`${process.env.REACT_APP_API_URL}/plant`, {
+    fetch(`${process.env.REACT_APP_API_URL}/plant`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(form),
     })
-      .catch(error => {
-        window.alert(error);
-        return;
-      });
-
-    navigate('/plants');
+      .then(() => navigate(-1));
   }
 
   return (

@@ -14,26 +14,31 @@ import Link from '@mui/material/Link';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 export default function PlantList() {
-  const [plants, setPlants] = useState([]);
   const navigate = useNavigate();
+  const [plants, setPlants] = useState([]);
 
-  // fetch plants from the database upon page loads
   useEffect(() => {
-    async function fetchData() {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/plants`);
-
-      if (!response.ok) {
-        const message = `An error occured: ${response.statusText}`;
-        window.alert(message);
-        return;
-      }
-
-      const plants = await response.json();
-      setPlants(plants);
-    }
-
-    fetchData();
+    fetch(`${process.env.REACT_APP_API_URL}/plants`)
+      .then(resppnse => resppnse.json())
+      .then(plants => setPlants(plants));
   }, []);
+
+  const formatGrowStartCell = (row) => {
+    const date = new Date(row.germinated_on);
+    const displayDate = datefns.format(date, 'dd LLL yyyy');
+    const displayDistance = datefns.formatDistance(date, Date.now(), { addSuffix: true });
+    return `${displayDate} | ${displayDistance}`;
+  };
+
+  const navToPlantEdit = (plant) => {
+    localStorage.setItem('plant', JSON.stringify(plant));
+    navigate('/plant/edit');
+  };
+
+  const navToLogs = (plant) => {
+    localStorage.setItem('plant', JSON.stringify(plant));
+    navigate('/logs');
+  };
 
   return (
     <TableContainer component={Paper}>
@@ -64,18 +69,12 @@ export default function PlantList() {
               <TableCell component="th" scope="row">{row.name}</TableCell>
               <TableCell align="center">{row.logs.length}</TableCell>
               <TableCell align="right">{row.type}</TableCell>
-              <TableCell align="right">{datefns.format(new Date(row.germinated_on), 'dd LLL yyyy')}</TableCell>
+              <TableCell align="right">{formatGrowStartCell(row)}</TableCell>
               <TableCell align="right">
                 <Link
                   component="button"
                   underline="none"
-                  onClick={() => {
-                    navigate('/plant/edit', {
-                      state: {
-                        id: row._id
-                      }
-                    })
-                  }}
+                  onClick={() => navToPlantEdit(row)}
                 >
                   Edit Plant
                 </Link>
@@ -83,14 +82,7 @@ export default function PlantList() {
                 <Link
                   component="button"
                   underline="none"
-                  onClick={() => {
-                    navigate('/logs', {
-                      state: {
-                        id: row._id,
-                        name: row.name
-                      }
-                    })
-                  }}
+                  onClick={() => navToLogs(row)}
                 >
                   View Logs
                 </Link>
