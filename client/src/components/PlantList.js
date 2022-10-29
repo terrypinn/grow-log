@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-import * as datefns from 'date-fns'
-
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -12,6 +10,7 @@ import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import * as datefns from 'date-fns'
 
 export default function PlantList() {
   const navigate = useNavigate();
@@ -27,8 +26,8 @@ export default function PlantList() {
     if (!row.germinated_on) return 'n/a';
     const date = new Date(row.germinated_on + 'T00:00');
     const displayDate = datefns.format(date, 'dd LLL yyyy');
-    const displayDistance = datefns.differenceInDays(new Date(), date);
-    return `${displayDate} | ${displayDistance} days`;
+    const diffDays = datefns.differenceInDays(new Date(), date);
+    return `${displayDate} | ${diffDays} days`;
   };
 
   const navToPlantEdit = (plant) => {

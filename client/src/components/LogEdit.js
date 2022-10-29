@@ -15,7 +15,6 @@ import SaveIcon from '@mui/icons-material/Save';
 
 export default function LogEdit() {
   const navigate = useNavigate();
-
   const log = useRef(JSON.parse(localStorage.getItem('log')));
 
   const [form, setForm] = useState({
@@ -26,14 +25,10 @@ export default function LogEdit() {
   });
 
   useEffect(() => {
-    if (!log.current) {
-      navigate(-1);
-      return;
-    }
-    const data = { ...log.current }
-    data.images = data.images.join('\n');
-    setForm(data)
-  }, [navigate]);
+    const form = { ...log.current }
+    form.images = form.images.join('\n');
+    setForm(form)
+  }, []);
 
   const updateForm = value => setForm(prev => ({ ...prev, ...value }));
 

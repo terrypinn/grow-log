@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
-import * as datefns from 'date-fns'
-
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
@@ -12,12 +13,11 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import SaveIcon from '@mui/icons-material/Save';
-
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import * as datefns from 'date-fns'
 
 export default function PlantAdd() {
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({
     name: '',
     source: '',
@@ -30,40 +30,33 @@ export default function PlantAdd() {
     note: '',
   });
 
-  const navigate = useNavigate();
+  const updateForm = value => setForm(prev => ({ ...prev, ...value }));
 
-  function updateForm(value) {
-    return setForm((prev) => {
-      return { ...prev, ...value };
-    });
-  }
-
-  function onSubmit(e) {
+  const submitForm = (e) => {
     e.preventDefault();
-
-    const data = { ...form };
-    data.germinated_on = data.germinated_on ?? '';
-    data.planted_on = data.planted_on ?? '';
-
+    const body = {
+      ...form,
+      germinated_on: form.germinated_on ?? '',
+      planted_on: form.planted_on ?? ''
+    };
     fetch(`${process.env.REACT_APP_API_URL}/plant`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    })
-      .then(() => navigate(-1));
-  }
+      body: JSON.stringify(body),
+    }).then(() => navigate(-1));
+  };
 
-  function formatDatePickerValue(value) {
+  const formatDatePickerValue = (value) => {
     if (!value) return null;
     return datefns.format(value, 'yyyy-MM-dd');
-  }
+  };
 
   return (
     <Box
       component="form"
       noValidate
       autoComplete="off"
-      onSubmit={onSubmit}
+      onSubmit={submitForm}
     >
       <h4>Create New Plant</h4>
 
@@ -74,7 +67,7 @@ export default function PlantAdd() {
             id="name"
             label="Name"
             value={form.name}
-            onChange={(e) => updateForm({ name: e.target.value })}
+            onChange={e => updateForm({ name: e.target.value })}
           />
         </Grid>
         <Grid item xs={2}>
@@ -83,7 +76,7 @@ export default function PlantAdd() {
             id="source"
             label="Source"
             value={form.source}
-            onChange={(e) => updateForm({ source: e.target.value })}
+            onChange={e => updateForm({ source: e.target.value })}
           />
         </Grid>
       </Grid>
@@ -96,7 +89,7 @@ export default function PlantAdd() {
               aria-labelledby="plant-type-radio-buttons-group"
               name="type-options"
               value={form.type}
-              onChange={(e) => updateForm({ type: e.target.value })}
+              onChange={e => updateForm({ type: e.target.value })}
             >
               <FormControlLabel value="Autoflower" control={<Radio />} label="Autoflower" />
               <FormControlLabel value="Regular" control={<Radio />} label="Regular" />
@@ -110,7 +103,7 @@ export default function PlantAdd() {
               aria-labelledby="plant-propagation-radio-buttons-group"
               name="propagation-options"
               value={form.propagation}
-              onChange={(e) => updateForm({ propagation: e.target.value })}
+              onChange={e => updateForm({ propagation: e.target.value })}
             >
               <FormControlLabel value="Seed" control={<Radio />} label="Seed" />
               <FormControlLabel value="Clone" control={<Radio />} label="Clone" />
@@ -124,7 +117,7 @@ export default function PlantAdd() {
               aria-labelledby="plant-location-radio-buttons-group"
               name="location-options"
               value={form.location}
-              onChange={(e) => updateForm({ location: e.target.value })}
+              onChange={e => updateForm({ location: e.target.value })}
             >
               <FormControlLabel value="Indoor" control={<Radio />} label="Indoor" />
               <FormControlLabel value="Outdoor" control={<Radio />} label="Outdoor" />
@@ -139,7 +132,7 @@ export default function PlantAdd() {
               aria-labelledby="plant-method-radio-buttons-group"
               name="method-options"
               value={form.method}
-              onChange={(e) => updateForm({ method: e.target.value })}
+              onChange={e => updateForm({ method: e.target.value })}
             >
               <FormControlLabel value="Soil" control={<Radio />} label="Soil" />
               <FormControlLabel value="Hydroponics" control={<Radio />} label="Hydroponics" />
@@ -157,8 +150,8 @@ export default function PlantAdd() {
               label="Planted On"
               value={form.planted_on}
               inputFormat="dd/MM/yyyy"
-              onChange={(value) => updateForm({ planted_on: formatDatePickerValue(value) })}
-              renderInput={(params) => <TextField {...params} />}
+              onChange={value => updateForm({ planted_on: formatDatePickerValue(value) })}
+              renderInput={params => <TextField {...params} />}
             />
           </LocalizationProvider>
         </Grid>
@@ -169,8 +162,8 @@ export default function PlantAdd() {
               label="Germinated On"
               value={form.germinated_on}
               inputFormat="dd/MM/yyyy"
-              onChange={(value) => updateForm({ germinated_on: formatDatePickerValue(value) })}
-              renderInput={(params) => <TextField {...params} />}
+              onChange={value => updateForm({ germinated_on: formatDatePickerValue(value) })}
+              renderInput={params => <TextField {...params} />}
             />
           </LocalizationProvider>
         </Grid>
@@ -185,7 +178,7 @@ export default function PlantAdd() {
             multiline
             rows={8}
             value={form.note}
-            onChange={(e) => updateForm({ note: e.target.value })}
+            onChange={e => updateForm({ note: e.target.value })}
           />
         </Grid>
       </Grid>

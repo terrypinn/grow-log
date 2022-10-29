@@ -1,7 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
-import * as datefns from 'date-fns'
-
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -13,22 +11,18 @@ import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
+import * as datefns from 'date-fns'
 
 export default function LogList() {
   const navigate = useNavigate();
-
-  const [logs, setLogs] = useState([]);
   const plant = useRef(JSON.parse(localStorage.getItem('plant')));
+  const [logs, setLogs] = useState([]);
 
   useEffect(() => {
-    if (!plant.current) {
-      navigate('/plants');
-      return;
-    }
     fetch(`${process.env.REACT_APP_API_URL}/plant/${plant.current._id}/logs`)
       .then(response => response.json())
       .then(logs => setLogs(logs));
-  }, [navigate]);
+  }, []);
 
   const navToLogEdit = (log) => {
     localStorage.setItem('log', JSON.stringify(log));

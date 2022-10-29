@@ -15,7 +15,6 @@ import SaveIcon from '@mui/icons-material/Save';
 
 export default function LogAdd() {
   const navigate = useNavigate();
-
   const plant = useRef(JSON.parse(localStorage.getItem('plant')));
 
   const [form, setForm] = useState({
