@@ -49,7 +49,7 @@ export default function LogAdd() {
       autoComplete="off"
       onSubmit={submitForm}
     >
-      <h4>Create New Log</h4>
+      <h4>Create New Log ({plant.current.name})</h4>
 
       <Grid container spacing={1} mt={1}>
         <Grid item xs={2}>
