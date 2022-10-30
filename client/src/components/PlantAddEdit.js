@@ -15,9 +15,9 @@ import FormLabel from '@mui/material/FormLabel';
 import SaveIcon from '@mui/icons-material/Save';
 import * as datefns from 'date-fns'
 
-export default function PlantEdit() {
+export default function PlantAddEdit(props) {
   const navigate = useNavigate();
-  const plant = useRef(JSON.parse(localStorage.getItem('plant')));
+  const plant =  useRef(props.mode === 'edit' ? JSON.parse(localStorage.getItem('plant')) : null);
 
   const [form, setForm] = useState({
     name: '',
@@ -32,11 +32,13 @@ export default function PlantEdit() {
   });
 
   useEffect(() => {
-    const form = { ...plant.current };
-    form.germinated_on = form.germinated_on ?? null;
-    form.planted_on = form.planted_on ?? null;
-    setForm(plant.current);
-  }, []);
+    if (props.mode === 'edit') {
+      const form = { ...plant.current };
+      form.germinated_on = form.germinated_on ?? null;
+      form.planted_on = form.planted_on ?? null;
+      setForm(plant.current);
+    }
+  }, [props.mode]);
 
   const updateForm = value => setForm(prev => ({ ...prev, ...value }));
 
@@ -47,12 +49,24 @@ export default function PlantEdit() {
       germinated_on: form.germinated_on ?? '',
       planted_on: form.planted_on ?? ''
     };
+    props.mode === 'add' ? createPlant(body) : updatePlant(body);
+  };
+
+  const createPlant = (body) => {
+    fetch(`${process.env.REACT_APP_API_URL}/plant`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    }).then(() => navigate(-1));
+  };
+
+  const updatePlant = (body) => {
     fetch(`${process.env.REACT_APP_API_URL}/plant/${plant.current._id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
     }).then(() => navigate(-1));
-  }
+  };
 
   const deletePlant = () => {
     if (!window.confirm('Are you sure you want to delete this plant?')) return;
@@ -71,7 +85,7 @@ export default function PlantEdit() {
       autoComplete="off"
       onSubmit={submitForm}
     >
-      <h4>Edit Plant</h4>
+      <h4>{props.mode === 'add' ? 'Add' : 'Edit'} Plant</h4>
 
       <Grid container spacing={1} mt={1}>
         <Grid item xs={2}>
@@ -206,16 +220,17 @@ export default function PlantEdit() {
             Save
           </Button>
         </Grid>
-        <Grid item xs={1}>
-          <Button
-            fullWidth
-            color="error"
-            variant="outlined"
-            onClick={deletePlant}
-          >
-            Delete
-          </Button>
-        </Grid>
+        {props.mode === 'edit' &&
+          <Grid item xs={1}>
+            <Button
+              fullWidth
+              color="error"
+              variant="outlined"
+              onClick={deletePlant}
+            >
+              Delete
+            </Button>
+          </Grid>}
         <Grid item xs={1}>
           <Button
             fullWidth

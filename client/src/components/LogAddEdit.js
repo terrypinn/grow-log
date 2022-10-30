@@ -13,9 +13,10 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import SaveIcon from '@mui/icons-material/Save';
 
-export default function LogEdit() {
+export default function LogAddEdit(props) {
   const navigate = useNavigate();
-  const log = useRef(JSON.parse(localStorage.getItem('log')));
+  const plant = useRef(JSON.parse(localStorage.getItem('plant')));
+  const log = useRef(props.mode === 'edit' ? JSON.parse(localStorage.getItem('log')) : null);
 
   const [form, setForm] = useState({
     created_on: new Date(),
@@ -25,10 +26,12 @@ export default function LogEdit() {
   });
 
   useEffect(() => {
-    const form = { ...log.current }
-    form.images = form.images.join('\n');
-    setForm(form)
-  }, []);
+    if (props.mode === 'edit') {
+      const form = { ...log.current }
+      form.images = form.images.join('\n');
+      setForm(form);
+    }
+  }, [props.mode]);
 
   const updateForm = value => setForm(prev => ({ ...prev, ...value }));
 
@@ -37,8 +40,21 @@ export default function LogEdit() {
     const body = {
       ...form,
       created_on: +form.created_on,
-      images: form.images.split(/\r?\n/).filter(x => x !== '')
+      images: form.images.split(/\r?\n/).filter(x => x !== ''),
+      plant_id: plant.current._id
     };
+    props.mode === 'add' ? createLog(body) : updateLog(body);
+  };
+
+  const createLog = (body) => {
+    fetch(`${process.env.REACT_APP_API_URL}/log`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    }).then(() => navigate(-1));
+  };
+
+  const updateLog = (body) => {
     fetch(`${process.env.REACT_APP_API_URL}/log/${log.current._id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
@@ -58,7 +74,7 @@ export default function LogEdit() {
       autoComplete="off"
       onSubmit={submitForm}
     >
-      <h4>Edit Log</h4>
+      <h4>{props.mode === 'add' ? 'Add' : 'Edit'} Log ({plant.current.name})</h4>
 
       <Grid container spacing={1} mt={1}>
         <Grid item xs={2}>
@@ -133,16 +149,17 @@ export default function LogEdit() {
             Save
           </Button>
         </Grid>
-        <Grid item xs={1}>
-          <Button
-            fullWidth
-            color="error"
-            variant="outlined"
-            onClick={deleteLog}
-          >
-            Delete
-          </Button>
-        </Grid>
+        {props.mode === 'edit' &&
+          <Grid item xs={1}>
+            <Button
+              fullWidth
+              color="error"
+              variant="outlined"
+              onClick={deleteLog}
+            >
+              Delete
+            </Button>
+          </Grid>}
         <Grid item xs={1}>
           <Button
             fullWidth
