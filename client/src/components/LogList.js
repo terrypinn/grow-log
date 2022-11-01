@@ -29,15 +29,22 @@ export default function LogList() {
     navigate('/log/edit');
   };
 
+  const getGrowDay = (log) => {
+    const value = plant.current.propagation === 'Seed' ? plant.current.germinated_on : plant.current.planted_on;
+    const date = new Date( `${value}T00:00`);
+    const day = datefns.differenceInDays(log.created_on, date);
+    return day;
+  };
+
   return (
     <TableContainer component={Paper}>
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell colSpan={4}><h3>Logs ({plant.current?.name})</h3></TableCell>
+            <TableCell colSpan={5}><h3>Logs ({plant.current?.name})</h3></TableCell>
             <TableCell colSpan={2} align="right">
               <Button
-                onClick={() => navigate('/plants')}
+                onClick={() => navigate(-1)}
                 startIcon={<ArrowCircleLeftIcon />}
                 variant="contained">
                 Back
@@ -55,6 +62,7 @@ export default function LogList() {
           <TableRow>
             <TableCell>#</TableCell>
             <TableCell>Type</TableCell>
+            <TableCell>Grow Day</TableCell>
             <TableCell>Created On</TableCell>
             <TableCell>Note</TableCell>
             <TableCell>Images</TableCell>
@@ -66,6 +74,7 @@ export default function LogList() {
             <TableRow key={row._id}>
               <TableCell component="th" scope="row">{logs.length - index}</TableCell>
               <TableCell>{row.type}</TableCell>
+              <TableCell>{getGrowDay(row)}</TableCell>
               <TableCell>{datefns.format(row.created_on, 'iii dd LLL yyyy HH:mm')}</TableCell>
               <TableCell><div style={{ whiteSpace: 'pre-line' }}>{row.note}</div></TableCell>
               <TableCell>
