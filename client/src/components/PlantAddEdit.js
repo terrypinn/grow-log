@@ -126,8 +126,8 @@ export default function PlantAddEdit(props) {
               value={form.type}
               onChange={e => onChangeType(e.target.value)}
             >
-              <FormControlLabel value="Autoflower" control={<Radio />} label="Autoflower" />
-              <FormControlLabel value="Regular" control={<Radio />} label="Regular" />
+              <FormControlLabel value="Autoflower" control={<Radio />} label="Auto" />
+              <FormControlLabel value="Regular" control={<Radio />} label="Reg" />
             </RadioGroup>
           </FormControl>
         </Grid>
@@ -163,9 +163,9 @@ export default function PlantAddEdit(props) {
               value={form.location}
               onChange={e => updateForm({ location: e.target.value })}
             >
-              <FormControlLabel value="Indoor" control={<Radio />} label="Indoor" />
-              <FormControlLabel value="Outdoor" control={<Radio />} label="Outdoor" />
-              <FormControlLabel value="Greenhouse" control={<Radio />} label="Greenhouse" />
+              <FormControlLabel value="Indoor" control={<Radio />} label="In" />
+              <FormControlLabel value="Outdoor" control={<Radio />} label="Out" />
+              <FormControlLabel value="Greenhouse" control={<Radio />} label="GH" />
             </RadioGroup>
           </FormControl>
         </Grid>
@@ -179,9 +179,9 @@ export default function PlantAddEdit(props) {
               onChange={e => updateForm({ method: e.target.value })}
             >
               <FormControlLabel value="Soil" control={<Radio />} label="Soil" />
-              <FormControlLabel value="Hydroponics" control={<Radio />} label="Hydroponics" />
-              <FormControlLabel value="Aquaponics" control={<Radio />} label="Aquaponics" />
-              <FormControlLabel value="Aeroponics" control={<Radio />} label="Aeroponics" />
+              <FormControlLabel value="Hydroponics" control={<Radio />} label="Hydro" />
+              <FormControlLabel value="Aquaponics" control={<Radio />} label="Aqua" />
+              <FormControlLabel value="Aeroponics" control={<Radio />} label="Aero" />
             </RadioGroup>
           </FormControl>
         </Grid>
