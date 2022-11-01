@@ -17,7 +17,7 @@ import * as datefns from 'date-fns'
 
 export default function PlantAddEdit(props) {
   const navigate = useNavigate();
-  const plant =  useRef(props.mode === 'edit' ? JSON.parse(localStorage.getItem('plant')) : null);
+  const plant = useRef(props.mode === 'edit' ? JSON.parse(localStorage.getItem('plant')) : null);
 
   const [form, setForm] = useState({
     name: '',
@@ -78,6 +78,14 @@ export default function PlantAddEdit(props) {
     return datefns.format(value, 'yyyy-MM-dd');
   };
 
+  const onChangeType = (value) => {
+    updateForm(value === 'Regular' ? { type: value } : { type: value, propagation: 'Seed' });
+  };
+
+  const onPropagationChange = (value) => {
+    updateForm(value === 'Seed' ? { propagation: value } : { propagation: value, germinated_on: null });
+  };
+
   return (
     <Box
       component="form"
@@ -116,7 +124,7 @@ export default function PlantAddEdit(props) {
               aria-labelledby="plant-type-radio-buttons-group"
               name="type-options"
               value={form.type}
-              onChange={e => updateForm({ type: e.target.value })}
+              onChange={e => onChangeType(e.target.value)}
             >
               <FormControlLabel value="Autoflower" control={<Radio />} label="Autoflower" />
               <FormControlLabel value="Regular" control={<Radio />} label="Regular" />
@@ -130,10 +138,19 @@ export default function PlantAddEdit(props) {
               aria-labelledby="plant-propagation-radio-buttons-group"
               name="propagation-options"
               value={form.propagation}
-              onChange={e => updateForm({ propagation: e.target.value })}
+              onChange={e => onPropagationChange(e.target.value)}
             >
-              <FormControlLabel value="Seed" control={<Radio />} label="Seed" />
-              <FormControlLabel value="Clone" control={<Radio />} label="Clone" />
+              <FormControlLabel
+                value="Seed"
+                control={<Radio />}
+                label="Seed"
+              />
+              <FormControlLabel
+                value="Clone"
+                control={<Radio />}
+                label="Clone"
+                disabled={!form.type || form.type === 'Autoflower'}
+              />
             </RadioGroup>
           </FormControl>
         </Grid>
