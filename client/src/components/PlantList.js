@@ -22,9 +22,9 @@ export default function PlantList() {
       .then(plants => setPlants(plants));
   }, []);
 
-  const formatGrowStartCell = (row) => {
-    if (!row.germinated_on) return 'n/a';
-    const date = new Date(row.germinated_on + 'T00:00');
+  const formatGrowStartCell = (plant) => {
+    const value = plant.propagation === 'Seed' ? plant.germinated_on : plant.planted_on;
+    const date = new Date(`${value}T00:00`);
     const displayDate = datefns.format(date, 'dd LLL yyyy');
     const diffDays = datefns.differenceInDays(new Date(), date);
     return `${displayDate} | ${diffDays} days`;
