@@ -13,7 +13,6 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import SaveIcon from '@mui/icons-material/Save';
-import * as datefns from 'date-fns'
 
 export default function PlantAddEdit({ mode }) {
   const navigate = useNavigate();
@@ -46,8 +45,8 @@ export default function PlantAddEdit({ mode }) {
     e.preventDefault();
     const body = {
       ...form,
-      germinated_on: form.germinated_on ?? '',
-      planted_on: form.planted_on ?? ''
+      germinated_on: form.germinated_on === null ? '' : +form.germinated_on,
+      planted_on: form.planted_on === null ? '' : +form.planted_on
     };
     mode === 'add'
       ? createPlant(body)
@@ -72,9 +71,6 @@ export default function PlantAddEdit({ mode }) {
     if (!window.confirm('Are you sure you want to delete this plant?')) return;
     fetch(`${process.env.REACT_APP_API_URL}/plant/${plant.current._id}`, { method: 'DELETE' }).then(() => navigate(-1));
   };
-
-  const formatDatePickerValue = (value) =>
-    value ? datefns.format(value, 'yyyy-MM-dd') : null;
 
   const onChangeType = (value) =>
     updateForm(value === 'Regular' ? { type: value } : { type: value, propagation: 'Seed' });
@@ -190,7 +186,7 @@ export default function PlantAddEdit({ mode }) {
               label="Planted On"
               value={form.planted_on}
               inputFormat="dd/MM/yyyy"
-              onChange={value => updateForm({ planted_on: formatDatePickerValue(value) })}
+              onChange={value => updateForm({ planted_on: value })}
               renderInput={(params) => <TextField {...params} />}
             />
           </LocalizationProvider>
@@ -202,7 +198,7 @@ export default function PlantAddEdit({ mode }) {
               label="Germinated On"
               value={form.germinated_on}
               inputFormat="dd/MM/yyyy"
-              onChange={value => updateForm({ germinated_on: formatDatePickerValue(value) })}
+              onChange={value => updateForm({ germinated_on: value })}
               renderInput={(params) => <TextField {...params} />}
             />
           </LocalizationProvider>

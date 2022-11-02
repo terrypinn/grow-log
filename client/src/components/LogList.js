@@ -11,7 +11,7 @@ import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
-import * as datefns from 'date-fns'
+import * as datefns from 'date-fns';
 
 export default function LogList() {
   const navigate = useNavigate();
@@ -30,8 +30,7 @@ export default function LogList() {
   };
 
   const getGrowDay = (log) => {
-    const value = plant.current.propagation === 'Seed' ? plant.current.germinated_on : plant.current.planted_on;
-    const date = new Date( `${value}T00:00`);
+    const date = plant.current.propagation === 'Seed' ? plant.current.germinated_on : plant.current.planted_on;
     const day = datefns.differenceInDays(log.created_on, date);
     return day;
   };
