@@ -41,7 +41,7 @@ export default function LogList() {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell colSpan={5}><h3>Logs ({plant.current?.name})</h3></TableCell>
+            <TableCell colSpan={5}><h3>Logs ({plant.current.name})</h3></TableCell>
             <TableCell colSpan={2} align="right">
               <Button
                 onClick={() => navigate(-1)}
