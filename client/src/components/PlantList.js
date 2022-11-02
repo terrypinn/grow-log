@@ -10,7 +10,7 @@ import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import * as datefns from 'date-fns'
+import * as datefns from 'date-fns';
 
 export default function PlantList() {
   const navigate = useNavigate();

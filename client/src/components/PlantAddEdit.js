@@ -73,10 +73,14 @@ export default function PlantAddEdit({ mode }) {
   };
 
   const onChangeType = (value) =>
-    updateForm(value === 'Regular' ? { type: value } : { type: value, propagation: 'Seed' });
+    updateForm(value === 'Regular'
+      ? { type: value }
+      : { type: value, propagation: PlantPropagation.Seed });
 
-  const onPropagationChange = (value) =>
-    updateForm(value === 'Seed' ? { propagation: value } : { propagation: value, germinated_on: null });
+  const onChangePropagation = (value) =>
+    updateForm(value === 'Seed'
+      ? { propagation: value }
+      : { propagation: value, germinated_on: null });
 
   return (
     <Box
@@ -130,7 +134,7 @@ export default function PlantAddEdit({ mode }) {
               aria-labelledby="plant-propagation-radio-buttons-group"
               name="propagation-options"
               value={form.propagation}
-              onChange={e => onPropagationChange(e.target.value)}
+              onChange={e => onChangePropagation(e.target.value)}
             >
               <FormControlLabel
                 value="Seed"
