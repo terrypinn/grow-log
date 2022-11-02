@@ -159,8 +159,8 @@ export default function PlantAddEdit(props) {
               value={form.location}
               onChange={e => updateForm({ location: e.target.value })}
             >
-              <FormControlLabel value="Indoor" control={<Radio />} label="In" />
-              <FormControlLabel value="Outdoor" control={<Radio />} label="Out" />
+              <FormControlLabel value="Indoor" control={<Radio />} label="Indoor" />
+              <FormControlLabel value="Outdoor" control={<Radio />} label="Outdoor" />
               <FormControlLabel value="Greenhouse" control={<Radio />} label="GH" />
             </RadioGroup>
           </FormControl>
