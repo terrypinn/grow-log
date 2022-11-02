@@ -15,9 +15,9 @@ import FormLabel from '@mui/material/FormLabel';
 import SaveIcon from '@mui/icons-material/Save';
 import * as datefns from 'date-fns'
 
-export default function PlantAddEdit(props) {
+export default function PlantAddEdit({ mode }) {
   const navigate = useNavigate();
-  const plant = useRef(props.mode === 'edit' ? JSON.parse(localStorage.getItem('plant')) : null);
+  const plant = useRef(mode === 'edit' ? JSON.parse(localStorage.getItem('plant')) : null);
 
   const [form, setForm] = useState({
     name: '',
@@ -32,13 +32,13 @@ export default function PlantAddEdit(props) {
   });
 
   useEffect(() => {
-    if (props.mode === 'edit') {
+    if (mode === 'edit') {
       const form = { ...plant.current };
       form.germinated_on = form.germinated_on ?? null;
       form.planted_on = form.planted_on ?? null;
       setForm(plant.current);
     }
-  }, [props.mode]);
+  }, [mode]);
 
   const updateForm = value => setForm(prev => ({ ...prev, ...value }));
 
@@ -49,7 +49,7 @@ export default function PlantAddEdit(props) {
       germinated_on: form.germinated_on ?? '',
       planted_on: form.planted_on ?? ''
     };
-    props.mode === 'add'
+    mode === 'add'
       ? createPlant(body)
       : updatePlant(body);
   };
@@ -89,7 +89,7 @@ export default function PlantAddEdit(props) {
       autoComplete="off"
       onSubmit={submitForm}
     >
-      <h4>{props.mode === 'add' ? 'Add' : 'Edit'} Plant</h4>
+      <h4>{mode === 'add' ? 'Add' : 'Edit'} Plant</h4>
 
       <Grid container spacing={1} mt={1}>
         <Grid item xs={2}>
@@ -233,7 +233,7 @@ export default function PlantAddEdit(props) {
             Save
           </Button>
         </Grid>
-        {props.mode === 'edit' &&
+        {mode === 'edit' &&
           <Grid item xs={1}>
             <Button
               fullWidth

@@ -13,10 +13,10 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import SaveIcon from '@mui/icons-material/Save';
 
-export default function LogAddEdit(props) {
+export default function LogAddEdit({ mode }) {
   const navigate = useNavigate();
   const plant = useRef(JSON.parse(localStorage.getItem('plant')));
-  const log = useRef(props.mode === 'edit' ? JSON.parse(localStorage.getItem('log')) : null);
+  const log = useRef(mode === 'edit' ? JSON.parse(localStorage.getItem('log')) : null);
 
   const [form, setForm] = useState({
     created_on: new Date(),
@@ -26,12 +26,12 @@ export default function LogAddEdit(props) {
   });
 
   useEffect(() => {
-    if (props.mode === 'edit') {
+    if (mode === 'edit') {
       const form = { ...log.current }
       form.images = form.images.join('\n');
-      setForm(form);
+      setForm(form); 
     }
-  }, [props.mode]);
+  }, [mode]);
 
   const updateForm = value => setForm(prev => ({ ...prev, ...value }));
 
@@ -43,7 +43,7 @@ export default function LogAddEdit(props) {
       images: form.images.split(/\r?\n/).filter(x => x !== ''),
       plant_id: plant.current._id
     };
-    props.mode === 'add'
+    mode === 'add'
       ? createLog(body)
       : updateLog(body);
   };
@@ -74,7 +74,7 @@ export default function LogAddEdit(props) {
       autoComplete="off"
       onSubmit={submitForm}
     >
-      <h4>{props.mode === 'add' ? 'Add' : 'Edit'} Log ({plant.current.name})</h4>
+      <h4>{mode === 'add' ? 'Add' : 'Edit'} Log ({plant.current.name})</h4>
 
       <Grid container spacing={1} mt={1}>
         <Grid item xs={2}>
@@ -149,7 +149,7 @@ export default function LogAddEdit(props) {
             Save
           </Button>
         </Grid>
-        {props.mode === 'edit' &&
+        {mode === 'edit' &&
           <Grid item xs={1}>
             <Button
               fullWidth
