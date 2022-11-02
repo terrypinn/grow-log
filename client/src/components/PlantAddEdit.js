@@ -49,42 +49,38 @@ export default function PlantAddEdit(props) {
       germinated_on: form.germinated_on ?? '',
       planted_on: form.planted_on ?? ''
     };
-    props.mode === 'add' ? createPlant(body) : updatePlant(body);
+    props.mode === 'add'
+      ? createPlant(body)
+      : updatePlant(body);
   };
 
-  const createPlant = (body) => {
+  const createPlant = (body) =>
     fetch(`${process.env.REACT_APP_API_URL}/plant`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
     }).then(() => navigate(-1));
-  };
 
-  const updatePlant = (body) => {
+  const updatePlant = (body) =>
     fetch(`${process.env.REACT_APP_API_URL}/plant/${plant.current._id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
     }).then(() => navigate(-1));
-  };
 
   const deletePlant = () => {
     if (!window.confirm('Are you sure you want to delete this plant?')) return;
     fetch(`${process.env.REACT_APP_API_URL}/plant/${plant.current._id}`, { method: 'DELETE' }).then(() => navigate(-1));
   };
 
-  const formatDatePickerValue = (value) => {
-    if (!value) return null;
-    return datefns.format(value, 'yyyy-MM-dd');
-  };
+  const formatDatePickerValue = (value) =>
+    value ? datefns.format(value, 'yyyy-MM-dd') : null;
 
-  const onChangeType = (value) => {
+  const onChangeType = (value) =>
     updateForm(value === 'Regular' ? { type: value } : { type: value, propagation: 'Seed' });
-  };
 
-  const onPropagationChange = (value) => {
+  const onPropagationChange = (value) =>
     updateForm(value === 'Seed' ? { propagation: value } : { propagation: value, germinated_on: null });
-  };
 
   return (
     <Box

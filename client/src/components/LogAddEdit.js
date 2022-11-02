@@ -43,24 +43,24 @@ export default function LogAddEdit(props) {
       images: form.images.split(/\r?\n/).filter(x => x !== ''),
       plant_id: plant.current._id
     };
-    props.mode === 'add' ? createLog(body) : updateLog(body);
+    props.mode === 'add'
+      ? createLog(body)
+      : updateLog(body);
   };
 
-  const createLog = (body) => {
+  const createLog = (body) =>
     fetch(`${process.env.REACT_APP_API_URL}/log`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
     }).then(() => navigate(-1));
-  };
 
-  const updateLog = (body) => {
+  const updateLog = (body) =>
     fetch(`${process.env.REACT_APP_API_URL}/log/${log.current._id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
     }).then(() => navigate(-1));
-  };
 
   const deleteLog = () => {
     if (!window.confirm('Are you sure you want to delete this log?')) return;
