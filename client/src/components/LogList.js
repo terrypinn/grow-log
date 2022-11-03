@@ -1,3 +1,4 @@
+import { PlantPropagation } from '../constants';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 import Table from '@mui/material/Table';
@@ -30,7 +31,7 @@ export default function LogList() {
   };
 
   const getGrowDay = (log) => {
-    const date = plant.current.propagation === 'Seed' ? plant.current.germinated_on : plant.current.planted_on;
+    const date = plant.current.propagation === PlantPropagation.Seed ? plant.current.germinated_on : plant.current.planted_on;
     const day = datefns.differenceInDays(log.created_on, date);
     return day;
   };
