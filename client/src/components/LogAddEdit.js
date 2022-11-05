@@ -1,4 +1,4 @@
-import { LogType } from '../constants';
+import { LOG_TYPE } from '../constants';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -99,14 +99,14 @@ export default function LogAddEdit({ mode }) {
               label="Type"
               onChange={e => updateForm({ type: e.target.value })}
             >
-              <MenuItem value={LogType.Action}>Action</MenuItem>
-              <MenuItem value={LogType.BadInsects}>Bad Insects</MenuItem>
-              <MenuItem value={LogType.GoodInsects}>Good Insects</MenuItem>
-              <MenuItem value={LogType.Issues}>Issues</MenuItem>
-              <MenuItem value={LogType.Nutrients}>Nutrients</MenuItem>
-              <MenuItem value={LogType.Observation}>Observation</MenuItem>
-              <MenuItem value={LogType.PottingUp}>Potting Up</MenuItem>
-              <MenuItem value={LogType.Watering}>Watering</MenuItem>
+              <MenuItem value={LOG_TYPE.Action}>Action</MenuItem>
+              <MenuItem value={LOG_TYPE.BadInsects}>Bad Insects</MenuItem>
+              <MenuItem value={LOG_TYPE.GoodInsects}>Good Insects</MenuItem>
+              <MenuItem value={LOG_TYPE.Issues}>Issues</MenuItem>
+              <MenuItem value={LOG_TYPE.Nutrients}>Nutrients</MenuItem>
+              <MenuItem value={LOG_TYPE.Observation}>Observation</MenuItem>
+              <MenuItem value={LOG_TYPE.PottingUp}>Potting Up</MenuItem>
+              <MenuItem value={LOG_TYPE.Watering}>Watering</MenuItem>
             </Select>
           </FormControl>
         </Grid>

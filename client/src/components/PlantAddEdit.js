@@ -1,4 +1,4 @@
-import { PlantLocation, PlantMethod, PlantPropagation, PlantType } from '../constants';
+import { PLANT_LOCATION, PLANT_METHOD, PLANT_PROPAGATION, PLANT_TYPE } from '../constants';
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -74,12 +74,12 @@ export default function PlantAddEdit({ mode }) {
   };
 
   const onChangeType = (value) =>
-    updateForm(value === PlantType.Regular
+    updateForm(value === PLANT_TYPE.Regular
       ? { type: value }
-      : { type: value, propagation: PlantPropagation.Seed });
+      : { type: value, propagation: PLANT_PROPAGATION.Seed });
 
   const onChangePropagation = (value) =>
-    updateForm(value === PlantPropagation.Seed
+    updateForm(value === PLANT_PROPAGATION.Seed
       ? { propagation: value }
       : { propagation: value, germinated_on: null });
 
@@ -138,12 +138,12 @@ export default function PlantAddEdit({ mode }) {
               onChange={e => onChangePropagation(e.target.value)}
             >
               <FormControlLabel
-                value={PlantType.Seed}
+                value={PLANT_TYPE.Seed}
                 control={<Radio />}
                 label="Seed"
               />
               <FormControlLabel
-                value={PlantType.Clone}
+                value={PLANT_TYPE.Clone}
                 control={<Radio />}
                 label="Clone"
                 disabled={!form.type || form.type === 'Autoflower'}
@@ -160,9 +160,9 @@ export default function PlantAddEdit({ mode }) {
               value={form.location}
               onChange={e => updateForm({ location: e.target.value })}
             >
-              <FormControlLabel value={PlantLocation.Indoor} control={<Radio />} label="Indoor" />
-              <FormControlLabel value={PlantLocation.Outdoor} control={<Radio />} label="Outdoor" />
-              <FormControlLabel value={PlantLocation.Greenhouse} control={<Radio />} label="GH" />
+              <FormControlLabel value={PLANT_LOCATION.Indoor} control={<Radio />} label="Indoor" />
+              <FormControlLabel value={PLANT_LOCATION.Outdoor} control={<Radio />} label="Outdoor" />
+              <FormControlLabel value={PLANT_LOCATION.Greenhouse} control={<Radio />} label="GH" />
             </RadioGroup>
           </FormControl>
         </Grid>
@@ -175,10 +175,10 @@ export default function PlantAddEdit({ mode }) {
               value={form.method}
               onChange={e => updateForm({ method: e.target.value })}
             >
-              <FormControlLabel value={PlantMethod.Soil} control={<Radio />} label="Soil" />
-              <FormControlLabel value={PlantMethod.Hydroponics} control={<Radio />} label="Hydro" />
-              <FormControlLabel value={PlantMethod.Aquaponics} control={<Radio />} label="Aqua" />
-              <FormControlLabel value={PlantMethod.Aeroponics} control={<Radio />} label="Aero" />
+              <FormControlLabel value={PLANT_METHOD.Soil} control={<Radio />} label="Soil" />
+              <FormControlLabel value={PLANT_METHOD.Hydroponics} control={<Radio />} label="Hydro" />
+              <FormControlLabel value={PLANT_METHOD.Aquaponics} control={<Radio />} label="Aqua" />
+              <FormControlLabel value={PLANT_METHOD.Aeroponics} control={<Radio />} label="Aero" />
             </RadioGroup>
           </FormControl>
         </Grid>
