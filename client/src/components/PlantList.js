@@ -40,6 +40,11 @@ export default function PlantList() {
     navigate('/logs');
   };
 
+  const navToLogAddEdd = (plant) => {
+    localStorage.setItem('plant', JSON.stringify(plant));
+    navigate('/log/add');
+  };
+
   return (
     <TableContainer component={Paper}>
       <Table>
@@ -85,6 +90,14 @@ export default function PlantList() {
                   onClick={() => navToLogs(row)}
                 >
                   View Logs
+                </Link>
+                &nbsp;|&nbsp;
+                <Link
+                  component="button"
+                  underline="none"
+                  onClick={() => navToLogAddEdd(row)}
+                >
+                  Add Log
                 </Link>
               </TableCell>
             </TableRow>
