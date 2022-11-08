@@ -37,7 +37,7 @@ exports.plant_create = (req, res) => {
   db.collection('plants')
     .insertOne(doc)
     .catch(err => res.status(500).json({ error: err }))
-    .then(result => res.json(result));
+    .then(() => res.sendStatus(201));
 };
 
 exports.plant_update = (req, res) => {
@@ -53,12 +53,12 @@ exports.plant_update = (req, res) => {
       planted_on: req.body.planted_on,
       germinated_on: req.body.germinated_on,
       note: req.body.note,
-    },
+    }
   };
   db.collection('plants')
     .updateOne({ _id: ObjectId(req.params.id) }, update)
     .catch(err => res.status(500).json({ error: err }))
-    .then(result => res.json(result));
+    .then(() => res.sendStatus(204));
 };
 
 exports.plant_delete = (req, res) => {
@@ -66,11 +66,8 @@ exports.plant_delete = (req, res) => {
   db.collection('plants')
     .findOneAndDelete({ _id: ObjectId(req.params.id) })
     .catch(err => res.status(500).json({ error: err }))
-    .then(doc => {
-      // not sure what response to send
-      db.collection('logs')
-        .deleteMany({ plant_id: doc._id })
-        .catch(err => res.status(500).json({ error: err }))
-        .then(() => res.json(doc));
-    });
+    .then(doc => db.collection('logs')
+      .deleteMany({ plant_id: doc._id })
+      .catch(err => res.status(500).json({ error: err }))
+      .then(() => res.sendStatus(204)));
 };
