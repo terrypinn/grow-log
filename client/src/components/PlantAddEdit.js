@@ -138,12 +138,12 @@ export default function PlantAddEdit({ mode }) {
               onChange={e => onChangePropagation(e.target.value)}
             >
               <FormControlLabel
-                value={PLANT_TYPE.Seed}
+                value={PLANT_PROPAGATION.Seed}
                 control={<Radio />}
                 label="Seed"
               />
               <FormControlLabel
-                value={PLANT_TYPE.Clone}
+                value={PLANT_PROPAGATION.Clone}
                 control={<Radio />}
                 label="Clone"
                 disabled={!form.type || form.type === 'Autoflower'}
