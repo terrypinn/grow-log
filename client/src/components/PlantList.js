@@ -24,6 +24,7 @@ export default function PlantList() {
   }, []);
 
   const formatGrowStartCell = (plant) => {
+    if (!plant.propagation) return null;
     const date = plant.propagation === PLANT_PROPAGATION.Seed ? plant.germinated_on : plant.planted_on;
     const displayDate = datefns.format(date, 'dd LLL yyyy');
     const diffDays = datefns.differenceInDays(new Date(), date);

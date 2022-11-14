@@ -31,6 +31,7 @@ export default function LogList() {
   };
 
   const getGrowDay = (log) => {
+    if (!plant.current.propagation) return null;
     const date = plant.current.propagation === PLANT_PROPAGATION.Seed ? plant.current.germinated_on : plant.current.planted_on;
     const day = datefns.differenceInDays(log.created_on, date);
     return day;
