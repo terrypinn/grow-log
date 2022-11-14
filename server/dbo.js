@@ -1,13 +1,10 @@
 const { MongoClient } = require('mongodb');
 
-const DB_URI = process.env.DB_URI || 'mongodb://localhost:27017/';
-const DB_NAME = process.env.DB_NAME || 'grow_log';
-
 let _db;
 
 const connect = async () => {
   return MongoClient
-    .connect(DB_URI, {
+    .connect(process.env.DB_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     })
@@ -16,8 +13,8 @@ const connect = async () => {
       process.exit(1);
     })
     .then(client => {
-      _db = client.db(DB_NAME);
-    });   
+      _db = client.db(process.env.DB_NAME);
+    });
 };
 
 const getDb = () => {
