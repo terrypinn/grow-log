@@ -1,0 +1,52 @@
+version: '3.8'
+services:
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    container_name: grow-log-client
+    networks:
+      - frontend
+    volumes:
+      - ./client/src:/app/src
+      - ./client/public:/app/public
+    depends_on:
+      - server
+    stdin_open: true
+    tty: true
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - 5000:5000
+    container_name: grow-log-server
+    networks:
+      - backend
+      - frontend
+    volumes:
+      - ./server/src:/app/src
+    depends_on:
+      - database
+
+  database:
+    image: mongo
+    ports:
+      - 27017:27017
+    container_name: mongodb
+    networks:
+      - backend
+    volumes:
+      - data:/data/db
+
+networks:
+  backend:
+  frontend:
+
+
+volumes:
+  data:
