@@ -29,5 +29,6 @@ export const LOG_TYPE = {
   Nutrients: 'Nutrients',
   Observation: 'Observation',
   PottingUp: 'PottingUp',
+  Training: 'Training',
   Watering: 'Watering'
 };

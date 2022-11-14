@@ -106,6 +106,7 @@ export default function LogAddEdit({ mode }) {
               <MenuItem value={LOG_TYPE.Nutrients}>Nutrients</MenuItem>
               <MenuItem value={LOG_TYPE.Observation}>Observation</MenuItem>
               <MenuItem value={LOG_TYPE.PottingUp}>Potting Up</MenuItem>
+              <MenuItem value={LOG_TYPE.Training}>Training</MenuItem>
               <MenuItem value={LOG_TYPE.Watering}>Watering</MenuItem>
             </Select>
           </FormControl>
