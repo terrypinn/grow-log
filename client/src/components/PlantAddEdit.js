@@ -26,16 +26,16 @@ export default function PlantAddEdit({ mode }) {
     propagation: '',
     location: '',
     method: '',
-    planted_on: null,
-    germinated_on: null,
+    ended_on: null,
+    started_on: null,
     note: '',
   });
 
   useEffect(() => {
     if (mode === 'edit') {
       const form = { ...plant.current };
-      form.germinated_on = form.germinated_on ?? null;
-      form.planted_on = form.planted_on ?? null;
+      form.started_on = form.started_on ?? null;
+      form.ended_on = form.ended_on ?? null;
       setForm(form);
     }
   }, [mode]);
@@ -46,8 +46,8 @@ export default function PlantAddEdit({ mode }) {
     e.preventDefault();
     const body = {
       ...form,
-      germinated_on: form.germinated_on === null ? '' : +form.germinated_on,
-      planted_on: form.planted_on === null ? '' : +form.planted_on
+      started_on: form.started_on === null ? '' : +form.started_on,
+      ended_on: form.ended_on === null ? '' : +form.ended_on
     };
     mode === 'add'
       ? createPlant(body)
@@ -77,11 +77,6 @@ export default function PlantAddEdit({ mode }) {
     updateForm(value === PLANT_TYPE.Regular
       ? { type: value }
       : { type: value, propagation: PLANT_PROPAGATION.Seed });
-
-  const onChangePropagation = (value) =>
-    updateForm(value === PLANT_PROPAGATION.Seed
-      ? { propagation: value }
-      : { propagation: value, germinated_on: null });
 
   return (
     <Box
@@ -135,7 +130,7 @@ export default function PlantAddEdit({ mode }) {
               aria-labelledby="plant-propagation-radio-buttons-group"
               name="propagation-options"
               value={form.propagation}
-              onChange={e => onChangePropagation(e.target.value)}
+              onChange={e => updateForm({ propagation: e.target.value })}
             >
               <FormControlLabel
                 value={PLANT_PROPAGATION.Seed}
@@ -188,10 +183,11 @@ export default function PlantAddEdit({ mode }) {
         <Grid item xs={2}>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
-              label="Planted On"
-              value={form.planted_on}
+              disableFuture
+              label="Started On"
+              value={form.started_on}
               inputFormat="dd/MM/yyyy"
-              onChange={value => updateForm({ planted_on: value })}
+              onChange={value => updateForm({ started_on: value })}
               renderInput={(params) => <TextField {...params} />}
             />
           </LocalizationProvider>
@@ -199,11 +195,11 @@ export default function PlantAddEdit({ mode }) {
         <Grid item xs={2}>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
-              disabled={!form.propagation || form.propagation === 'Clone'}
-              label="Germinated On"
-              value={form.germinated_on}
+              disableFuture
+              label="Ended On"
+              value={form.ended_on}
               inputFormat="dd/MM/yyyy"
-              onChange={value => updateForm({ germinated_on: value })}
+              onChange={value => updateForm({ ended_on: value })}
               renderInput={(params) => <TextField {...params} />}
             />
           </LocalizationProvider>

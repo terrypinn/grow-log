@@ -29,8 +29,8 @@ exports.plant_create = (req, res) => {
     propagation: req.body.propagation,
     location: req.body.location,
     method: req.body.method,
-    planted_on: req.body.planted_on,
-    germinated_on: req.body.germinated_on,
+    started_on: req.body.started_on,
+    ended_on: req.body.ended_on,
     note: req.body.note,
     logs: [],
   };
@@ -50,8 +50,8 @@ exports.plant_update = (req, res) => {
       propagation: req.body.propagation,
       location: req.body.location,
       method: req.body.method,
-      planted_on: req.body.planted_on,
-      germinated_on: req.body.germinated_on,
+      started_on: req.body.started_on,
+      ended_on: req.body.ended_on,
       note: req.body.note,
     }
   };

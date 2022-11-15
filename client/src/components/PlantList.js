@@ -1,4 +1,3 @@
-import { PLANT_PROPAGATION } from '../constants';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import Table from '@mui/material/Table';
@@ -24,10 +23,11 @@ export default function PlantList() {
   }, []);
 
   const formatGrowStartCell = (plant) => {
-    if (!plant.propagation) return null;
-    const date = plant.propagation === PLANT_PROPAGATION.Seed ? plant.germinated_on : plant.planted_on;
-    const displayDate = datefns.format(date, 'dd LLL yyyy');
-    const diffDays = datefns.differenceInDays(new Date(), date);
+    if (!plant.started_on) return;
+    const start = plant.started_on;
+    const end = plant.ended_on ? plant.ended_on : new Date();
+    const displayDate = datefns.format(start, 'dd LLL yyyy');
+    const diffDays = datefns.differenceInDays(end, start);
     return `${displayDate} | ${diffDays} days`;
   };
 
