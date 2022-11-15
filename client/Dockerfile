@@ -1,4 +1,6 @@
-FROM node:18.12-slim
+FROM alpine
+
+RUN apk add --update nodejs npm
 
 WORKDIR /app
 
