@@ -36,7 +36,7 @@ export default function PlantAddEdit({ mode }) {
       const form = { ...plant.current };
       form.germinated_on = form.germinated_on ?? null;
       form.planted_on = form.planted_on ?? null;
-      setForm(plant.current);
+      setForm(form);
     }
   }, [mode]);
 
