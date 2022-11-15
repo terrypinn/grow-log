@@ -1,4 +1,4 @@
-import { LOG_TYPE } from '../constants';
+import { LOG_TYPE, LOG_TYPE_OPTIONS } from '../constants';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -30,7 +30,7 @@ export default function LogAddEdit({ mode }) {
     if (mode === 'edit') {
       const form = { ...log.current }
       form.images = form.images.join('\n');
-      setForm(form); 
+      setForm(form);
     }
   }, [mode]);
 
@@ -68,6 +68,22 @@ export default function LogAddEdit({ mode }) {
     fetch(`${process.env.REACT_APP_API_URL}/log/${log.current._id}`, { method: 'DELETE' }).then(() => navigate(-1));
   };
 
+  const formatTypeOptions = (type) => {
+    const options = [];
+    const keys = Object.keys(LOG_TYPE_OPTIONS[type]);
+    keys.forEach(key => options.push(LOG_TYPE_OPTIONS[type][key]));
+    return options.join(' | ');
+  };
+
+  const onChangeType = (value) => {
+    if (value === LOG_TYPE.Training || value === LOG_TYPE.Watering) {
+      const dialog = () => window.confirm('This action will clear your note. Proceed?');
+      if (!form.note.trim() || dialog()) updateForm({ type: value, note: formatTypeOptions(value) });
+      return;
+    }
+    updateForm({ type: value });
+  };
+
   return (
     <Box
       component="form"
@@ -97,7 +113,7 @@ export default function LogAddEdit({ mode }) {
               id="log-type-select"
               value={form.type}
               label="Type"
-              onChange={e => updateForm({ type: e.target.value })}
+              onChange={e => onChangeType(e.target.value)}
             >
               <MenuItem value={LOG_TYPE.Action}>Action</MenuItem>
               <MenuItem value={LOG_TYPE.BadInsects}>Bad Insects</MenuItem>
