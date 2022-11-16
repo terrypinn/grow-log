@@ -68,17 +68,10 @@ export default function LogAddEdit({ mode }) {
     fetch(`${process.env.REACT_APP_API_URL}/log/${log.current._id}`, { method: 'DELETE' }).then(() => navigate(-1));
   };
 
-  const formatTypeOptions = (type) => {
-    const options = [];
-    const keys = Object.keys(LOG_TYPE_OPTIONS[type]);
-    keys.forEach(key => options.push(LOG_TYPE_OPTIONS[type][key]));
-    return options.join(' | ');
-  };
-
   const onChangeType = (value) => {
     if (value === LOG_TYPE.Training || value === LOG_TYPE.Watering) {
       const dialog = () => window.confirm('This action will clear your note. Proceed?');
-      if (!form.note.trim() || dialog()) updateForm({ type: value, note: formatTypeOptions(value) });
+      if (!form.note.trim() || dialog()) updateForm({ type: value, note: LOG_TYPE_OPTIONS[value].join(' | ') });
       return;
     }
     updateForm({ type: value });

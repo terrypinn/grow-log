@@ -34,15 +34,6 @@ export const LOG_TYPE = {
 };
 
 export const LOG_TYPE_OPTIONS = {
-  [LOG_TYPE.Training]: {
-    Defoliation: 'Defoliation',
-    HighStressTraining: 'HST',
-    LowStressTraining: 'LST'
-  },
-  [LOG_TYPE.Watering]: {
-    ReverseOsmosis: 'RO',
-    Rain: 'Rain',
-    Spring: 'Spring',
-    Tap: 'Tap'
-  }
+  [LOG_TYPE.Training]: ['Defoliation', 'HST', 'LST'],
+  [LOG_TYPE.Watering]: ['RO', 'Rain', 'Spring', 'Tap']
 };
