@@ -184,7 +184,7 @@ export default function PlantAddEdit({ mode }) {
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
               disableFuture
-              label="Started On"
+              label="Grow Start"
               value={form.started_on}
               inputFormat="dd/MM/yyyy"
               onChange={value => updateForm({ started_on: value })}
@@ -196,7 +196,7 @@ export default function PlantAddEdit({ mode }) {
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
               disableFuture
-              label="Ended On"
+              label="Grow End"
               value={form.ended_on}
               inputFormat="dd/MM/yyyy"
               onChange={value => updateForm({ ended_on: value })}

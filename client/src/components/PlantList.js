@@ -65,7 +65,7 @@ export default function PlantList() {
             <TableCell>Name</TableCell>
             <TableCell align="center">Logs</TableCell>
             <TableCell align="right">Type</TableCell>
-            <TableCell align="right">Grow Start</TableCell>
+            <TableCell align="right">Grow Period</TableCell>
             <TableCell />
           </TableRow>
         </TableHead>
