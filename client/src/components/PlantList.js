@@ -22,13 +22,21 @@ export default function PlantList() {
       .then(plants => setPlants(plants));
   }, []);
 
-  const formatGrowStartCell = (plant) => {
+  const getGrowPeriod = (plant) => {
+    const format = 'dd LLL yyyy';
     if (!plant.started_on) return;
-    const start = plant.started_on;
-    const end = plant.ended_on ? plant.ended_on : new Date();
-    const displayDate = datefns.format(start, 'dd LLL yyyy');
-    const diffDays = datefns.differenceInDays(end, start);
-    return `${displayDate} | ${diffDays} days`;
+    const done = () => {
+      const displayStartDate = datefns.format(plant.started_on, format);
+      const displayEndDate = datefns.format(plant.ended_on, format);
+      const diffDays = datefns.differenceInDays(plant.ended_on, plant.started_on);
+      return `${displayStartDate} - ${displayEndDate} | ${diffDays} days`;
+    };
+    const ongoing = () => {
+      const displayDate = datefns.format(plant.started_on, format);
+      const diffDays = datefns.differenceInDays(new Date(), plant.started_on);
+      return `${displayDate} | ${diffDays} days`;
+    };
+    return plant.ended_on ? done() : ongoing();
   };
 
   const navToPlantEdit = (plant) => {
@@ -75,7 +83,7 @@ export default function PlantList() {
               <TableCell component="th" scope="row">{row.name}</TableCell>
               <TableCell align="center">{row.logs.length}</TableCell>
               <TableCell align="right">{row.type}</TableCell>
-              <TableCell align="right">{formatGrowStartCell(row)}</TableCell>
+              <TableCell align="right">{getGrowPeriod(row)}</TableCell>
               <TableCell align="right">
                 <Link
                   component="button"
