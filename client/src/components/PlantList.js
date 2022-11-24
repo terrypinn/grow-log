@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -7,9 +9,10 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
 import Paper from '@mui/material/Paper';
-import Link from '@mui/material/Link';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import Typography from '@mui/material/Typography';
 import * as datefns from 'date-fns';
 
 export default function PlantList() {
@@ -55,64 +58,58 @@ export default function PlantList() {
   };
 
   return (
-    <TableContainer component={Paper}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell colSpan={4}><h3>My&nbsp;Plants</h3></TableCell>
-            <TableCell align="right">
-              <Button
-                onClick={() => navigate('/plant/add')}
-                startIcon={<AddCircleIcon />}
-                variant="contained">
-                Add
-              </Button>
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell align="center">Logs</TableCell>
-            <TableCell align="right">Type</TableCell>
-            <TableCell align="right">Grow Period</TableCell>
-            <TableCell />
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {plants.map((row) => (
-            <TableRow key={row._id}>
-              <TableCell component="th" scope="row">{row.name}</TableCell>
-              <TableCell align="center">{row.logs.length}</TableCell>
-              <TableCell align="right">{row.type}</TableCell>
-              <TableCell align="right">{getGrowPeriod(row)}</TableCell>
-              <TableCell align="right">
-                <Link
-                  component="button"
-                  underline="none"
-                  onClick={() => navToPlantEdit(row)}
-                >
-                  Edit Plant
-                </Link>
-                &nbsp;|&nbsp;
-                <Link
-                  component="button"
-                  underline="none"
-                  onClick={() => navToLogs(row)}
-                >
-                  View Logs
-                </Link>
-                &nbsp;|&nbsp;
-                <Link
-                  component="button"
-                  underline="none"
-                  onClick={() => navToLogAddEdd(row)}
-                >
-                  Add Log
-                </Link>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <Box>
+      <Grid container alignItems="center">
+        <Grid item xs={6}>
+          <Typography variant="h6">
+            My Plants
+          </Typography>
+        </Grid>
+        <Grid item xs={6}>
+          <Box display="flex" justifyContent="flex-end">
+            <Button
+              onClick={() => navigate('/plant/add')}
+              startIcon={<AddCircleIcon />}
+              variant="contained"
+            >
+              Add
+            </Button>
+          </Box>
+        </Grid>
+      </Grid>
+
+      <Box mt={1}>
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 750 }}>
+            <TableHead>
+              <TableRow>
+                <TableCell>Name</TableCell>
+                <TableCell align="center">Logs</TableCell>
+                <TableCell align="right">Type</TableCell>
+                <TableCell align="right">Grow Period</TableCell>
+                <TableCell align="right" />
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {plants.map((row) => (
+                <TableRow key={row._id}>
+                  <TableCell component="th" scope="row">{row.name}</TableCell>
+                  <TableCell align="center">{row.logs.length}</TableCell>
+                  <TableCell align="right">{row.type}</TableCell>
+                  <TableCell align="right">{getGrowPeriod(row)}</TableCell>
+                  <TableCell align="right">
+                    <ButtonGroup size="small" variant="text" aria-label="actions button group">
+                      <Button onClick={() => navToPlantEdit(row)}>Edit Plant</Button>
+                      <Button onClick={() => navToLogs(row)}>View Logs</Button>
+                      <Button onClick={() => navToLogAddEdd(row)}>Add Log</Button>
+                    </ButtonGroup>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
+    </Box>
   );
 }

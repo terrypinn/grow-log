@@ -8,10 +8,14 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import Typography from '@mui/material/Typography';
+import CancelIcon from '@mui/icons-material/Cancel';
+import DeleteIcon from '@mui/icons-material/Delete';
 import SaveIcon from '@mui/icons-material/Save';
 
 export default function LogAddEdit({ mode }) {
@@ -84,21 +88,35 @@ export default function LogAddEdit({ mode }) {
       autoComplete="off"
       onSubmit={submitForm}
     >
-      <h4>{mode === 'add' ? 'Add' : 'Edit'} Log ({plant.current.name})</h4>
+      <Grid container alignItems="center">
+        <Grid item xs={mode === 'add' ? 12 : 10}>
+          <Typography variant="h6">
+            {mode === 'add' ? 'Add' : 'Edit'} Log ({plant.current.name})
+          </Typography>
+        </Grid>
+        {mode === 'edit' &&
+          <Grid item xs={2}>
+            <Box display="flex" justifyContent="flex-end">
+              <IconButton aria-label="delete" size="large" onClick={deleteLog}>
+                <DeleteIcon fontSize="inherit" />
+              </IconButton>
+            </Box>
+          </Grid>}
+      </Grid>
 
       <Grid container spacing={1} mt={1}>
-        <Grid item xs={2}>
+        <Grid item xs={6}>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DateTimePicker
               label="Created On"
               value={form.created_on}
               inputFormat="dd/MM/yyyy HH:mm"
               onChange={value => updateForm({ created_on: value })}
-              renderInput={params => <TextField {...params} />}
+              renderInput={params => <TextField {...params} fullWidth />}
             />
           </LocalizationProvider>
         </Grid>
-        <Grid item xs={2}>
+        <Grid item xs={6}>
           <FormControl fullWidth>
             <InputLabel id="log-type-select-label">Type</InputLabel>
             <Select
@@ -123,7 +141,7 @@ export default function LogAddEdit({ mode }) {
       </Grid>
 
       <Grid container spacing={1} mt={1}>
-        <Grid item xs={4}>
+        <Grid item xs={12}>
           <TextField
             id="note"
             label="Note"
@@ -137,7 +155,7 @@ export default function LogAddEdit({ mode }) {
       </Grid>
 
       <Grid container spacing={1} mt={1}>
-        <Grid item xs={4}>
+        <Grid item xs={12}>
           <TextField
             id="images"
             label="Images"
@@ -150,34 +168,23 @@ export default function LogAddEdit({ mode }) {
         </Grid>
       </Grid>
 
-      <Grid container spacing={1} mt={1}>
-        <Grid item xs={1}>
-          <Button
-            fullWidth
-            type="submit"
-            variant="contained"
-            startIcon={<SaveIcon />}>
-            Save
-          </Button>
-        </Grid>
-        {mode === 'edit' &&
-          <Grid item xs={1}>
-            <Button
-              fullWidth
-              color="error"
-              variant="outlined"
-              onClick={deleteLog}
-            >
-              Delete
-            </Button>
-          </Grid>}
-        <Grid item xs={1}>
-          <Button
-            fullWidth
-            variant="outlined"
-            onClick={() => navigate(-1)}>Cancel</Button>
-        </Grid>
-      </Grid>
+      <Box mt={1} spacing={1}>
+        <Button
+          type="submit"
+          variant="contained"
+          startIcon={<SaveIcon />}
+          sx={{ mr: 1 }}
+        >
+          Save
+        </Button>
+        <Button
+          variant="outlined"
+          onClick={() => navigate(-1)}
+          startIcon={<CancelIcon />}
+        >
+          Cancel
+        </Button>
+      </Box>
     </Box>
   );
 }

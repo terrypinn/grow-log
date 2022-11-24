@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -7,10 +9,11 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
 import Paper from '@mui/material/Paper';
-import Link from '@mui/material/Link';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import ArrowCircleLeftIcon from '@mui/icons-material/ArrowCircleLeft';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import Typography from '@mui/material/Typography';
 import * as datefns from 'date-fns';
 
 export default function LogList() {
@@ -35,64 +38,72 @@ export default function LogList() {
   };
 
   return (
-    <TableContainer component={Paper}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell colSpan={5}><h3>Logs ({plant.current.name})</h3></TableCell>
-            <TableCell colSpan={2} align="right">
-              <Button
-                onClick={() => navigate(-1)}
-                startIcon={<ArrowCircleLeftIcon />}
-                variant="contained">
-                Back
-              </Button>
-              &nbsp;
-              <Button
-                onClick={() => navigate('/log/add')}
-                startIcon={<AddCircleIcon />}
-                variant="contained"
-              >
-                Add
-              </Button>
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell>#</TableCell>
-            <TableCell>Type</TableCell>
-            <TableCell>Grow Day</TableCell>
-            <TableCell>Created On</TableCell>
-            <TableCell>Note</TableCell>
-            <TableCell>Images</TableCell>
-            <TableCell />
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {logs.map((row, index) => (
-            <TableRow key={row._id}>
-              <TableCell component="th" scope="row">{logs.length - index}</TableCell>
-              <TableCell>{row.type}</TableCell>
-              <TableCell>{getGrowDay(row)}</TableCell>
-              <TableCell>{datefns.format(row.created_on, 'iii dd LLL yyyy HH:mm')}</TableCell>
-              <TableCell><div style={{ whiteSpace: 'pre-line' }}>{row.note}</div></TableCell>
-              <TableCell>
-                {row.images.map((url, index) => (
-                  <div key={index}><a href={url} target="_blank" rel="noreferrer">{url}</a></div>
-                ))}
-              </TableCell>
-              <TableCell align="right">
-                <Link
-                  component="button"
-                  underline="none"
-                  onClick={() => navToLogEdit(row)}
-                >
-                  Edit
-                </Link>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <Box>
+      <Grid container alignItems="center">
+        <Grid item xs={6}>
+          <Typography variant="h6">
+            Logs ({plant.current.name})
+          </Typography>
+        </Grid>
+        <Grid item xs={6}>
+          <Box display="flex" justifyContent="flex-end">
+            <Button
+              onClick={() => navigate(-1)}
+              startIcon={<ArrowBackIcon />}
+              variant="contained"
+              sx={{ mr: 1 }}
+            >
+              Back
+            </Button>
+            <Button
+              onClick={() => navigate('/log/add')}
+              startIcon={<AddCircleIcon />}
+              variant="contained"
+            >
+              Add
+            </Button>
+          </Box>
+        </Grid>
+      </Grid>
+
+      <Box mt={1}>
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 750 }}>
+            <TableHead>
+              <TableRow>
+                <TableCell>#</TableCell>
+                <TableCell>Type</TableCell>
+                <TableCell>Grow Day</TableCell>
+                <TableCell>Created On</TableCell>
+                <TableCell>Note</TableCell>
+                <TableCell>Images</TableCell>
+                <TableCell />
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {logs.map((row, index) => (
+                <TableRow key={row._id}>
+                  <TableCell component="th" scope="row">{logs.length - index}</TableCell>
+                  <TableCell>{row.type}</TableCell>
+                  <TableCell>{getGrowDay(row)}</TableCell>
+                  <TableCell>{datefns.format(row.created_on, 'iii dd LLL yyyy HH:mm')}</TableCell>
+                  <TableCell><div style={{ whiteSpace: 'pre-line' }}>{row.note}</div></TableCell>
+                  <TableCell>
+                    {row.images.map((url, index) => (
+                      <div key={index}><a href={url} target="_blank" rel="noreferrer">{url}</a></div>
+                    ))}
+                  </TableCell>
+                  <TableCell align="right">
+                    <ButtonGroup size="small" variant="text" aria-label="actions button group">
+                      <Button onClick={() => navToLogEdit(row)}>Edit</Button>
+                    </ButtonGroup>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
+    </Box>
   );
 }

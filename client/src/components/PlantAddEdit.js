@@ -8,11 +8,15 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
+import Typography from '@mui/material/Typography';
+import CancelIcon from '@mui/icons-material/Cancel';
+import DeleteIcon from '@mui/icons-material/Delete';
 import SaveIcon from '@mui/icons-material/Save';
 
 export default function PlantAddEdit({ mode }) {
@@ -85,10 +89,24 @@ export default function PlantAddEdit({ mode }) {
       autoComplete="off"
       onSubmit={submitForm}
     >
-      <h4>{mode === 'add' ? 'Add' : 'Edit'} Plant</h4>
+      <Grid container alignItems="center">
+        <Grid item xs={mode === 'add' ? 12 : 10}>
+          <Typography variant="h6">
+            {mode === 'add' ? 'Add' : 'Edit'} Plant
+          </Typography>
+        </Grid>
+        {mode === 'edit' &&
+          <Grid item xs={2}>
+            <Box display="flex" justifyContent="flex-end">
+              <IconButton aria-label="delete" size="large" onClick={deletePlant}>
+                <DeleteIcon fontSize="inherit" />
+              </IconButton>
+            </Box>
+          </Grid>}
+      </Grid>
 
       <Grid container spacing={1} mt={1}>
-        <Grid item xs={2}>
+        <Grid item xs={6}>
           <TextField
             fullWidth
             id="name"
@@ -97,7 +115,7 @@ export default function PlantAddEdit({ mode }) {
             onChange={e => updateForm({ name: e.target.value })}
           />
         </Grid>
-        <Grid item xs={2}>
+        <Grid item xs={6}>
           <TextField
             fullWidth
             id="source"
@@ -109,7 +127,7 @@ export default function PlantAddEdit({ mode }) {
       </Grid>
 
       <Grid container spacing={1} mt={1}>
-        <Grid item xs={1}>
+        <Grid item xs={3}>
           <FormControl>
             <FormLabel id="plant-type-radio-buttons-group">Type</FormLabel>
             <RadioGroup
@@ -123,7 +141,7 @@ export default function PlantAddEdit({ mode }) {
             </RadioGroup>
           </FormControl>
         </Grid>
-        <Grid item xs={1}>
+        <Grid item xs={3}>
           <FormControl>
             <FormLabel id="plant-propagation-radio-buttons-group">Propagation</FormLabel>
             <RadioGroup
@@ -146,7 +164,7 @@ export default function PlantAddEdit({ mode }) {
             </RadioGroup>
           </FormControl>
         </Grid>
-        <Grid item xs={1}>
+        <Grid item xs={3}>
           <FormControl>
             <FormLabel id="plant-location-radio-buttons-group">Location</FormLabel>
             <RadioGroup
@@ -161,7 +179,7 @@ export default function PlantAddEdit({ mode }) {
             </RadioGroup>
           </FormControl>
         </Grid>
-        <Grid item xs={1} ml={2}>
+        <Grid item xs={3}>
           <FormControl>
             <FormLabel id="plant-method-radio-buttons-group">Method</FormLabel>
             <RadioGroup
@@ -180,7 +198,7 @@ export default function PlantAddEdit({ mode }) {
       </Grid>
 
       <Grid container spacing={1} mt={1}>
-        <Grid item xs={2}>
+        <Grid item xs={6}>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
               disableFuture
@@ -188,11 +206,11 @@ export default function PlantAddEdit({ mode }) {
               value={form.started_on}
               inputFormat="dd/MM/yyyy"
               onChange={value => updateForm({ started_on: value })}
-              renderInput={(params) => <TextField {...params} />}
+              renderInput={(params) => <TextField {...params} fullWidth />}
             />
           </LocalizationProvider>
         </Grid>
-        <Grid item xs={2}>
+        <Grid item xs={6}>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DatePicker
               disableFuture
@@ -200,14 +218,14 @@ export default function PlantAddEdit({ mode }) {
               value={form.ended_on}
               inputFormat="dd/MM/yyyy"
               onChange={value => updateForm({ ended_on: value })}
-              renderInput={(params) => <TextField {...params} />}
+              renderInput={(params) => <TextField {...params} fullWidth />}
             />
           </LocalizationProvider>
         </Grid>
       </Grid>
 
       <Grid container spacing={1} mt={1}>
-        <Grid item xs={4}>
+        <Grid item xs={12}>
           <TextField
             id="note"
             label="Note"
@@ -220,37 +238,24 @@ export default function PlantAddEdit({ mode }) {
         </Grid>
       </Grid>
 
-      <Grid container spacing={1} mt={1}>
-        <Grid item xs={1}>
-          <Button
-            fullWidth
-            type="submit"
-            variant="contained"
-            startIcon={<SaveIcon />}>
-            Save
-          </Button>
-        </Grid>
-        {mode === 'edit' &&
-          <Grid item xs={1}>
-            <Button
-              fullWidth
-              color="error"
-              variant="outlined"
-              onClick={deletePlant}
-            >
-              Delete
-            </Button>
-          </Grid>}
-        <Grid item xs={1}>
-          <Button
-            fullWidth
-            variant="outlined"
-            onClick={() => navigate(-1)}
-          >
-            Cancel
-          </Button>
-        </Grid>
-      </Grid>
+      <Box mt={1} spacing={1}>
+        <Button
+          type="submit"
+          variant="contained"
+          startIcon={<SaveIcon />}
+          sx={{ mr: 1 }}
+        >
+          Save
+        </Button>
+        <Button
+          variant="outlined"
+          onClick={() => navigate(-1)}
+          startIcon={<CancelIcon />}
+        >
+          Cancel
+        </Button>
+      </Box>
+
     </Box>
   );
 }
