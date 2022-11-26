@@ -50,8 +50,8 @@ export default function PlantAddEdit({ mode }) {
     e.preventDefault();
     const body = {
       ...form,
-      started_on: form.started_on === null ? '' : +form.started_on,
-      ended_on: form.ended_on === null ? '' : +form.ended_on
+      started_on: form.started_on ? +form.started_on : '',
+      ended_on: form.ended_on ? +form.ended_on : ''
     };
     mode === 'add'
       ? createPlant(body)
