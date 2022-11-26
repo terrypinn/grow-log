@@ -147,7 +147,7 @@ export default function LogAddEdit({ mode }) {
             label="Note"
             fullWidth
             multiline
-            rows={8}
+            rows={12}
             value={form.note}
             onChange={e => updateForm({ note: e.target.value })}
           />
