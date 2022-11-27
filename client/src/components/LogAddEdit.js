@@ -18,6 +18,8 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SaveIcon from '@mui/icons-material/Save';
 
+const NOTE_OPTIONS_DELIMITER = ' | ';
+
 export default function LogAddEdit({ mode }) {
   const navigate = useNavigate();
   const plant = useRef(JSON.parse(localStorage.getItem('plant')));
@@ -78,7 +80,7 @@ export default function LogAddEdit({ mode }) {
       return;
     }
     const dialog = () => window.confirm('This action will clear your note. Proceed?');
-    if (!form.note.trim() || dialog()) updateForm({ type: value, note: options.join(' | ') });
+    if (!form.note.trim() || dialog()) updateForm({ type: value, note: options.join(NOTE_OPTIONS_DELIMITER) });
   };
 
   return (
