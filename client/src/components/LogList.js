@@ -81,21 +81,21 @@ export default function LogList() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {logs.map((row, index) => (
-                <TableRow key={row._id}>
+              {logs.map((log, index) => (
+                <TableRow key={log._id}>
                   <TableCell component="th" scope="row">{logs.length - index}</TableCell>
-                  <TableCell>{row.type}</TableCell>
-                  <TableCell>{getGrowDay(row)}</TableCell>
-                  <TableCell>{datefns.format(row.created_on, 'iii dd LLL yyyy HH:mm')}</TableCell>
-                  <TableCell><div style={{ whiteSpace: 'pre-line' }}>{row.note}</div></TableCell>
+                  <TableCell>{log.type}</TableCell>
+                  <TableCell>{getGrowDay(log)}</TableCell>
+                  <TableCell>{datefns.format(log.created_on, 'iii dd LLL yyyy HH:mm')}</TableCell>
+                  <TableCell><div style={{ whiteSpace: 'pre-line' }}>{log.note}</div></TableCell>
                   <TableCell>
-                    {row.images.map((url, index) => (
+                    {log.images.map((url, index) => (
                       <div key={index}><a href={url} target="_blank" rel="noreferrer">{url}</a></div>
                     ))}
                   </TableCell>
                   <TableCell align="right">
                     <ButtonGroup size="small" variant="text" aria-label="actions button group">
-                      <Button onClick={() => navToLogEdit(row)}>Edit</Button>
+                      <Button onClick={() => navToLogEdit(log)}>Edit</Button>
                     </ButtonGroup>
                   </TableCell>
                 </TableRow>
