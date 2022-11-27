@@ -23,17 +23,17 @@ export const PLANT_METHOD = {
 
 export const LOG_TYPE = {
   Action: 'Action',
-  BadInsects: 'BadInsects',
-  GoodInsects: 'GoodInsects',
+  Expense: 'Expense',
+  Insects: 'Insects',
   Issues: 'Issues',
   Nutrients: 'Nutrients',
   Observation: 'Observation',
-  PottingUp: 'PottingUp',
   Training: 'Training',
   Watering: 'Watering'
 };
 
 export const LOG_TYPE_OPTIONS = {
+  [LOG_TYPE.Insects]: ['Good', 'Bad'],
   [LOG_TYPE.Training]: ['Defoliation', 'HST', 'LST'],
   [LOG_TYPE.Watering]: ['RO', 'Rain', 'Spring', 'Tap']
 };

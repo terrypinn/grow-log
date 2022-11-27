@@ -128,12 +128,11 @@ export default function LogAddEdit({ mode }) {
               onChange={e => onChangeType(e.target.value)}
             >
               <MenuItem value={LOG_TYPE.Action}>Action</MenuItem>
-              <MenuItem value={LOG_TYPE.BadInsects}>Bad Insects</MenuItem>
-              <MenuItem value={LOG_TYPE.GoodInsects}>Good Insects</MenuItem>
+              <MenuItem value={LOG_TYPE.Expense}>Expense</MenuItem>
+              <MenuItem value={LOG_TYPE.Insects}>Insects</MenuItem>
               <MenuItem value={LOG_TYPE.Issues}>Issues</MenuItem>
               <MenuItem value={LOG_TYPE.Nutrients}>Nutrients</MenuItem>
               <MenuItem value={LOG_TYPE.Observation}>Observation</MenuItem>
-              <MenuItem value={LOG_TYPE.PottingUp}>Potting Up</MenuItem>
               <MenuItem value={LOG_TYPE.Training}>Training</MenuItem>
               <MenuItem value={LOG_TYPE.Watering}>Watering</MenuItem>
             </Select>
