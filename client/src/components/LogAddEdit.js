@@ -73,12 +73,13 @@ export default function LogAddEdit({ mode }) {
   };
 
   const onChangeType = (value) => {
-    if (value === LOG_TYPE.Training || value === LOG_TYPE.Watering) {
-      const dialog = () => window.confirm('This action will clear your note. Proceed?');
-      if (!form.note.trim() || dialog()) updateForm({ type: value, note: LOG_TYPE_OPTIONS[value].join(' | ') });
+    const options = LOG_TYPE_OPTIONS[value];
+    if (!options) {
+      updateForm({ type: value });
       return;
     }
-    updateForm({ type: value });
+    const dialog = () => window.confirm('This action will clear your note. Proceed?');
+    if (!form.note.trim() || dialog()) updateForm({ type: value, note: options.join(' | ') });
   };
 
   return (
