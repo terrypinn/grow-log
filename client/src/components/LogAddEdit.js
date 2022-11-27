@@ -31,11 +31,10 @@ export default function LogAddEdit({ mode }) {
   });
 
   useEffect(() => {
-    if (mode === 'edit') {
-      const form = { ...log.current }
-      form.images = form.images.join('\n');
-      setForm(form);
-    }
+    if (mode === 'add') return;
+    const form = { ...log.current };
+    form.images = form.images.join('\n');
+    setForm(form);
   }, [mode]);
 
   const updateForm = value => setForm(prev => ({ ...prev, ...value }));

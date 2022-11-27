@@ -26,16 +26,16 @@ export default function PlantList() {
   }, []);
 
   const getGrowPeriod = (plant) => {
-    const format = 'dd LLL yyyy';
     if (!plant.started_on) return;
+    const fmt = 'dd LLL yyyy';
     const done = () => {
-      const displayStartDate = datefns.format(plant.started_on, format);
-      const displayEndDate = datefns.format(plant.ended_on, format);
+      const displayStartDate = datefns.format(plant.started_on, fmt);
+      const displayEndDate = datefns.format(plant.ended_on, fmt);
       const diffDays = datefns.differenceInDays(plant.ended_on, plant.started_on);
       return `${displayStartDate} - ${displayEndDate} | ${diffDays} days`;
     };
     const ongoing = () => {
-      const displayDate = datefns.format(plant.started_on, format);
+      const displayDate = datefns.format(plant.started_on, fmt);
       const diffDays = datefns.differenceInDays(new Date(), plant.started_on);
       return `${displayDate} | ${diffDays} days`;
     };
@@ -91,17 +91,17 @@ export default function PlantList() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {plants.map((row) => (
-                <TableRow key={row._id}>
-                  <TableCell component="th" scope="row">{row.name}</TableCell>
-                  <TableCell align="center">{row.logs.length}</TableCell>
-                  <TableCell align="right">{row.type}</TableCell>
-                  <TableCell align="right">{getGrowPeriod(row)}</TableCell>
+              {plants.map((plant) => (
+                <TableRow key={plant._id}>
+                  <TableCell component="th" scope="row">{plant.name}</TableCell>
+                  <TableCell align="center">{plant.logs.length}</TableCell>
+                  <TableCell align="right">{plant.type}</TableCell>
+                  <TableCell align="right">{getGrowPeriod(plant)}</TableCell>
                   <TableCell align="right">
                     <ButtonGroup size="small" variant="text" aria-label="actions button group">
-                      <Button onClick={() => navToPlantEdit(row)}>Edit Plant</Button>
-                      <Button onClick={() => navToLogs(row)}>View Logs</Button>
-                      <Button onClick={() => navToLogAddEdd(row)}>Add Log</Button>
+                      <Button onClick={() => navToPlantEdit(plant)}>Edit Plant</Button>
+                      <Button onClick={() => navToLogs(plant)}>View Logs</Button>
+                      <Button onClick={() => navToLogAddEdd(plant)}>Add Log</Button>
                     </ButtonGroup>
                   </TableCell>
                 </TableRow>
