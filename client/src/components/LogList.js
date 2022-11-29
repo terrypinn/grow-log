@@ -87,7 +87,7 @@ export default function LogList() {
                   <TableCell>{log.type}</TableCell>
                   <TableCell>{getGrowDay(log)}</TableCell>
                   <TableCell>{datefns.format(log.created_on, 'iii dd LLL yyyy HH:mm')}</TableCell>
-                  <TableCell><div style={{ whiteSpace: 'pre-line' }}>{log.note}</div></TableCell>
+                  <TableCell sx={{minWidth: 400}}><div style={{ whiteSpace: 'pre-line' }}>{log.note}</div></TableCell>
                   <TableCell>
                     {log.images.map((url, index) => (
                       <div key={index}><a href={url} target="_blank" rel="noreferrer">{url}</a></div>
