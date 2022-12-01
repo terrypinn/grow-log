@@ -132,6 +132,9 @@ export default function LogAddEdit({ mode }) {
               label="Stage"
               onChange={e => updateForm({ stage: e.target.value })}
             >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
               {Object.keys(PLANT_STAGE).map(x => {
                 return <MenuItem key={x} value={x}>{PLANT_STAGE[x]}</MenuItem>
               })}
