@@ -1,73 +1,43 @@
-const dbo = require('../dbo');
-
-const ObjectId = require('mongodb').ObjectID
+const Log = require('../models/Log');
+const Plant = require('../models/Plant');
 
 exports.plant_list = (req, res) => {
-  const db = dbo.getDb();
-  db.collection('plants')
-    .find({})
-    .toArray()
+  Plant
+    .find()
     .catch(err => res.status(500).json({ error: err }))
     .then(docs => res.json(docs));
 };
 
 exports.plant_detail = (req, res) => {
-  const db = dbo.getDb();
-  db.collection('plants')
-    .findOne({ _id: ObjectId(req.params.id) })
+  Plant
+    .findById(req.params.id)
     .catch(err => res.status(500).json({ error: err }))
     .then(doc => res.json(doc));
 };
 
 exports.plant_create = (req, res) => {
-  const db = dbo.getDb();
-  const doc = {
-    name: req.body.name,
-    created_on: Date.now(),
-    source: req.body.source,
-    type: req.body.type,
-    propagation: req.body.propagation,
-    location: req.body.location,
-    method: req.body.method,
-    started_on: req.body.started_on,
-    ended_on: req.body.ended_on,
-    note: req.body.note,
-    logs: [],
-  };
-  db.collection('plants')
-    .insertOne(doc)
+  const doc = new Plant({ ...req.body, created_on: Date.now() });
+  Plant
+    .create(doc)
     .catch(err => res.status(500).json({ error: err }))
     .then(() => res.sendStatus(201));
 };
 
 exports.plant_update = (req, res) => {
-  const db = dbo.getDb();
-  const update = {
-    $set: {
-      name: req.body.name,
-      source: req.body.source,
-      type: req.body.type,
-      propagation: req.body.propagation,
-      location: req.body.location,
-      method: req.body.method,
-      started_on: req.body.started_on,
-      ended_on: req.body.ended_on,
-      note: req.body.note,
-    }
-  };
-  db.collection('plants')
-    .updateOne({ _id: ObjectId(req.params.id) }, update)
+  const doc = new Plant({ ...req.body });
+  Plant
+    .findByIdAndUpdate(req.params.id, doc)
     .catch(err => res.status(500).json({ error: err }))
     .then(() => res.sendStatus(204));
 };
 
 exports.plant_delete = (req, res) => {
-  const db = dbo.getDb();
-  db.collection('plants')
-    .findOneAndDelete({ _id: ObjectId(req.params.id) })
+  Plant
+    .findByIdAndDelete(req.params.id)
     .catch(err => res.status(500).json({ error: err }))
-    .then(doc => db.collection('logs')
-      .deleteMany({ plant_id: doc._id })
-      .catch(err => res.status(500).json({ error: err }))
-      .then(() => res.sendStatus(204)));
+    .then(doc =>
+      Log
+        .deleteMany({ plant_id: doc._id })
+        .catch(err => res.status(500).json({ error: err }))
+        .then(() => res.sendStatus(204)));
 };

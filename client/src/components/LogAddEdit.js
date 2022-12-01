@@ -33,10 +33,13 @@ export default function LogAddEdit({ mode }) {
   });
 
   useEffect(() => {
-    if (mode === 'add') return;
-    const form = { ...log.current };
-    form.images = form.images.join('\n');
-    setForm(form);
+    if (mode === 'edit') {
+      const form = {
+        ...log.current,
+        images: log.current.images.join('\n')
+      };
+      setForm(form);
+    }
   }, [mode]);
 
   const updateForm = value => setForm(prev => ({ ...prev, ...value }));

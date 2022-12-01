@@ -36,12 +36,7 @@ export default function PlantAddEdit({ mode }) {
   });
 
   useEffect(() => {
-    if (mode === 'edit') {
-      const form = { ...plant.current };
-      form.started_on = form.started_on ?? null;
-      form.ended_on = form.ended_on ?? null;
-      setForm(form);
-    }
+    if (mode === 'edit') setForm(plant.current);
   }, [mode]);
 
   const updateForm = value => setForm(prev => ({ ...prev, ...value }));
@@ -50,8 +45,8 @@ export default function PlantAddEdit({ mode }) {
     e.preventDefault();
     const body = {
       ...form,
-      started_on: form.started_on ? +form.started_on : '',
-      ended_on: form.ended_on ? +form.ended_on : ''
+      started_on: form.started_on ? +form.started_on : null,
+      ended_on: form.ended_on ? +form.ended_on : null
     };
     mode === 'add'
       ? createPlant(body)
