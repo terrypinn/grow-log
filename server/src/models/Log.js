@@ -3,11 +3,11 @@ const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId;
 
 const logSchema = new Schema({
-    plant_id: ObjectId,
     created_on: Number,
-    type: String,
+    images: [String],
     note: String,
-    images: [String]
+    plant_id: ObjectId,
+    type: String
 }, { versionKey: false });
 
 module.exports = mongoose.model('Log', logSchema);
