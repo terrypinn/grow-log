@@ -1,4 +1,4 @@
-import { LOG_TYPE, LOG_TYPE_OPTIONS } from '../constants';
+import { LOG_TYPE, LOG_TYPE_OPTIONS, PLANT_STAGE } from '../constants';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -27,6 +27,7 @@ export default function LogAddEdit({ mode }) {
 
   const [form, setForm] = useState({
     created_on: new Date(),
+    stage: mode === 'add' ? plant.current.stage : '',
     type: '',
     note: '',
     images: ''
@@ -110,7 +111,7 @@ export default function LogAddEdit({ mode }) {
       </Grid>
 
       <Grid container spacing={1} mt={1}>
-        <Grid item xs={6}>
+        <Grid item xs={4}>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DateTimePicker
               label="Created On"
@@ -121,7 +122,23 @@ export default function LogAddEdit({ mode }) {
             />
           </LocalizationProvider>
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={4}>
+          <FormControl fullWidth>
+            <InputLabel id="stage-select-label">Stage</InputLabel>
+            <Select
+              labelId="stage-select-label"
+              id="stage-select"
+              value={form.stage}
+              label="Stage"
+              onChange={e => updateForm({ stage: e.target.value })}
+            >
+              {Object.keys(PLANT_STAGE).map(x => {
+                return <MenuItem key={x} value={x}>{PLANT_STAGE[x]}</MenuItem>
+              })}
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={4}>
           <FormControl fullWidth>
             <InputLabel id="log-type-select-label">Type</InputLabel>
             <Select

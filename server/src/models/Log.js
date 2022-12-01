@@ -7,6 +7,7 @@ const logSchema = new Schema({
     images: [String],
     note: String,
     plant_id: ObjectId,
+    stage: String,
     type: String
 }, { versionKey: false });
 

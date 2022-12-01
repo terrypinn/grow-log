@@ -73,6 +73,7 @@ export default function LogList() {
               <TableRow>
                 <TableCell>#</TableCell>
                 <TableCell>Type</TableCell>
+                <TableCell>Stage</TableCell>
                 <TableCell>Grow Day</TableCell>
                 <TableCell>Created On</TableCell>
                 <TableCell>Note</TableCell>
@@ -85,6 +86,7 @@ export default function LogList() {
                 <TableRow key={log._id}>
                   <TableCell component="th" scope="row">{logs.length - index}</TableCell>
                   <TableCell>{log.type}</TableCell>
+                  <TableCell>{log.stage}</TableCell>
                   <TableCell>{getGrowDay(log)}</TableCell>
                   <TableCell>{datefns.format(log.created_on, 'iii dd LLL yyyy HH:mm')}</TableCell>
                   <TableCell sx={{minWidth: 400}}><div style={{ whiteSpace: 'pre-line' }}>{log.note}</div></TableCell>
