@@ -27,8 +27,8 @@ export default function LogAddEdit({ mode }) {
 
   const [form, setForm] = useState({
     created_on: new Date(),
-    stage: mode === 'add' ? plant.current.stage : '',
     type: '',
+    stage: mode === 'add' ? plant.current.stage : '',
     note: '',
     images: ''
   });
@@ -124,6 +124,22 @@ export default function LogAddEdit({ mode }) {
         </Grid>
         <Grid item xs={4}>
           <FormControl fullWidth>
+            <InputLabel id="log-type-select-label">Type</InputLabel>
+            <Select
+              labelId="log-type-select-label"
+              id="log-type-select"
+              value={form.type}
+              label="Type"
+              onChange={e => onChangeType(e.target.value)}
+            >
+              {Object.keys(LOG_TYPE).map(x => {
+                return <MenuItem key={x} value={x}>{LOG_TYPE[x]}</MenuItem>
+              })}
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={4}>
+          <FormControl fullWidth>
             <InputLabel id="stage-select-label">Stage</InputLabel>
             <Select
               labelId="stage-select-label"
@@ -137,22 +153,6 @@ export default function LogAddEdit({ mode }) {
               </MenuItem>
               {Object.keys(PLANT_STAGE).map(x => {
                 return <MenuItem key={x} value={x}>{PLANT_STAGE[x]}</MenuItem>
-              })}
-            </Select>
-          </FormControl>
-        </Grid>
-        <Grid item xs={4}>
-          <FormControl fullWidth>
-            <InputLabel id="log-type-select-label">Type</InputLabel>
-            <Select
-              labelId="log-type-select-label"
-              id="log-type-select"
-              value={form.type}
-              label="Type"
-              onChange={e => onChangeType(e.target.value)}
-            >
-              {Object.keys(LOG_TYPE).map(x => {
-                return <MenuItem key={x} value={x}>{LOG_TYPE[x]}</MenuItem>
               })}
             </Select>
           </FormControl>
