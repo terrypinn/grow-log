@@ -1,4 +1,4 @@
-import { PLANT_LOCATION, PLANT_METHOD, PLANT_PROPAGATION, PLANT_TYPE } from '../constants';
+import { PLANT_STAGE, PLANT_LOCATION, PLANT_METHOD, PLANT_PROPAGATION, PLANT_TYPE } from '../constants';
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -18,6 +18,9 @@ import Typography from '@mui/material/Typography';
 import CancelIcon from '@mui/icons-material/Cancel';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SaveIcon from '@mui/icons-material/Save';
+import InputLabel from '@mui/material/InputLabel';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
 
 export default function PlantAddEdit({ mode }) {
   const navigate = useNavigate();
@@ -25,6 +28,7 @@ export default function PlantAddEdit({ mode }) {
 
   const [form, setForm] = useState({
     name: '',
+    stage: '',
     source: '',
     type: '',
     propagation: '',
@@ -101,7 +105,7 @@ export default function PlantAddEdit({ mode }) {
       </Grid>
 
       <Grid container spacing={1} mt={1}>
-        <Grid item xs={6}>
+        <Grid item xs={4}>
           <TextField
             fullWidth
             id="name"
@@ -110,7 +114,23 @@ export default function PlantAddEdit({ mode }) {
             onChange={e => updateForm({ name: e.target.value })}
           />
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={4}>
+        <FormControl fullWidth>
+            <InputLabel id="stage-select-label">Stage</InputLabel>
+            <Select
+              labelId="stage-select-label"
+              id="stage-select"
+              value={form.stage}
+              label="Stage"
+              onChange={e => updateForm({ stage: e.target.value })}
+            >
+              {Object.keys(PLANT_STAGE).map(x => {
+                return <MenuItem key={x} value={x}>{PLANT_STAGE[x]}</MenuItem>
+              })}
+            </Select>
+          </FormControl>
+        </Grid>
+        <Grid item xs={4}>
           <TextField
             fullWidth
             id="source"

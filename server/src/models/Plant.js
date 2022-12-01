@@ -12,6 +12,7 @@ const plantSchema = new Schema({
     note: String,
     propagation: String,
     source: String,
+    stage: String,
     started_on: Number,
     type: String,
 }, { versionKey: false });

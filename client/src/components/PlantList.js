@@ -86,6 +86,7 @@ export default function PlantList() {
                 <TableCell>Name</TableCell>
                 <TableCell align="center">Logs</TableCell>
                 <TableCell align="right">Type</TableCell>
+                <TableCell align="right">Stage</TableCell>
                 <TableCell align="right">Grow Period</TableCell>
                 <TableCell align="right" />
               </TableRow>
@@ -96,6 +97,7 @@ export default function PlantList() {
                   <TableCell component="th" scope="row">{plant.name}</TableCell>
                   <TableCell align="center">{plant.logs.length}</TableCell>
                   <TableCell align="right">{plant.type}</TableCell>
+                  <TableCell align="right">{plant.stage}</TableCell>
                   <TableCell align="right">{getGrowPeriod(plant)}</TableCell>
                   <TableCell align="right">
                     <ButtonGroup size="small" variant="text" aria-label="actions button group">

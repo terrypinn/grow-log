@@ -37,3 +37,14 @@ export const LOG_TYPE_OPTIONS = {
   [LOG_TYPE.Training]: ['Defoliation', 'HST', 'LST'],
   [LOG_TYPE.Watering]: ['RO', 'Rain', 'Spring', 'Tap']
 };
+
+export const PLANT_STAGE = {
+  Germination: 'Germination',
+  Seedling: 'Seedling',
+  Vegetative: 'Vegetative',
+  Flowering: 'Flowering',
+  Drying: 'Drying',
+  Curing: 'Curing'
+};
+
+};
