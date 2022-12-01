@@ -151,8 +151,8 @@ export default function LogAddEdit({ mode }) {
               label="Type"
               onChange={e => onChangeType(e.target.value)}
             >
-              {Object.keys(LOG_TYPE).map(key => {
-                return <MenuItem key={key} value={key}>{LOG_TYPE[key]}</MenuItem>
+              {Object.keys(LOG_TYPE).map(x => {
+                return <MenuItem key={x} value={x}>{LOG_TYPE[x]}</MenuItem>
               })}
             </Select>
           </FormControl>
