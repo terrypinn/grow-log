@@ -41,7 +41,7 @@ export const LOG_TYPE_OPTIONS = {
 export const PLANT_STAGE = {
   Germination: 'Germination',
   Seedling: 'Seedling',
-  Vegetative: 'Vegetative',
+  Vegging: 'Vegging',
   Flowering: 'Flowering',
   Drying: 'Drying',
   Curing: 'Curing',
