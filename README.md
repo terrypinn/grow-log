@@ -1,2 +1,2 @@
 # Grow Log
-A simple app using the MERN stack to record of all the important aspects of my grow
+A simple app using the MERN stack to record all the important aspects of my grow
