@@ -44,7 +44,7 @@ export const PLANT_STAGE = {
   Vegetative: 'Vegetative',
   Flowering: 'Flowering',
   Drying: 'Drying',
-  Curing: 'Curing'
-};
-
+  Curing: 'Curing',
+  Consuming: 'Consuming',
+  Archive: 'Archive'
 };
