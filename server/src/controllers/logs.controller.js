@@ -1,10 +1,8 @@
-const mongoose = require('mongoose');
-const ObjectId = mongoose.Types.ObjectId;
 const Log = require('../models/Log');
 const Plant = require('../models/Plant')
 
 exports.log_list = (req, res) => {
-  const filter = { plant_id: ObjectId(req.params.plant_id) };
+  const filter = { plant_id:  req.params.plant_id };
   Log.find(filter).sort({ created_on: -1 }).then(docs => res.json(docs));
 };
 
