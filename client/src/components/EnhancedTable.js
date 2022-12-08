@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -39,14 +39,14 @@ function getComparator(order, orderBy) {
 }
 
 function EnhancedTableHead(props) {
-  const { 
-    headCells, 
-    onSelectAllClick, 
-    order, 
-    orderBy, 
-    numSelected, 
-    rowCount, 
-    onRequestSort 
+  const {
+    headCells,
+    onSelectAllClick,
+    order,
+    orderBy,
+    numSelected,
+    rowCount,
+    onRequestSort
   } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
@@ -159,13 +159,24 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export default function EnhancedTable(props) {
-  const { columns, rows, tableoOrder, tableoOrderBy, tableTitle } = props;
-  const [order, setOrder] = React.useState(tableoOrder);
-  const [orderBy, setOrderBy] = React.useState(tableoOrderBy);
-  const [selected, setSelected] = React.useState([]);
-  const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const {
+    tableHeadCells,
+    tableRows,
+    tableOrder,
+    tableOrderBy,
+    tableTitle
+  } = props;
+  const [rows, setRows] = useState([]);
+  const [order, setOrder] = useState(tableOrder);
+  const [orderBy, setOrderBy] = useState(tableOrderBy);
+  const [selected, setSelected] = useState([]);
+  const [page, setPage] = useState(0);
+  const [dense, setDense] = useState(false);
+  const [rowsPerPage, setRowsPerPage] = useState(25);
+
+  useEffect(() => {
+    setRows(tableRows);
+  }, [tableRows]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -175,7 +186,7 @@ export default function EnhancedTable(props) {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelected = rows.map((n) => n.name);
+      const newSelected = rows.map((n) => n.id);
       setSelected(newSelected);
       return;
     }
@@ -232,7 +243,7 @@ export default function EnhancedTable(props) {
             size={dense ? 'small' : 'medium'}
           >
             <EnhancedTableHead
-              headCells={columns}
+              headCells={tableHeadCells}
               numSelected={selected.length}
               order={order}
               orderBy={orderBy}
@@ -244,13 +255,13 @@ export default function EnhancedTable(props) {
               {rows.sort(getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.day);
+                  const isItemSelected = isSelected(row.id);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.day)}
+                      onClick={(event) => handleClick(event, row.id)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
@@ -273,9 +284,10 @@ export default function EnhancedTable(props) {
                         scope="row"
                         padding="none"
                       >
-                        {row.day}
+                        {row.id}
                       </TableCell>
                       <TableCell align="right">{row.created_on}</TableCell>
+                      <TableCell align="right">{row.day}</TableCell>
                       <TableCell align="right">{row.type}</TableCell>
                       <TableCell align="right">{row.stage}</TableCell>
                       <TableCell align="right">{row.note}</TableCell>
@@ -314,9 +326,8 @@ export default function EnhancedTable(props) {
 }
 
 EnhancedTable.propTypes = {
-  columns: PropTypes.array.isRequired,
-  rows: PropTypes.array.isRequired,
-  tableoOrder: PropTypes.string.isRequired,
-  tableoOrderBy: PropTypes.string.isRequired,
+  tableHeadCells: PropTypes.array.isRequired,
+  tableOrder: PropTypes.string.isRequired,
+  tableOrderBy: PropTypes.string.isRequired,
   tableTitle: PropTypes.string.isRequired
 };
