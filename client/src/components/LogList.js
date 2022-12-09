@@ -56,6 +56,31 @@ export default function LogList() {
       .then(logs => setRows(createRows(logs)));
   }, []);
 
+  const BackBtn = () => {
+    return (
+      <Button
+        onClick={() => navigate(-1)}
+        startIcon={<ArrowBackIcon />}
+        variant="contained"
+        sx={{ mr: 1 }}
+      >
+        Back
+      </Button>
+    )
+  };
+
+  const AddBtn = () => {
+    return (
+      <Button
+        onClick={() => navigate('/log/add')}
+        startIcon={<AddCircleIcon />}
+        variant="contained"
+      >
+        Add
+      </Button>
+    )
+  };
+
   const navToLogEdit = (log) => {
     localStorage.setItem('log', JSON.stringify(log));
     navigate('/log/edit');
@@ -66,21 +91,8 @@ export default function LogList() {
       <Grid container alignItems="center">
         <Grid item xs={12}>
           <Box display="flex" justifyContent="flex-end">
-            <Button
-              onClick={() => navigate(-1)}
-              startIcon={<ArrowBackIcon />}
-              variant="contained"
-              sx={{ mr: 1 }}
-            >
-              Back
-            </Button>
-            <Button
-              onClick={() => navigate('/log/add')}
-              startIcon={<AddCircleIcon />}
-              variant="contained"
-            >
-              Add
-            </Button>
+            <BackBtn />
+            <AddBtn />
           </Box>
         </Grid>
       </Grid>
