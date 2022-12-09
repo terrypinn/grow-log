@@ -1,4 +1,4 @@
-import { LOG_TYPE, LOG_TYPE_OPTIONS, PLANT_STAGE } from '../constants';
+import { FORM_ACTION, LOG_TYPE, LOG_TYPE_OPTIONS, PLANT_STAGE } from '../constants';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { differenceInDays } from 'date-fns'
@@ -19,15 +19,10 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SaveIcon from '@mui/icons-material/Save';
 
-export const ACTIONS = {
-  add: 'add',
-  edit: 'edit'
-};
-
 const NOTE_OPTIONS_DELIMITER = ' | ';
 
 LogForm.defaultProps = {
-  action: ACTIONS.add,
+  action: FORM_ACTION.add,
   log: null
 };
 
@@ -38,13 +33,13 @@ export default function LogForm(props) {
   const [form, setForm] = useState({
     created_on: new Date(),
     type: '',
-    stage: action === ACTIONS.add ? plant.stage : '',
+    stage: action === FORM_ACTION.add ? plant.stage : '',
     note: '',
     images: ''
   });
 
   useEffect(() => {
-    if (action === ACTIONS.edit) {
+    if (action === FORM_ACTION.edit) {
       const form = {
         ...log,
         images: log.images.join('\n')
@@ -64,7 +59,7 @@ export default function LogForm(props) {
       images: form.images.split(/\r?\n/).filter(x => x !== ''),
       plant_id: plant._id
     };
-    action === ACTIONS.add 
+    action === FORM_ACTION.add 
       ? createLog(body)
       : updateLog(body);
   };
@@ -106,12 +101,12 @@ export default function LogForm(props) {
       onSubmit={submitForm}
     >
       <Grid container alignItems="center">
-        <Grid item xs={action === ACTIONS.add  ? 12 : 10}>
+        <Grid item xs={action === FORM_ACTION.add  ? 12 : 10}>
           <Typography variant="h6">
-            {action === ACTIONS.add  ? 'Add' : 'Edit'} Log ({plant.name})
+            {action === FORM_ACTION.add  ? 'Add' : 'Edit'} Log ({plant.name})
           </Typography>
         </Grid>
-        {action === ACTIONS.edit &&
+        {action === FORM_ACTION.edit &&
           <Grid item xs={2}>
             <Box display="flex" justifyContent="flex-end">
               <IconButton aria-label="delete" size="large" onClick={deleteLog}>

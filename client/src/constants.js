@@ -48,3 +48,8 @@ export const PLANT_STAGE = {
   Consuming: 'Consuming',
   Archive: 'Archive'
 };
+
+export const FORM_ACTION = {
+  add: 'add',
+  edit: 'edit'
+};

@@ -1,4 +1,4 @@
-import { PLANT_STAGE, PLANT_LOCATION, PLANT_METHOD, PLANT_PROPAGATION, PLANT_TYPE } from '../constants';
+import { FORM_ACTION, PLANT_STAGE, PLANT_LOCATION, PLANT_METHOD, PLANT_PROPAGATION, PLANT_TYPE } from '../constants';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -22,13 +22,8 @@ import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 
-export const ACTIONS = {
-  add: 'add',
-  edit: 'edit'
-};
-
 PlantForm.defaultProps = {
-  action: ACTIONS.add,
+  action: FORM_ACTION.add,
   plant: null
 };
 
@@ -50,7 +45,7 @@ export default function PlantForm(props) {
   });
 
   useEffect(() => {
-    if (action === ACTIONS.edit) setForm(plant);
+    if (action === FORM_ACTION.edit) setForm(plant);
   }, [action]);
 
   const updateForm = value => setForm(prev => ({ ...prev, ...value }));
@@ -62,7 +57,7 @@ export default function PlantForm(props) {
       started_on: form.started_on ? +form.started_on : null,
       ended_on: form.ended_on ? +form.ended_on : null
     };
-    action === ACTIONS.add
+    action === FORM_ACTION.add
       ? createPlant(body)
       : updatePlant(body);
   };
@@ -100,12 +95,12 @@ export default function PlantForm(props) {
       onSubmit={submitForm}
     >
       <Grid container alignItems="center">
-        <Grid item xs={action === ACTIONS.add ? 12 : 10}>
+        <Grid item xs={action === FORM_ACTION.add ? 12 : 10}>
           <Typography variant="h6">
-            {action === ACTIONS.add ? 'Add' : 'Edit'} Plant
+            {action === FORM_ACTION.add ? 'Add' : 'Edit'} Plant
           </Typography>
         </Grid>
-        {action === ACTIONS.edit &&
+        {action === FORM_ACTION.edit &&
           <Grid item xs={2}>
             <Box display="flex" justifyContent="flex-end">
               <IconButton aria-label="delete" size="large" onClick={deletePlant}>
