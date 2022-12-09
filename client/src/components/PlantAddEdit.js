@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import Box from '@mui/material/Box';
 import PlantForm, { ACTIONS } from './PlantForm';
 
 export default function PlantAddEdit(props) {
@@ -9,6 +10,12 @@ export default function PlantAddEdit(props) {
       : null);
 
   return (
-    <PlantForm action={action} plant={plant.current} />
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+    >
+      <PlantForm action={action} plant={plant.current} />
+    </Box>
   );
 }
