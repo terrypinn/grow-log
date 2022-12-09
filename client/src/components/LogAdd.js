@@ -3,14 +3,8 @@ import { useRef } from 'react';
 import Box from '@mui/material/Box';
 import LogForm from './LogForm';
 
-export default function LogAddEdit(props) {
-  const { action } = props;
+export default function LogAdd() {
   const plant = useRef(JSON.parse(localStorage.getItem('plant')));
-  const log = useRef(
-    action === FORM_ACTION.edit
-      ? JSON.parse(localStorage.getItem('log'))
-      : null
-  );
 
   return (
     <Box
@@ -18,7 +12,7 @@ export default function LogAddEdit(props) {
       justifyContent="center"
       alignItems="center"
     >
-      <LogForm action={action} plant={plant.current} log={log.current} />
+      <LogForm action={FORM_ACTION.add} plant={plant.current} />
     </Box>
   );
 }
