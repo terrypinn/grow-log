@@ -32,6 +32,11 @@ export default function LogList() {
     navigate('/log/edit');
   };
 
+  const getGrowDay = (log) => {
+    if (!plant.current.started_on) return;
+    return datefns.differenceInDays(log.created_on, plant.current.started_on);;
+  };
+
   return (
     <Box>
       <Grid container alignItems="center">
@@ -80,11 +85,11 @@ export default function LogList() {
               {logs.map((log, index) => (
                 <TableRow key={log._id}>
                   <TableCell component="th" scope="row">{logs.length - index}</TableCell>
-                  <TableCell sx={{minWidth: 150}}>{datefns.format(log.created_on, 'iii dd LLL yyyy HH:mm')}</TableCell>
-                  <TableCell>{log.day}</TableCell>
+                  <TableCell sx={{ minWidth: 150 }}>{datefns.format(log.created_on, 'iii dd LLL yyyy HH:mm')}</TableCell>
+                  <TableCell>{getGrowDay(log)}</TableCell>
                   <TableCell>{log.type}</TableCell>
                   <TableCell>{log.stage}</TableCell>
-                  <TableCell sx={{minWidth: 350}}><div style={{ whiteSpace: 'pre-line' }}>{log.note}</div></TableCell>
+                  <TableCell sx={{ minWidth: 350 }}><div style={{ whiteSpace: 'pre-line' }}>{log.note}</div></TableCell>
                   <TableCell>
                     {log.images.map((url, index) => (
                       <div key={index}><a href={url} target="_blank" rel="noreferrer">{url}</a></div>

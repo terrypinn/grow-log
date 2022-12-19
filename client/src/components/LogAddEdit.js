@@ -1,7 +1,6 @@
 import { LOG_TYPE, LOG_TYPE_OPTIONS, PLANT_STAGE } from '../constants';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { differenceInDays } from 'date-fns'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
@@ -51,7 +50,6 @@ export default function LogAddEdit({ mode }) {
     const body = {
       ...form,
       created_on: +form.created_on,
-      day: plant.current.started_on ? differenceInDays(form.created_on, plant.current.started_on).toString() : '',
       images: form.images.split(/\r?\n/).filter(x => x !== ''),
       plant_id: plant.current._id
     };
