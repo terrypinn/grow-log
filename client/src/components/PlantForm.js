@@ -1,5 +1,5 @@
-import { PLANT_STAGE, PLANT_LOCATION, PLANT_METHOD, PLANT_PROPAGATION, PLANT_TYPE } from '../constants';
-import { useEffect, useState, useRef } from 'react';
+import { FORM_ACTION, PLANT_STAGE, PLANT_LOCATION, PLANT_METHOD, PLANT_PROPAGATION, PLANT_TYPE } from '../constants';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -22,9 +22,14 @@ import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 
-export default function PlantAddEdit({ mode }) {
+PlantForm.defaultProps = {
+  action: FORM_ACTION.add,
+  plant: null
+};
+
+export default function PlantForm(props) {
+  const { action, plant } = props;
   const navigate = useNavigate();
-  const plant = useRef(mode === 'edit' ? JSON.parse(localStorage.getItem('plant')) : null);
 
   const [form, setForm] = useState({
     name: '',
@@ -40,8 +45,8 @@ export default function PlantAddEdit({ mode }) {
   });
 
   useEffect(() => {
-    if (mode === 'edit') setForm(plant.current);
-  }, [mode]);
+    if (action === FORM_ACTION.edit) setForm(plant);
+  }, [action]);
 
   const updateForm = value => setForm(prev => ({ ...prev, ...value }));
 
@@ -52,7 +57,7 @@ export default function PlantAddEdit({ mode }) {
       started_on: form.started_on ? +form.started_on : null,
       ended_on: form.ended_on ? +form.ended_on : null
     };
-    mode === 'add'
+    action === FORM_ACTION.add
       ? createPlant(body)
       : updatePlant(body);
   };
@@ -65,7 +70,7 @@ export default function PlantAddEdit({ mode }) {
     }).then(() => navigate(-1));
 
   const updatePlant = (body) =>
-    fetch(`${process.env.REACT_APP_API_URL}/plant/${plant.current._id}`, {
+    fetch(`${process.env.REACT_APP_API_URL}/plant/${plant._id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
@@ -74,7 +79,7 @@ export default function PlantAddEdit({ mode }) {
   const deletePlant = () => {
     const dialog = () => window.confirm('Are you sure you want to delete this plant?');
     if (!dialog()) return;
-    fetch(`${process.env.REACT_APP_API_URL}/plant/${plant.current._id}`, { method: 'DELETE' }).then(() => navigate(-1));
+    fetch(`${process.env.REACT_APP_API_URL}/plant/${plant._id}`, { method: 'DELETE' }).then(() => navigate(-1));
   };
 
   const onChangeType = (value) =>
@@ -90,12 +95,12 @@ export default function PlantAddEdit({ mode }) {
       onSubmit={submitForm}
     >
       <Grid container alignItems="center">
-        <Grid item xs={mode === 'add' ? 12 : 10}>
+        <Grid item xs={action === FORM_ACTION.add ? 12 : 10}>
           <Typography variant="h6">
-            {mode === 'add' ? 'Add' : 'Edit'} Plant
+            {action === FORM_ACTION.add ? 'Add' : 'Edit'} Plant
           </Typography>
         </Grid>
-        {mode === 'edit' &&
+        {action === FORM_ACTION.edit &&
           <Grid item xs={2}>
             <Box display="flex" justifyContent="flex-end">
               <IconButton aria-label="delete" size="large" onClick={deletePlant}>
@@ -116,7 +121,7 @@ export default function PlantAddEdit({ mode }) {
           />
         </Grid>
         <Grid item xs={4}>
-        <FormControl fullWidth>
+          <FormControl fullWidth>
             <InputLabel id="stage-select-label">Stage</InputLabel>
             <Select
               labelId="stage-select-label"

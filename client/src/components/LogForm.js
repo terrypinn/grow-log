@@ -1,5 +1,5 @@
-import { LOG_TYPE, LOG_TYPE_OPTIONS, PLANT_STAGE } from '../constants';
-import { useEffect, useRef, useState } from 'react';
+import { FORM_ACTION, LOG_TYPE, LOG_TYPE_OPTIONS, PLANT_STAGE } from '../constants';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -20,28 +20,32 @@ import SaveIcon from '@mui/icons-material/Save';
 
 const NOTE_OPTIONS_DELIMITER = ' | ';
 
-export default function LogAddEdit({ mode }) {
+LogForm.defaultProps = {
+  action: FORM_ACTION.add,
+  log: null
+};
+
+export default function LogForm(props) {
+  const { action, plant, log } = props;
   const navigate = useNavigate();
-  const plant = useRef(JSON.parse(localStorage.getItem('plant')));
-  const log = useRef(mode === 'edit' ? JSON.parse(localStorage.getItem('log')) : null);
 
   const [form, setForm] = useState({
     created_on: new Date(),
     type: '',
-    stage: mode === 'add' ? plant.current.stage : '',
+    stage: action === FORM_ACTION.add ? plant.stage : '',
     note: '',
     images: ''
   });
 
   useEffect(() => {
-    if (mode === 'edit') {
+    if (action === FORM_ACTION.edit) {
       const form = {
-        ...log.current,
-        images: log.current.images.join('\n')
+        ...log,
+        images: log.images.join('\n')
       };
       setForm(form);
     }
-  }, [mode]);
+  }, [action]);
 
   const updateForm = value => setForm(prev => ({ ...prev, ...value }));
 
@@ -51,9 +55,9 @@ export default function LogAddEdit({ mode }) {
       ...form,
       created_on: +form.created_on,
       images: form.images.split(/\r?\n/).filter(x => x !== ''),
-      plant_id: plant.current._id
+      plant_id: plant._id
     };
-    mode === 'add'
+    action === FORM_ACTION.add 
       ? createLog(body)
       : updateLog(body);
   };
@@ -66,7 +70,7 @@ export default function LogAddEdit({ mode }) {
     }).then(() => navigate(-1));
 
   const updateLog = (body) =>
-    fetch(`${process.env.REACT_APP_API_URL}/log/${log.current._id}`, {
+    fetch(`${process.env.REACT_APP_API_URL}/log/${log._id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
@@ -74,7 +78,7 @@ export default function LogAddEdit({ mode }) {
 
   const deleteLog = () => {
     if (!window.confirm('Are you sure you want to delete this log?')) return;
-    fetch(`${process.env.REACT_APP_API_URL}/log/${log.current._id}`, { method: 'DELETE' }).then(() => navigate(-1));
+    fetch(`${process.env.REACT_APP_API_URL}/log/${log._id}`, { method: 'DELETE' }).then(() => navigate(-1));
   };
 
   const onChangeType = (value) => {
@@ -95,12 +99,12 @@ export default function LogAddEdit({ mode }) {
       onSubmit={submitForm}
     >
       <Grid container alignItems="center">
-        <Grid item xs={mode === 'add' ? 12 : 10}>
+        <Grid item xs={action === FORM_ACTION.add  ? 12 : 10}>
           <Typography variant="h6">
-            {mode === 'add' ? 'Add' : 'Edit'} Log ({plant.current.name})
+            {action === FORM_ACTION.add  ? 'Add' : 'Edit'} Log ({plant.name})
           </Typography>
         </Grid>
-        {mode === 'edit' &&
+        {action === FORM_ACTION.edit &&
           <Grid item xs={2}>
             <Box display="flex" justifyContent="flex-end">
               <IconButton aria-label="delete" size="large" onClick={deleteLog}>
