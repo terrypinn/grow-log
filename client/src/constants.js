@@ -23,6 +23,7 @@ export const PLANT_METHOD = {
 
 export const LOG_TYPE = {
   Action: 'Action',
+  Consuming: 'Consuming',
   Expense: 'Expense',
   Insects: 'Insects',
   Issues: 'Issues',
@@ -45,7 +46,6 @@ export const PLANT_STAGE = {
   Flowering: 'Flowering',
   Drying: 'Drying',
   Curing: 'Curing',
-  Consuming: 'Consuming',
   Archive: 'Archive'
 };
 
