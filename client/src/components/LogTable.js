@@ -31,7 +31,7 @@ export default function LogTable(props) {
 
   const getGrowDay = (log) => {
     if (!plant.started_on) return;
-    return datefns.differenceInDays(log.created_on, plant.started_on);;
+    return datefns.differenceInDays(log.created_on, plant.started_on) + 1;
   };
 
   return (
