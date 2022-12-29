@@ -28,12 +28,13 @@ export default function PlantTable(props) {
     const done = () => {
       const displayStartDate = datefns.format(plant.started_on, fmt);
       const displayEndDate = datefns.format(plant.ended_on, fmt);
-      const diffDays = datefns.differenceInDays(plant.ended_on, plant.started_on);
+      const diffDays = datefns.differenceInDays(plant.ended_on, plant.started_on) + 1;
       return `${displayStartDate} - ${displayEndDate} | ${diffDays} days`;
     };
     const ongoing = () => {
+      const midnight = datefns.add(new Date().setHours(0, 0, 0, 0), { days: 1 });
       const displayDate = datefns.format(plant.started_on, fmt);
-      const diffDays = datefns.differenceInDays(new Date(), plant.started_on);
+      const diffDays = datefns.differenceInDays(midnight, plant.started_on);
       return `${displayDate} | ${diffDays} days`;
     };
     return plant.ended_on ? done() : ongoing();
