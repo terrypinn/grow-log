@@ -40,6 +40,7 @@ export const LOG_TYPE_OPTIONS = {
 };
 
 export const PLANT_STAGE = {
+  Seed: 'Seed',
   Germination: 'Germination',
   Seedling: 'Seedling',
   Vegging: 'Vegging',
