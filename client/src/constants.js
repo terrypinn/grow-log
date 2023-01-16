@@ -23,13 +23,13 @@ export const PLANT_METHOD = {
 
 export const LOG_TYPE = {
   Action: 'Action',
-  Consuming: 'Consuming',
   Expense: 'Expense',
   Insects: 'Insects',
   Issues: 'Issues',
   Nutrients: 'Nutrients',
   Observation: 'Observation',
   Training: 'Training',
+  Used: 'Used',
   Watering: 'Watering'
 };
 
