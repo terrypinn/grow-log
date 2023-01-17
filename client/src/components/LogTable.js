@@ -31,8 +31,11 @@ export default function LogTable(props) {
 
   const getGrowDay = (log) => {
     if (!plant.started_on) return;
-    const left = new Date(log.created_on).setHours(0, 0, 0, 0);
-    const right = new Date(plant.started_on).setHours(0, 0, 0, 0);
+    const setToMidnight = (timestamp) => {
+      return new Date(timestamp).setHours(0, 0, 0, 0);
+    };
+    const left = setToMidnight(log.created_on);
+    const right = setToMidnight(plant.started_on);
     return datefns.differenceInDays(left, right) + 1;
   };
 
