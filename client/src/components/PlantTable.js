@@ -26,16 +26,25 @@ export default function PlantTable(props) {
     if (!plant.started_on) return;
     const fmt = 'dd LLL yyyy';
     const done = () => {
+      const midnight = datefns.add(new Date(plant.ended_on).setHours(0, 0, 0, 0), { days: 1 });
+      const diffDays = datefns.differenceInDays(midnight, plant.started_on);
+      const diffWeeks = datefns.differenceInWeeks(midnight, plant.started_on);
       const displayStartDate = datefns.format(plant.started_on, fmt);
       const displayEndDate = datefns.format(plant.ended_on, fmt);
-      const diffDays = datefns.differenceInDays(plant.ended_on, plant.started_on) + 1;
-      return `${displayStartDate} - ${displayEndDate} | ${diffDays} days`;
+      const displayText = diffWeeks == 0
+        ? `${displayStartDate} - ${displayEndDate} | ${diffDays} days`
+        : `${displayStartDate} - ${displayEndDate} | ${diffWeeks} wk ${diffDays} d`;
+      return displayText;
     };
     const ongoing = () => {
       const midnight = datefns.add(new Date().setHours(0, 0, 0, 0), { days: 1 });
-      const displayDate = datefns.format(plant.started_on, fmt);
       const diffDays = datefns.differenceInDays(midnight, plant.started_on);
-      return `${displayDate} | ${diffDays} days`;
+      const diffWeeks = datefns.differenceInWeeks(midnight, plant.started_on);
+      const displayDate = datefns.format(plant.started_on, fmt);
+      const displayText = diffWeeks == 0
+        ? `${displayDate} | ${diffDays} days`
+        : `${displayDate} | ${diffWeeks} wk ${diffDays} d`;
+      return displayText;
     };
     return plant.ended_on ? done() : ongoing();
   };
