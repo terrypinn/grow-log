@@ -24,18 +24,25 @@ export default function PlantTable(props) {
 
   const getGrowPeriod = (plant) => {
     if (!plant.started_on) return;
-    const fmt = 'dd LLL yyyy';
+    const format = 'dd LLL yyyy';
     const done = () => {
-      const displayStartDate = datefns.format(plant.started_on, fmt);
-      const displayEndDate = datefns.format(plant.ended_on, fmt);
-      const diffDays = datefns.differenceInDays(plant.ended_on, plant.started_on) + 1;
-      return `${displayStartDate} - ${displayEndDate} | ${diffDays} days`;
+      const midnight = datefns.add(new Date(plant.ended_on).setHours(0, 0, 0, 0), { days: 1 });
+      const days = datefns.differenceInDays(midnight, plant.started_on);
+      const weeks = datefns.differenceInWeeks(midnight, plant.started_on);
+      const start = datefns.format(plant.started_on, format);
+      const end = datefns.format(plant.ended_on, format);
+      return weeks == 0
+        ? `${start} - ${end} | ${days} days`
+        : `${start} - ${end} | ${weeks} wk ${days} d`;
     };
     const ongoing = () => {
       const midnight = datefns.add(new Date().setHours(0, 0, 0, 0), { days: 1 });
-      const displayDate = datefns.format(plant.started_on, fmt);
-      const diffDays = datefns.differenceInDays(midnight, plant.started_on);
-      return `${displayDate} | ${diffDays} days`;
+      const days = datefns.differenceInDays(midnight, plant.started_on);
+      const weeks = datefns.differenceInWeeks(midnight, plant.started_on);
+      const start = datefns.format(plant.started_on, format);
+      return weeks == 0
+        ? `${start} | ${days} days`
+        : `${start} | ${weeks} wk ${days} d`;
     };
     return plant.ended_on ? done() : ongoing();
   };
