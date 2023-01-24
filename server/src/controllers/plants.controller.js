@@ -2,7 +2,7 @@ const Log = require('../models/Log');
 const Plant = require('../models/Plant');
 
 exports.plant_list = (req, res) => {
-  Plant.find().sort({ name: 1 }).then(docs => res.json(docs));
+  Plant.find().sort({ created_on: 1 }).then(docs => res.json(docs));
 };
 
 exports.plant_detail = (req, res) => {
