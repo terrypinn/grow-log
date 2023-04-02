@@ -31,7 +31,7 @@ export default function PlantTable(props) {
       const weeks = datefns.differenceInWeeks(midnight, plant.started_on);
       const start = datefns.format(plant.started_on, format);
       const end = datefns.format(plant.ended_on, format);
-      return weeks == 0
+      return weeks === 0
         ? `${start} - ${end} | ${days} days`
         : `${start} - ${end} | ${weeks} wk ${days} d`;
     };
@@ -40,7 +40,7 @@ export default function PlantTable(props) {
       const days = datefns.differenceInDays(midnight, plant.started_on);
       const weeks = datefns.differenceInWeeks(midnight, plant.started_on);
       const start = datefns.format(plant.started_on, format);
-      return weeks == 0
+      return weeks === 0
         ? `${start} | ${days} days`
         : `${start} | ${weeks} wk ${days} d`;
     };
@@ -60,6 +60,13 @@ export default function PlantTable(props) {
   const navToLogAddEdd = (plant) => {
     localStorage.setItem('plant', JSON.stringify(plant));
     navigate('/log/add');
+  };
+
+  const getGrowDay = (plant) => {
+    const setToMidnight = timestamp => new Date(timestamp).setHours(0, 0, 0, 0);
+    const left = setToMidnight(new Date());
+    const right = setToMidnight(plant.created_on);
+    return datefns.differenceInDays(left, right) + 1;
   };
 
   return (
@@ -88,21 +95,27 @@ export default function PlantTable(props) {
           <Table sx={{ minWidth: 750 }}>
             <TableHead>
               <TableRow>
+                <TableCell>#</TableCell>
+                <TableCell>Created On</TableCell>
+                <TableCell>Day</TableCell>
+                <TableCell>Type</TableCell>
+                <TableCell>Stage</TableCell>
+                <TableCell>Logs</TableCell>
                 <TableCell>Name</TableCell>
-                <TableCell align="center">Logs</TableCell>
-                <TableCell align="right">Type</TableCell>
-                <TableCell align="right">Stage</TableCell>
                 <TableCell align="right">Grow Period</TableCell>
                 <TableCell align="right" />
               </TableRow>
             </TableHead>
             <TableBody>
-              {plants.map((plant) => (
-                <TableRow key={plant._id}>
+              {plants.map((plant, index) => (
+                <TableRow key={index}>
+                  <TableCell component="th" scope="row">{index + 1}</TableCell>
+                  <TableCell sx={{ minWidth: 150 }}>{datefns.format(plant.created_on, 'dd/MM/yyyy')}</TableCell>
+                  <TableCell>{getGrowDay(plant)}</TableCell>
+                  <TableCell>{plant.type}</TableCell>
+                  <TableCell>{plant.stage}</TableCell>
+                  <TableCell>{plant.logs.length}</TableCell>
                   <TableCell component="th" scope="row">{plant.name}</TableCell>
-                  <TableCell align="center">{plant.logs.length}</TableCell>
-                  <TableCell align="right">{plant.type}</TableCell>
-                  <TableCell align="right">{plant.stage}</TableCell>
                   <TableCell align="right">{getGrowPeriod(plant)}</TableCell>
                   <TableCell align="right">
                     <ButtonGroup size="small" variant="text" aria-label="actions button group">
